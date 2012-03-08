@@ -41,12 +41,12 @@ namespace UnitTests
             Console.WriteLine(writtenText);
         }
 
-        private TextGenerator _textGenerator;
+        private MarkovGenerator _textGenerator;
 
         [SetUp]
         public void SetUp()
         {
-            _textGenerator = new TextGenerator();
+            _textGenerator = new MarkovGenerator();
         }
     }
 }

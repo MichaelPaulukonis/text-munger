@@ -12,7 +12,7 @@ namespace UnitTests
 		[ExpectedException(typeof(ArgumentOutOfRangeException))]
 		public void keySize_zero_throws_error()
 		{
-			var _ = new TextGenerator(0);
+			var _ = new MarkovGenerator(0);
 		}
 
 		[Test]
@@ -20,7 +20,7 @@ namespace UnitTests
 		{
 			foreach (var i in Enumerable.Range(1,5))
 			{
-				var _ = new TextGenerator(i);
+				var _ = new MarkovGenerator(i);
 			}
 		}
 
@@ -28,7 +28,7 @@ namespace UnitTests
 		[ExpectedException(typeof(ArgumentOutOfRangeException))]
 		public void keySize_six_throws_error()
 		{
-			var _ = new TextGenerator(6);
+			var _ = new MarkovGenerator(6);
 		}
 	}
 }

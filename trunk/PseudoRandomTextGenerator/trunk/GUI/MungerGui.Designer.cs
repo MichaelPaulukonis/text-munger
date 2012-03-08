@@ -28,20 +28,15 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.Windows.Forms.ListViewGroup listViewGroup1 = new System.Windows.Forms.ListViewGroup("ListViewGroup", System.Windows.Forms.HorizontalAlignment.Left);
-            System.Windows.Forms.ListViewGroup listViewGroup2 = new System.Windows.Forms.ListViewGroup("ListViewGroup", System.Windows.Forms.HorizontalAlignment.Left);
-            System.Windows.Forms.ListViewItem listViewItem1 = new System.Windows.Forms.ListViewItem("");
-            System.Windows.Forms.ListViewItem listViewItem2 = new System.Windows.Forms.ListViewItem("");
-            System.Windows.Forms.ListViewItem listViewItem3 = new System.Windows.Forms.ListViewItem("");
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MungerGui));
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.rbPaste = new System.Windows.Forms.RadioButton();
             this.rbInternet = new System.Windows.Forms.RadioButton();
             this.rbLibrary = new System.Windows.Forms.RadioButton();
-            this.listView1 = new System.Windows.Forms.ListView();
-            this.columnHeader1 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.columnHeader2 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.RuleSetAdder = new CustomSelectControl.MultipleSelectionControl();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
+            this.btnApply = new System.Windows.Forms.Button();
+            this.txtOutput = new System.Windows.Forms.TextBox();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.SuspendLayout();
@@ -91,35 +86,12 @@
             this.rbLibrary.Text = "Library";
             this.rbLibrary.UseVisualStyleBackColor = true;
             // 
-            // listView1
-            // 
-            this.listView1.AllowColumnReorder = true;
-            this.listView1.AllowDrop = true;
-            this.listView1.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
-            this.columnHeader1,
-            this.columnHeader2});
-            listViewGroup1.Header = "ListViewGroup";
-            listViewGroup1.Name = "listViewGroup1";
-            listViewGroup2.Header = "ListViewGroup";
-            listViewGroup2.Name = "listViewGroup2";
-            this.listView1.Groups.AddRange(new System.Windows.Forms.ListViewGroup[] {
-            listViewGroup1,
-            listViewGroup2});
-            this.listView1.Items.AddRange(new System.Windows.Forms.ListViewItem[] {
-            listViewItem1,
-            listViewItem2,
-            listViewItem3});
-            this.listView1.Location = new System.Drawing.Point(218, 561);
-            this.listView1.Name = "listView1";
-            this.listView1.Size = new System.Drawing.Size(281, 121);
-            this.listView1.TabIndex = 7;
-            this.listView1.UseCompatibleStateImageBehavior = false;
-            // 
             // RuleSetAdder
             // 
             this.RuleSetAdder.AllowMultipleItems = true;
             this.RuleSetAdder.Location = new System.Drawing.Point(6, 19);
             this.RuleSetAdder.Name = "RuleSetAdder";
+            this.RuleSetAdder.SelectedItems = ((System.Collections.Generic.List<object>)(resources.GetObject("RuleSetAdder.SelectedItems")));
             this.RuleSetAdder.Size = new System.Drawing.Size(389, 255);
             this.RuleSetAdder.TabIndex = 8;
             // 
@@ -133,13 +105,33 @@
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "addRuleSet";
             // 
+            // btnApply
+            // 
+            this.btnApply.Location = new System.Drawing.Point(233, 347);
+            this.btnApply.Name = "btnApply";
+            this.btnApply.Size = new System.Drawing.Size(75, 23);
+            this.btnApply.TabIndex = 10;
+            this.btnApply.Text = "ApplyRules";
+            this.btnApply.UseVisualStyleBackColor = true;
+            this.btnApply.Click += new System.EventHandler(this.btnApply_Click);
+            // 
+            // txtOutput
+            // 
+            this.txtOutput.Font = new System.Drawing.Font("Consolas", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.txtOutput.Location = new System.Drawing.Point(334, 347);
+            this.txtOutput.Multiline = true;
+            this.txtOutput.Name = "txtOutput";
+            this.txtOutput.Size = new System.Drawing.Size(529, 335);
+            this.txtOutput.TabIndex = 11;
+            // 
             // MungerGui
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(875, 694);
+            this.Controls.Add(this.txtOutput);
+            this.Controls.Add(this.btnApply);
             this.Controls.Add(this.groupBox2);
-            this.Controls.Add(this.listView1);
             this.Controls.Add(this.groupBox1);
             this.Name = "MungerGui";
             this.Text = "Form1";
@@ -147,6 +139,7 @@
             this.groupBox1.PerformLayout();
             this.groupBox2.ResumeLayout(false);
             this.ResumeLayout(false);
+            this.PerformLayout();
 
         }
 
@@ -156,11 +149,10 @@
         private System.Windows.Forms.RadioButton rbPaste;
         private System.Windows.Forms.RadioButton rbInternet;
         private System.Windows.Forms.RadioButton rbLibrary;
-        private System.Windows.Forms.ListView listView1;
-        private System.Windows.Forms.ColumnHeader columnHeader1;
-        private System.Windows.Forms.ColumnHeader columnHeader2;
         private CustomSelectControl.MultipleSelectionControl RuleSetAdder;
         private System.Windows.Forms.GroupBox groupBox2;
+        private System.Windows.Forms.Button btnApply;
+        private System.Windows.Forms.TextBox txtOutput;
 
     }
 }

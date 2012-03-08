@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 11.00
 # Visual Studio 2010
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PseudoRandomTextGenerator", "PseudoRandomTextGenerator\PseudoRandomTextGenerator.csproj", "{389353F3-0622-4BE1-BA94-DC3AFC565FE5}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TextTransformers", "PseudoRandomTextGenerator\TextTransformers.csproj", "{389353F3-0622-4BE1-BA94-DC3AFC565FE5}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UnitTests", "UnitTests\UnitTests.csproj", "{0C59DA0F-A2CB-4F72-A8B5-4806A29E1A83}"
 EndProject
