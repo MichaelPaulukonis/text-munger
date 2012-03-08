@@ -11,21 +11,21 @@ using TextMunger;
 
 namespace Runner
 {
-    internal class TextMunger
+    public class ConsoleRunner
     {
-        private TextGenerator _textGenerator;
+        private MarkovGenerator _textGenerator;
         private static string _textCache = string.Empty;
 
         public void SetUp()
         {
             // no parm = default keysize of 2
-            //_textGenerator = new TextGenerator();
-            _textGenerator = new TextGenerator(2);
+            //_textGenerator = new MarkovGenerator();
+            _textGenerator = new MarkovGenerator(2);
         }
 
         private static void Main(string[] args)
         {
-            var mg = new TextMunger();
+            var mg = new ConsoleRunner();
             mg.MungeIt();
         }
 
@@ -149,7 +149,7 @@ namespace Runner
             return Path.Combine(dir, name);
         }
 
-        private string GetSource()
+        public string GetSource()
         {
             //return GetGutenberg();
             return GetLibraryTexts();

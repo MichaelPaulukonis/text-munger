@@ -49,13 +49,13 @@ namespace UnitTests
         //    _textGenerator.ReadText("this is my seed data");
         //}
 
-        private TextGenerator _textGenerator;
+        private MarkovGenerator _textGenerator;
         private string _filePath;
 
         [SetUp]
         public void SetUp()
         {
-            _textGenerator = new TextGenerator();
+            _textGenerator = new MarkovGenerator();
             _filePath = string.Format(@"{0}\AllsWellThatEndsWell.txt", Assembly.GetExecutingAssembly().Directory());
         }
     }

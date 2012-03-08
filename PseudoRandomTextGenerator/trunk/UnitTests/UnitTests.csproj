@@ -62,9 +62,9 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\PseudoRandomTextGenerator\PseudoRandomTextGenerator.csproj">
+    <ProjectReference Include="..\PseudoRandomTextGenerator\TextTransformers.csproj">
       <Project>{389353F3-0622-4BE1-BA94-DC3AFC565FE5}</Project>
-      <Name>PseudoRandomTextGenerator</Name>
+      <Name>TextTransformers</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

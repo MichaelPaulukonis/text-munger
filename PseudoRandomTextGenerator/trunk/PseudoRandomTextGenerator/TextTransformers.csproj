@@ -8,7 +8,7 @@
     <ProjectGuid>{389353F3-0622-4BE1-BA94-DC3AFC565FE5}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>PseudoRandomTextGenerator</RootNamespace>
+    <RootNamespace>TextTransformer</RootNamespace>
     <AssemblyName>PseudoRandomTextGenerator</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
@@ -45,6 +45,7 @@
     <Compile Include="MarkovGenerator.cs" />
     <Compile Include="RuleSet.cs" />
     <Compile Include="Transformation.cs" />
+    <Compile Include="TransformationFactory.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

@@ -1,10 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
 using System.Linq;
-using System.Text;
 using System.Windows.Forms;
 using CustomSelectControl;
 using TextMunger;
@@ -38,8 +34,7 @@ namespace GUI
             // SELECTED should be the below....
             Editor.AvailableItems = set.Rules.Cast<object>().ToList();
 
-            // TODO: there is no way to pre-set the SelectedItems
-            Editor.SelectedItems = set.Rules.Cast<object>().ToList();
+            //Editor.SelectedItems = set.Rules.Cast<object>().ToList();
         }
 
         // TODO: we also need to create the Transformer editor

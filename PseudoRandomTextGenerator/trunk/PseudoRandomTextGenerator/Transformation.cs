@@ -21,15 +21,38 @@ namespace TextMunger
         All = 100       // leaving room for weird expansion. although refactoring should take care of that. except for serialization...
     }
 
-    // TODO: implement ICloneable on all ITransformers
-    // then apply to interface
-    public interface ITransformer //: ICloneable
+    // do NOT implement ICloneable on interface
+    // as only those Transformers that have distinct settings require it
+    public interface ITransformer
     {
         string Source { get; set; }
 
         string Munged { get; }
 
         Granularity Granularity { get; }
+    }
+
+    internal static class TransformerTools
+    {
+        // this is ganked from MarkovGenerator.cs:public class DefaultRule : IMarkovRule
+        // which suggests it is common code....
+        internal static IList<string> SplitToWords(string subject)
+        {
+            var regex = new Regex(@"\s+");
+
+            var splitted = regex.Split(subject).ToList();
+
+            return splitted;
+        }
+
+        internal static IList<string> SplitToChars(string subject)
+        {
+            var regex = new Regex(@".");
+
+            var splitted = regex.Split(subject).ToList();
+
+            return splitted;
+        }
     }
 
     public class Shouty : ITransformer
@@ -126,7 +149,8 @@ namespace TextMunger
         public Granularity Granularity { get { return Granularity.Any; } }
     }
 
-    public class PunctuizeWhitespace : ITransformer
+    // clone, as the Mark can be set independently
+    public class PunctuizeWhitespace : ITransformer, ICloneable
     {
         public PunctuizeWhitespace()
         {
@@ -155,6 +179,15 @@ namespace TextMunger
         }
 
         public Granularity Granularity { get { return Granularity.Sentence; } }
+
+        public object Clone()
+        {
+            var c = new PunctuizeWhitespace();
+
+            c.Mark = this.Mark;
+
+            return c;
+        }
     }
 
     public class VowellToPunct : ITransformer
@@ -463,29 +496,6 @@ namespace TextMunger
         }
     }
 
-    internal static class TransformerTools
-    {
-        // this is ganked from MarkovGenerator.cs:public class DefaultRule : IMarkovRule
-        // which suggests it is common code....
-        internal static IList<string> SplitToWords(string subject)
-        {
-            var regex = new Regex(@"\s+");
-
-            var splitted = regex.Split(subject).ToList();
-
-            return splitted;
-        }
-
-        internal static IList<string> SplitToChars(string subject)
-        {
-            var regex = new Regex(@".");
-
-            var splitted = regex.Split(subject).ToList();
-
-            return splitted;
-        }
-    }
-
     //       shuffle -- problem: depends upon atomicity
     //       for now, let's assume word-level, that is, shuffle the chars in a word
     public class Shuffle : ITransformer
@@ -527,27 +537,29 @@ namespace TextMunger
         // based on code @ http://stackoverflow.com/questions/4098178/c-sharp-translator-from-pig-latin-to-english
         private static string Munge(string word)
         {
-            string pigLatinOut;
-            const string vowel = "AEIOUaeiou";
-
-            string afterFirst = word.Substring(1);
-            string firstLetter = word.Substring(0, 1);
-            var x = firstLetter.IndexOf(vowel);
-
-            if (x == -1)
+            string pigLatinOut = string.Empty;
+            if (word.Length > 0)
             {
-                pigLatinOut = (afterFirst + firstLetter + "ay ");
-            }
-            else
-            {
-                pigLatinOut = (firstLetter + afterFirst + "way ");
-            }
+                const string vowel = "AEIOUaeiou";
 
+                string afterFirst = word.Substring(1);
+                string firstLetter = word.Substring(0, 1);
+                var x = firstLetter.IndexOf(vowel);
+
+                if (x == -1)
+                {
+                    pigLatinOut = (afterFirst + firstLetter + "ay ");
+                }
+                else
+                {
+                    pigLatinOut = (firstLetter + afterFirst + "way ");
+                }
+            }
             return pigLatinOut;
         }
     }
 
-    public class Leet : ITransformer, ICloneable
+    public class Leet : ITransformer
     {
         // transform code based on http://stackoverflow.com/a/3216008/41153
 
@@ -674,17 +686,6 @@ namespace TextMunger
         public override string ToString()
         {
             return "L33t";
-        }
-
-        public object Clone()
-        {
-            // wonder if there's an easier way to clone, to just copy the existing ruleset
-            // instead of re-building it
-            // because in a clone-scenario
-            // we don't want to bother with file-reading
-            // or whatever else was originally used to implement....
-            var r = new Leet();
-            return r;
         }
     }
 }

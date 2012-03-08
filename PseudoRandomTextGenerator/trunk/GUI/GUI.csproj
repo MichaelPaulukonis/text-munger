@@ -11,7 +11,8 @@
     <RootNamespace>GUI</RootNamespace>
     <AssemblyName>GUI</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
-    <TargetFrameworkProfile>Client</TargetFrameworkProfile>
+    <TargetFrameworkProfile>
+    </TargetFrameworkProfile>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x86' ">
@@ -74,10 +75,12 @@
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DependentUpon>Resources.resx</DependentUpon>
+      <DesignTime>True</DesignTime>
     </Compile>
     <EmbeddedResource Include="RuleSetEditor.resx">
       <DependentUpon>RuleSetEditor.cs</DependentUpon>
     </EmbeddedResource>
+    <None Include="app.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
@@ -89,9 +92,13 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\PseudoRandomTextGenerator\PseudoRandomTextGenerator.csproj">
+    <ProjectReference Include="..\PseudoRandomTextGenerator\TextTransformers.csproj">
       <Project>{389353F3-0622-4BE1-BA94-DC3AFC565FE5}</Project>
-      <Name>PseudoRandomTextGenerator</Name>
+      <Name>TextTransformers</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Runner\Runner.csproj">
+      <Project>{A77852C8-D232-451C-BB81-3B09202BE125}</Project>
+      <Name>Runner</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

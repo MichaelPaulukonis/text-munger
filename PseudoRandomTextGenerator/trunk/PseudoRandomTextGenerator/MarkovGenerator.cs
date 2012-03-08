@@ -6,7 +6,7 @@ using System.Text.RegularExpressions;
 
 namespace TextMunger
 {
-    public interface IMarkovRule
+    public interface IMarkovRules
     {
         IList<string> Split(string subject);
 
@@ -15,7 +15,7 @@ namespace TextMunger
         string Clean(string dirty);
     }
 
-    public class DefaultRule : IMarkovRule
+    public class DefaultRule : IMarkovRules
     {
         public virtual IList<string> Split(string subject)
         {
@@ -135,16 +135,16 @@ namespace TextMunger
         public string Previous { get; set; }
     }
 
-    public class TextGenerator : ITransformer
+    public class MarkovGenerator : ITransformer, ICloneable
     {
         private readonly int _keySize;
         private Dictionary<string, List<string>> _chain;
         private Random _random;
-        private readonly IMarkovRule _rule;
+        private readonly IMarkovRules _rule;
         private const int FirstWord = 1;
         private string _wordDelim = Convert.ToChar(6).ToString(); // this is for the storage model only, not for output.
 
-        public TextGenerator(int keySize = 2)
+        public MarkovGenerator(int keySize = 2)
         {
             if (keySize < 1 || keySize > 5) throw new ArgumentOutOfRangeException("keySize", "Can be 1-5");
 
@@ -158,6 +158,20 @@ namespace TextMunger
 
             MinLength = 100;
             MaxLength = 100;
+        }
+
+        public MarkovGenerator(IMarkovRules rules, int keySize = 2)
+            : this(keySize)
+        {
+            _rule = rules;
+        }
+
+        // TODO: should there be more params exposed?
+        public object Clone()
+        {
+            var c = new MarkovGenerator(_rule, _keySize);
+
+            return c;
         }
 
         public void ReadTextFile(string filePath)
@@ -241,9 +255,12 @@ namespace TextMunger
 
         private string _m = null;
 
+        // doh! this means it never re-processes what we've got!
+        // ugh. not what I want...
         public string Munged
         {
-            get { return _m ?? (_m = Munge()); }
+            //get { return _m ?? (_m = Munge()); }
+            get { return Munge(); }
         }
 
         public string Munge()
