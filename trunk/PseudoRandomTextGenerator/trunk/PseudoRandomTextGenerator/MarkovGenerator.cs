@@ -271,7 +271,7 @@ namespace TextMunger
         // running Markov on a word-level is a bit silly, but for long words I guess you could do it
         // should we just bite-the-bullet and insist on sentence-level?
         // what about the hundred-letter thunderwords? or a punctuation-and-whitespace-free blob?
-        public Granularity Granularity { get { return Granularity.Word; } }
+        public Granularity Granularity { get { return Granularity.All; } }
 
         // TODO: overload, to accept a designated seed-string
         // if seed-string does not exist, also use random

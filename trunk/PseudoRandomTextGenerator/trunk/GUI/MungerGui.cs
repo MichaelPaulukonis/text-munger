@@ -25,11 +25,12 @@ namespace GUI
 
             // these are all examples of how to add rules
 
-            var globals = new RuleSet("Global Rules");
+            var globals = new RuleSet("Global Rules", Granularity.All);
+
             var markov = new MarkovGenerator { MinLength = 8000, MaxLength = 10000 };
             globals.AddRule(markov).AddRule(new Density { Percentage = 97 }).AddRule(new XrmlFormat());
 
-            var granular = new RuleSet("Granular Rules")
+            var granular = new RuleSet("Granular Rules", Granularity.Word)
                                {
                                    Rules = new List<ITransformer>
                                                {
@@ -111,50 +112,103 @@ namespace GUI
 
             if (sets.Count > 0)
             {
-                var globals = sets[0];
-
-                // below works for the global rule, but not for the granular rules....
-                // how will we distinguish rulesets?
-                // we need to enforce a granularity-level inside of it
-                // and return that value as a property of the ruleset....
-                foreach (var rule in globals.Rules)
+                foreach (var ruleset in sets)
                 {
-                    rule.Source = _output;
-                    _output = rule.Munged;
-                }
-
-                var granulars = sets[1].Rules;
-                // TODO: apply
-                // have a look at ConsoleRunner.ApplyGranularRules()
-                const int threshold = 20; // 20% chance of applying the rule
-                var sb = new StringBuilder();
-
-                var rnd = new Random();
-
-                var regex = new Regex(@"\s+"); // original regex
-                var words = regex.Split(_output).ToList();
-
-                foreach (var word in words)
-                {
-                    string outword;
-
-                    if (granulars.Any() && rnd.Next(0, 100) < threshold)
+                    if (ruleset.Granularity == Granularity.All)
                     {
-                        var rule = granulars[(rnd.Next(0, granulars.Count))];
-                        rule.Source = word;
-                        outword = rule.Munged;
+                        ApplyGlobals(ruleset.Rules);
                     }
                     else
                     {
-                        outword = word;
+                        ApplyGranularRules(ruleset.Rules);
                     }
-
-                    sb.Append(outword + " ");
                 }
 
-                _output = sb.ToString();
+                //var globals = sets[0];
+
+                //// below works for the global rule, but not for the granular rules....
+                //// how will we distinguish rulesets?
+                //// we need to enforce a granularity-level inside of it
+                //// and return that value as a property of the ruleset....
+                //foreach (var rule in globals.Rules)
+                //{
+                //    rule.Source = _output;
+                //    _output = rule.Munged;
+                //}
+
+                //var granulars = sets[1].Rules;
+                //// TODO: apply
+                //// have a look at ConsoleRunner.ApplyGranularRules()
+                //const int threshold = 20; // 20% chance of applying the rule
+                //var sb = new StringBuilder();
+
+                //var rnd = new Random();
+
+                //var regex = new Regex(@"\s+"); // original regex
+                //var words = regex.Split(_output).ToList();
+
+                //foreach (var word in words)
+                //{
+                //    string outword;
+
+                //    if (granulars.Any() && rnd.Next(0, 100) < threshold)
+                //    {
+                //        var rule = granulars[(rnd.Next(0, granulars.Count))];
+                //        rule.Source = word;
+                //        outword = rule.Munged;
+                //    }
+                //    else
+                //    {
+                //        outword = word;
+                //    }
+
+                //    sb.Append(outword + " ");
+                //}
+
+                //_output = sb.ToString();
             }
+
             txtOutput.Text = _output;
+        }
+
+        private void ApplyGlobals(List<ITransformer> globalRules)
+        {
+            foreach (var rule in globalRules)
+            {
+                rule.Source = _output;
+                _output = rule.Munged;
+            }
+        }
+
+        private void ApplyGranularRules(List<ITransformer> granulars)
+        {
+            const int threshold = 100; // 20% chance of applying the rule
+            var sb = new StringBuilder();
+
+            var rnd = new Random();
+
+            var regex = new Regex(@"\s+"); // original regex
+            var words = regex.Split(_output).ToList();
+
+            foreach (var word in words)
+            {
+                string outword;
+
+                if (granulars.Any() && rnd.Next(0, 100) < threshold)
+                {
+                    var rule = granulars[(rnd.Next(0, granulars.Count))];
+                    rule.Source = word;
+                    outword = rule.Munged;
+                }
+                else
+                {
+                    outword = word;
+                }
+                // TODO: spaces don't work so well, here.....
+                sb.Append(outword + " ");
+            }
+
+            _output = sb.ToString();
         }
     }
 }
