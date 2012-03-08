@@ -9,15 +9,16 @@ namespace TextMunger
 {
     // TODO: indicates the minimum level for the rule to run on
     //       ie, an "All" should not run on a char
+    // I've commented out unused granularities, for now.
     public enum Granularity
     {
         Unknown = -1,
         Any = 0,
-        Character = 1,
+        //Character = 1,
         Word = 2,
         Sentence = 3,   // yeah, maybe
-        Paragraph = 4,  // yeah. okay. so what?
-        Page = 5,       // no idea how this would be defined
+        //Paragraph = 4,  // yeah. okay. so what?
+        //Page = 5,       // no idea how this would be defined
         All = 100       // leaving room for weird expansion. although refactoring should take care of that. except for serialization...
     }
 
@@ -102,7 +103,7 @@ namespace TextMunger
             return new string(c);
         }
 
-        public Granularity Granularity { get { return Granularity.Any; } }
+        public Granularity Granularity { get { return Granularity.Word; } }
     }
 
     public class Disemconsonant : ITransformer
@@ -311,7 +312,7 @@ namespace TextMunger
             return sb.ToString();
         }
 
-        public Granularity Granularity { get { return Granularity.All; } }
+        public Granularity Granularity { get { return Granularity.Sentence; } }
 
         // TODO: eventually, drop the word in here, too
         //       so we can break it apart sometimes for lower density
@@ -444,7 +445,7 @@ namespace TextMunger
             return sb.ToString();
         }
 
-        public Granularity Granularity { get { return Granularity.All; } }
+        public Granularity Granularity { get { return Granularity.Word; } }
 
         private Dictionary<string, List<string>> _homophones = null;
 
