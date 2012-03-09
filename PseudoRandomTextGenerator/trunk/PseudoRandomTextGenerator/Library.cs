@@ -4,7 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 
-namespace TextMunger
+namespace TextTransformer
 {
     public class Library
     {

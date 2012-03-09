@@ -1,7 +1,7 @@
 using System;
 using System.Linq;
 using NUnit.Framework;
-using TextMunger;
+using TextTransformer;
 
 namespace UnitTests
 {

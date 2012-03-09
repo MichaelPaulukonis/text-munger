@@ -1,6 +1,8 @@
-﻿namespace TextTransformer
+﻿using System.Collections.Generic;
+
+namespace TextTransformer
 {
-    internal class TransformationFactory
+    public class TransformationFactory
     {
         //public enum Granularity
         //{
@@ -19,5 +21,53 @@
         // ie, word-transforer is all word, character, and any
         // All == all, I guess
         // do we have any any
+
+        public TransformationFactory()
+        {
+        }
+
+        // we will return ALL transformers that are up to and including this level
+        public List<ITransformer> GetTransformers(Granularity maxGranularity)
+        {
+            var ts = new List<ITransformer>();
+
+            // TODO: other cases
+            // and.. fall-through? things should be added up.....
+            // and actually, "ALL" should include... everything, right?!??!
+            switch (maxGranularity)
+            {
+                case Granularity.Word:
+                    ts.AddRange(GetGranularityWord());
+                    break;
+
+                case Granularity.All:
+                    ts.AddRange(GetGranularityAll());
+                    break;
+            }
+
+            return ts;
+        }
+
+        private List<ITransformer> GetGranularityWord()
+        {
+            return new List<ITransformer>
+            {new Leet(),
+                new PigLatin(),
+                new Shuffle(),
+                new Disemconsonant(),
+                new RandomCaps(),
+                new VowellToPunct(),
+                new Reverse(),
+                new Shouty(),
+                new VowellToPunct(),
+                new Homophonic(),
+                new Disemvowell()
+            };
+        }
+
+        private List<ITransformer> GetGranularityAll()
+        {
+            return new List<ITransformer> { new MarkovGenerator(), new XrmlFormat(), new Density() };
+        }
     }
 }
