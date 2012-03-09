@@ -2,7 +2,7 @@ using System;
 using System.IO;
 using System.Linq;
 using System.Reflection;
-using TextMunger;
+using TextTransformer;
 using NUnit.Framework;
 
 namespace UnitTests

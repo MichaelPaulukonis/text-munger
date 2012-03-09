@@ -5,7 +5,7 @@ using System.Text;
 using System.Text.RegularExpressions;
 using System.Windows.Forms;
 using Runner;
-using TextMunger;
+using TextTransformer;
 
 namespace GUI
 {
@@ -25,28 +25,35 @@ namespace GUI
 
             // these are all examples of how to add rules
 
+            // TODO: we need to have an editor for some of these
+            // or the factory will be giving us defaults I don't like.
+            // or, make what I like the defaults... yeah, that makes sense....
+
             var globals = new RuleSet("Global Rules", Granularity.All);
 
             var markov = new MarkovGenerator { MinLength = 8000, MaxLength = 10000 };
             globals.AddRule(markov).AddRule(new Density { Percentage = 97 }).AddRule(new XrmlFormat());
 
-            var granular = new RuleSet("Granular Rules", Granularity.Word)
-                               {
-                                   Rules = new List<ITransformer>
-                                               {
-                                                   new Leet(),
-                                                   new PigLatin(),
-                                                   new Shuffle(),
-                                                   new Disemconsonant(),
-                                                   new RandomCaps(),
-                                                   new VowellToPunct(),
-                                                   new Reverse(),
-                                                   new Shouty(),
-                                                   new VowellToPunct(),
-                                                   new Homophonic(),
-                                                   new Disemvowell(),
-                                               }
-                               };
+            // oop, I need a RuleSet populated
+            var granular = new RuleSet("Granular Rules", Granularity.Word) { Rules = new TransformationFactory().GetTransformers(Granularity.Word) };
+            //var granular = new TransformationFactory().GetTransformers(Granularity.Word);
+            //var granular = new RuleSet("Granular Rules", Granularity.Word)
+            //                   {
+            //                       Rules = new List<ITransformer>
+            //                                   {
+            //                                       new Leet(),
+            //                                       new PigLatin(),
+            //                                       new Shuffle(),
+            //                                       new Disemconsonant(),
+            //                                       new RandomCaps(),
+            //                                       new VowellToPunct(),
+            //                                       new Reverse(),
+            //                                       new Shouty(),
+            //                                       new VowellToPunct(),
+            //                                       new Homophonic(),
+            //                                       new Disemvowell(),
+            //                                   }
+            //                   };
 
             //granular.AddRule(new Leet()).AddRule(new PigLatin());
 
@@ -123,49 +130,6 @@ namespace GUI
                         ApplyGranularRules(ruleset.Rules);
                     }
                 }
-
-                //var globals = sets[0];
-
-                //// below works for the global rule, but not for the granular rules....
-                //// how will we distinguish rulesets?
-                //// we need to enforce a granularity-level inside of it
-                //// and return that value as a property of the ruleset....
-                //foreach (var rule in globals.Rules)
-                //{
-                //    rule.Source = _output;
-                //    _output = rule.Munged;
-                //}
-
-                //var granulars = sets[1].Rules;
-                //// TODO: apply
-                //// have a look at ConsoleRunner.ApplyGranularRules()
-                //const int threshold = 20; // 20% chance of applying the rule
-                //var sb = new StringBuilder();
-
-                //var rnd = new Random();
-
-                //var regex = new Regex(@"\s+"); // original regex
-                //var words = regex.Split(_output).ToList();
-
-                //foreach (var word in words)
-                //{
-                //    string outword;
-
-                //    if (granulars.Any() && rnd.Next(0, 100) < threshold)
-                //    {
-                //        var rule = granulars[(rnd.Next(0, granulars.Count))];
-                //        rule.Source = word;
-                //        outword = rule.Munged;
-                //    }
-                //    else
-                //    {
-                //        outword = word;
-                //    }
-
-                //    sb.Append(outword + " ");
-                //}
-
-                //_output = sb.ToString();
             }
 
             txtOutput.Text = _output;

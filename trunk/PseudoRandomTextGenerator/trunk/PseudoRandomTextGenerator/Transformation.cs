@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
 
-namespace TextMunger
+namespace TextTransformer
 {
     // TODO: indicates the minimum level for the rule to run on
     //       ie, an "All" should not run on a char
@@ -536,6 +536,7 @@ namespace TextMunger
         }
 
         // based on code @ http://stackoverflow.com/questions/4098178/c-sharp-translator-from-pig-latin-to-english
+        // TODO: final punctuation should come at the end of the word, not in the middle...
         private static string Munge(string word)
         {
             string pigLatinOut = string.Empty;
