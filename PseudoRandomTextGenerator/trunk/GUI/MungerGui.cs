@@ -29,6 +29,10 @@ namespace GUI
             // or the factory will be giving us defaults I don't like.
             // or, make what I like the defaults... yeah, that makes sense....
 
+            // there is some redundant redundancy, here...
+            var g = new RuleSet("temp", Granularity.All);
+            g.Rules = new TransformationFactory().GetTransformers(g.Granularity);
+
             var globals = new RuleSet("Global Rules", Granularity.All);
 
             var markov = new MarkovGenerator { MinLength = 8000, MaxLength = 10000 };
