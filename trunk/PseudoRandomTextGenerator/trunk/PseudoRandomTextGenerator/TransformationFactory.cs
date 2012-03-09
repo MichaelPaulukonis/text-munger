@@ -36,18 +36,23 @@ namespace TextTransformer
             // and actually, "ALL" should include... everything, right?!??!
             switch (maxGranularity)
             {
-                case Granularity.Word:
-                    ts.AddRange(GetGranularityWord());
-                    break;
-
                 case Granularity.All:
                     ts.AddRange(GetGranularityAll());
+                    goto case Granularity.Sentence;
+
+                case Granularity.Sentence:
+                    // TODO: implement
+                    goto case Granularity.Word;
+
+                case Granularity.Word:
+                    ts.AddRange(GetGranularityWord());
                     break;
             }
 
             return ts;
         }
 
+        // TODO: some of these are sentence based -- pull them out
         private List<ITransformer> GetGranularityWord()
         {
             return new List<ITransformer>
