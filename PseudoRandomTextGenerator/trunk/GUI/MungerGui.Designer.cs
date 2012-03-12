@@ -29,40 +29,79 @@
         private void InitializeComponent()
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MungerGui));
-            this.groupBox1 = new System.Windows.Forms.GroupBox();
-            this.rbPaste = new System.Windows.Forms.RadioButton();
+            this.SourceBox = new System.Windows.Forms.GroupBox();
+            this.btnSourceRetrieve = new System.Windows.Forms.Button();
+            this.btnClearSource = new System.Windows.Forms.Button();
+            this.rtbSource = new System.Windows.Forms.RichTextBox();
+            this.rbFile = new System.Windows.Forms.RadioButton();
             this.rbInternet = new System.Windows.Forms.RadioButton();
             this.rbLibrary = new System.Windows.Forms.RadioButton();
-            this.RuleSetAdder = new CustomSelectControl.MultipleSelectionControl();
+            this.RuleSetSelector = new CustomSelectControl.MultipleSelectionControl();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
             this.btnApply = new System.Windows.Forms.Button();
-            this.txtOutput = new System.Windows.Forms.TextBox();
-            this.groupBox1.SuspendLayout();
+            this.btnSave = new System.Windows.Forms.Button();
+            this.txtOutput = new System.Windows.Forms.RichTextBox();
+            this.rbEdit = new System.Windows.Forms.RadioButton();
+            this.SourceBox.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.SuspendLayout();
             // 
-            // groupBox1
+            // SourceBox
             // 
-            this.groupBox1.Controls.Add(this.rbPaste);
-            this.groupBox1.Controls.Add(this.rbInternet);
-            this.groupBox1.Controls.Add(this.rbLibrary);
-            this.groupBox1.Location = new System.Drawing.Point(12, 29);
-            this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(200, 516);
-            this.groupBox1.TabIndex = 4;
-            this.groupBox1.TabStop = false;
-            this.groupBox1.Text = "Sources";
+            this.SourceBox.Controls.Add(this.rbEdit);
+            this.SourceBox.Controls.Add(this.btnSourceRetrieve);
+            this.SourceBox.Controls.Add(this.btnClearSource);
+            this.SourceBox.Controls.Add(this.rtbSource);
+            this.SourceBox.Controls.Add(this.rbFile);
+            this.SourceBox.Controls.Add(this.rbInternet);
+            this.SourceBox.Controls.Add(this.rbLibrary);
+            this.SourceBox.Location = new System.Drawing.Point(12, 29);
+            this.SourceBox.Name = "SourceBox";
+            this.SourceBox.Size = new System.Drawing.Size(346, 660);
+            this.SourceBox.TabIndex = 4;
+            this.SourceBox.TabStop = false;
+            this.SourceBox.Text = "Sources";
             // 
-            // rbPaste
+            // btnSourceRetrieve
             // 
-            this.rbPaste.AutoSize = true;
-            this.rbPaste.Location = new System.Drawing.Point(15, 65);
-            this.rbPaste.Name = "rbPaste";
-            this.rbPaste.Size = new System.Drawing.Size(52, 17);
-            this.rbPaste.TabIndex = 6;
-            this.rbPaste.TabStop = true;
-            this.rbPaste.Text = "Paste";
-            this.rbPaste.UseVisualStyleBackColor = true;
+            this.btnSourceRetrieve.Location = new System.Drawing.Point(224, 20);
+            this.btnSourceRetrieve.Name = "btnSourceRetrieve";
+            this.btnSourceRetrieve.Size = new System.Drawing.Size(104, 23);
+            this.btnSourceRetrieve.TabIndex = 9;
+            this.btnSourceRetrieve.Text = "Select Sources";
+            this.btnSourceRetrieve.UseVisualStyleBackColor = true;
+            this.btnSourceRetrieve.Visible = false;
+            this.btnSourceRetrieve.Click += new System.EventHandler(this.btnSourceRetrieve_Click);
+            // 
+            // btnClearSource
+            // 
+            this.btnClearSource.Location = new System.Drawing.Point(253, 89);
+            this.btnClearSource.Name = "btnClearSource";
+            this.btnClearSource.Size = new System.Drawing.Size(75, 23);
+            this.btnClearSource.TabIndex = 8;
+            this.btnClearSource.Text = "Clear";
+            this.btnClearSource.UseVisualStyleBackColor = true;
+            this.btnClearSource.Click += new System.EventHandler(this.btnClearSource_Click);
+            // 
+            // rtbSource
+            // 
+            this.rtbSource.Location = new System.Drawing.Point(15, 118);
+            this.rtbSource.Name = "rtbSource";
+            this.rtbSource.Size = new System.Drawing.Size(314, 535);
+            this.rtbSource.TabIndex = 7;
+            this.rtbSource.Text = "";
+            this.rtbSource.TextChanged += new System.EventHandler(this.rtbSource_TextChanged);
+            // 
+            // rbFile
+            // 
+            this.rbFile.AutoSize = true;
+            this.rbFile.Location = new System.Drawing.Point(15, 65);
+            this.rbFile.Name = "rbFile";
+            this.rbFile.Size = new System.Drawing.Size(41, 17);
+            this.rbFile.TabIndex = 6;
+            this.rbFile.Text = "File";
+            this.rbFile.UseVisualStyleBackColor = true;
+            this.rbFile.CheckedChanged += new System.EventHandler(this.rbSource_CheckedChanged);
             // 
             // rbInternet
             // 
@@ -71,9 +110,9 @@
             this.rbInternet.Name = "rbInternet";
             this.rbInternet.Size = new System.Drawing.Size(98, 17);
             this.rbInternet.TabIndex = 5;
-            this.rbInternet.TabStop = true;
             this.rbInternet.Text = "Internet Source";
             this.rbInternet.UseVisualStyleBackColor = true;
+            this.rbInternet.CheckedChanged += new System.EventHandler(this.rbSource_CheckedChanged);
             // 
             // rbLibrary
             // 
@@ -82,23 +121,23 @@
             this.rbLibrary.Name = "rbLibrary";
             this.rbLibrary.Size = new System.Drawing.Size(56, 17);
             this.rbLibrary.TabIndex = 4;
-            this.rbLibrary.TabStop = true;
             this.rbLibrary.Text = "Library";
             this.rbLibrary.UseVisualStyleBackColor = true;
+            this.rbLibrary.CheckedChanged += new System.EventHandler(this.rbSource_CheckedChanged);
             // 
-            // RuleSetAdder
+            // RuleSetSelector
             // 
-            this.RuleSetAdder.AllowMultipleItems = true;
-            this.RuleSetAdder.Location = new System.Drawing.Point(6, 19);
-            this.RuleSetAdder.Name = "RuleSetAdder";
-            this.RuleSetAdder.SelectedItems = ((System.Collections.Generic.List<object>)(resources.GetObject("RuleSetAdder.SelectedItems")));
-            this.RuleSetAdder.Size = new System.Drawing.Size(389, 255);
-            this.RuleSetAdder.TabIndex = 8;
+            this.RuleSetSelector.AllowMultipleItems = true;
+            this.RuleSetSelector.Location = new System.Drawing.Point(6, 19);
+            this.RuleSetSelector.Name = "RuleSetSelector";
+            this.RuleSetSelector.SelectedItems = ((System.Collections.Generic.List<object>)(resources.GetObject("RuleSetSelector.SelectedItems")));
+            this.RuleSetSelector.Size = new System.Drawing.Size(389, 255);
+            this.RuleSetSelector.TabIndex = 8;
             // 
             // groupBox2
             // 
-            this.groupBox2.Controls.Add(this.RuleSetAdder);
-            this.groupBox2.Location = new System.Drawing.Point(227, 29);
+            this.groupBox2.Controls.Add(this.RuleSetSelector);
+            this.groupBox2.Location = new System.Drawing.Point(384, 29);
             this.groupBox2.Name = "groupBox2";
             this.groupBox2.Size = new System.Drawing.Size(414, 299);
             this.groupBox2.TabIndex = 9;
@@ -107,7 +146,8 @@
             // 
             // btnApply
             // 
-            this.btnApply.Location = new System.Drawing.Point(233, 347);
+            this.btnApply.Enabled = false;
+            this.btnApply.Location = new System.Drawing.Point(385, 334);
             this.btnApply.Name = "btnApply";
             this.btnApply.Size = new System.Drawing.Size(75, 23);
             this.btnApply.TabIndex = 10;
@@ -115,14 +155,36 @@
             this.btnApply.UseVisualStyleBackColor = true;
             this.btnApply.Click += new System.EventHandler(this.btnApply_Click);
             // 
+            // btnSave
+            // 
+            this.btnSave.Location = new System.Drawing.Point(478, 334);
+            this.btnSave.Name = "btnSave";
+            this.btnSave.Size = new System.Drawing.Size(75, 23);
+            this.btnSave.TabIndex = 12;
+            this.btnSave.Text = "Save Output";
+            this.btnSave.UseVisualStyleBackColor = true;
+            this.btnSave.Visible = false;
+            this.btnSave.Click += new System.EventHandler(this.btnSave_Click);
+            // 
             // txtOutput
             // 
-            this.txtOutput.Font = new System.Drawing.Font("Consolas", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.txtOutput.Location = new System.Drawing.Point(334, 347);
-            this.txtOutput.Multiline = true;
+            this.txtOutput.Location = new System.Drawing.Point(384, 363);
             this.txtOutput.Name = "txtOutput";
-            this.txtOutput.Size = new System.Drawing.Size(529, 335);
-            this.txtOutput.TabIndex = 11;
+            this.txtOutput.Size = new System.Drawing.Size(379, 319);
+            this.txtOutput.TabIndex = 13;
+            this.txtOutput.Text = "";
+            // 
+            // rbEdit
+            // 
+            this.rbEdit.AutoSize = true;
+            this.rbEdit.Checked = true;
+            this.rbEdit.Location = new System.Drawing.Point(15, 88);
+            this.rbEdit.Name = "rbEdit";
+            this.rbEdit.Size = new System.Drawing.Size(43, 17);
+            this.rbEdit.TabIndex = 10;
+            this.rbEdit.TabStop = true;
+            this.rbEdit.Text = "Edit";
+            this.rbEdit.UseVisualStyleBackColor = true;
             // 
             // MungerGui
             // 
@@ -130,29 +192,34 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(875, 694);
             this.Controls.Add(this.txtOutput);
+            this.Controls.Add(this.btnSave);
             this.Controls.Add(this.btnApply);
             this.Controls.Add(this.groupBox2);
-            this.Controls.Add(this.groupBox1);
+            this.Controls.Add(this.SourceBox);
             this.Name = "MungerGui";
             this.Text = "Form1";
-            this.groupBox1.ResumeLayout(false);
-            this.groupBox1.PerformLayout();
+            this.SourceBox.ResumeLayout(false);
+            this.SourceBox.PerformLayout();
             this.groupBox2.ResumeLayout(false);
             this.ResumeLayout(false);
-            this.PerformLayout();
 
         }
 
         #endregion
 
-        private System.Windows.Forms.GroupBox groupBox1;
-        private System.Windows.Forms.RadioButton rbPaste;
+        private System.Windows.Forms.GroupBox SourceBox;
+        private System.Windows.Forms.RadioButton rbFile;
         private System.Windows.Forms.RadioButton rbInternet;
         private System.Windows.Forms.RadioButton rbLibrary;
-        private CustomSelectControl.MultipleSelectionControl RuleSetAdder;
+        private CustomSelectControl.MultipleSelectionControl RuleSetSelector;
         private System.Windows.Forms.GroupBox groupBox2;
         private System.Windows.Forms.Button btnApply;
-        private System.Windows.Forms.TextBox txtOutput;
+        private System.Windows.Forms.RichTextBox rtbSource;
+        private System.Windows.Forms.Button btnClearSource;
+        private System.Windows.Forms.Button btnSourceRetrieve;
+        private System.Windows.Forms.Button btnSave;
+        private System.Windows.Forms.RichTextBox txtOutput;
+        private System.Windows.Forms.RadioButton rbEdit;
 
     }
 }
