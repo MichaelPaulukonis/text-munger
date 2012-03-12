@@ -17,6 +17,7 @@ namespace GUI
             InitializeComponent();
         }
 
+        // TODO: populate Available items from a factory
         public RuleSetEditor(RuleSet set, MultipleSelectionControl control, List<RuleSet> activeEditors)
             : this()
         {
@@ -59,7 +60,13 @@ namespace GUI
         // so when they are edited, this set never gets reset.....
         // TODO: don't store this independently....
         // or, update on close, so that RuleSet := Editor.SelectedItems
-        public RuleSet RuleSet { get; set; }
+        private RuleSet _rs;
+
+        public RuleSet RuleSet
+        {
+            get { return _rs; }
+            set { _rs = value; }
+        }
 
         private void btnSave_Click(object sender, EventArgs e)
         {

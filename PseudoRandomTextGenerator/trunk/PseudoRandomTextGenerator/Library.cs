@@ -1,12 +1,16 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
 
+// TODO: this shouldn't be stored under the TextTransformers project, should it?
+// a new project, for source-retrievers????
+// and the namespace ALSO makes no sense.....
 namespace TextTransformer
 {
-    public class Library
+    public class Library : IEnumerable<Text>
     {
         public Library()
         {
@@ -36,6 +40,31 @@ namespace TextTransformer
             Contents.Add(text.Title, text);
             return this;
         }
+
+        public Library Parent { get; set; }
+
+        public IEnumerator<Text> GetEnumerator()
+        {
+            return _contents.Values.GetEnumerator();
+        }
+
+        public override string ToString()
+        {
+            var t = string.Empty;
+            if (Parent != null)
+            {
+                t = Parent.Title + ":";
+            }
+
+            t += Title;
+
+            return t;
+        }
+
+        IEnumerator IEnumerable.GetEnumerator()
+        {
+            return GetEnumerator();
+        }
     }
 
     public class Text
@@ -56,6 +85,10 @@ namespace TextTransformer
 
         // allow for setting, so we can have arbitrary texts that are not file-based
         // not sure where to go with that, though....
+        // this could be if, say, we add all generated texts into the library-pool
+        // which would get really, really weird
+        // probably better off dumping generated texts into a folder
+        // that is then part of the library....
         public string Contents
         {
             get
@@ -79,5 +112,10 @@ namespace TextTransformer
         }
 
         public Library Parent { get; set; }
+
+        public override string ToString()
+        {
+            return String.Format("{0}:{1}", Parent.ToString(), Title);
+        }
     }
 }
