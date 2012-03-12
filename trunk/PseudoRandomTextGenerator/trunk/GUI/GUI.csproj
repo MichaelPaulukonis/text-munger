@@ -39,6 +39,7 @@
       <HintPath>..\resources\CustomSelectControl.dll</HintPath>
     </Reference>
     <Reference Include="System" />
+    <Reference Include="System.Configuration" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
@@ -50,6 +51,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="frmLibraryPicker.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmLibraryPicker.Designer.cs">
+      <DependentUpon>frmLibraryPicker.cs</DependentUpon>
+    </Compile>
     <Compile Include="MungerGui.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -64,6 +71,9 @@
     <Compile Include="RuleSetEditor.Designer.cs">
       <DependentUpon>RuleSetEditor.cs</DependentUpon>
     </Compile>
+    <EmbeddedResource Include="frmLibraryPicker.resx">
+      <DependentUpon>frmLibraryPicker.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="MungerGui.resx">
       <DependentUpon>MungerGui.cs</DependentUpon>
     </EmbeddedResource>

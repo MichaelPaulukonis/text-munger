@@ -27,7 +27,6 @@ namespace TextTransformer
             : this(name)
         {
             _g = granularity;
-            // TODO: this should be an exposed value (no
             ForcedGranularity = true; // ahhhh, not sure where to go with this
             // the idea being, if we create a "Globals" ruleset, or, "ALL", don't reset it to "Unknown"
             // as we want to process on the "ALL" level, no matter what.....

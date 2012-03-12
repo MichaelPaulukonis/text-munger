@@ -30,6 +30,7 @@
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MungerGui));
             this.SourceBox = new System.Windows.Forms.GroupBox();
+            this.rbEdit = new System.Windows.Forms.RadioButton();
             this.btnSourceRetrieve = new System.Windows.Forms.Button();
             this.btnClearSource = new System.Windows.Forms.Button();
             this.rtbSource = new System.Windows.Forms.RichTextBox();
@@ -41,7 +42,6 @@
             this.btnApply = new System.Windows.Forms.Button();
             this.btnSave = new System.Windows.Forms.Button();
             this.txtOutput = new System.Windows.Forms.RichTextBox();
-            this.rbEdit = new System.Windows.Forms.RadioButton();
             this.SourceBox.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.SuspendLayout();
@@ -61,6 +61,18 @@
             this.SourceBox.TabIndex = 4;
             this.SourceBox.TabStop = false;
             this.SourceBox.Text = "Sources";
+            // 
+            // rbEdit
+            // 
+            this.rbEdit.AutoSize = true;
+            this.rbEdit.Checked = true;
+            this.rbEdit.Location = new System.Drawing.Point(15, 88);
+            this.rbEdit.Name = "rbEdit";
+            this.rbEdit.Size = new System.Drawing.Size(43, 17);
+            this.rbEdit.TabIndex = 10;
+            this.rbEdit.TabStop = true;
+            this.rbEdit.Text = "Edit";
+            this.rbEdit.UseVisualStyleBackColor = true;
             // 
             // btnSourceRetrieve
             // 
@@ -168,23 +180,12 @@
             // 
             // txtOutput
             // 
+            this.txtOutput.Font = new System.Drawing.Font("Courier New", 6.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.txtOutput.Location = new System.Drawing.Point(384, 363);
             this.txtOutput.Name = "txtOutput";
-            this.txtOutput.Size = new System.Drawing.Size(379, 319);
+            this.txtOutput.Size = new System.Drawing.Size(479, 319);
             this.txtOutput.TabIndex = 13;
             this.txtOutput.Text = "";
-            // 
-            // rbEdit
-            // 
-            this.rbEdit.AutoSize = true;
-            this.rbEdit.Checked = true;
-            this.rbEdit.Location = new System.Drawing.Point(15, 88);
-            this.rbEdit.Name = "rbEdit";
-            this.rbEdit.Size = new System.Drawing.Size(43, 17);
-            this.rbEdit.TabIndex = 10;
-            this.rbEdit.TabStop = true;
-            this.rbEdit.Text = "Edit";
-            this.rbEdit.UseVisualStyleBackColor = true;
             // 
             // MungerGui
             // 

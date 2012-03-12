@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
@@ -78,6 +79,8 @@ namespace GUI
             }
         }
 
+        // TODO: throw some logging on here
+        // what's taking so much time ?!?!?
         private void btnApply_Click(object sender, EventArgs e)
         {
             _output = rtbSource.Text;
@@ -87,22 +90,7 @@ namespace GUI
             // this will be tweaked, so that each rule has it's own percentage.
             // or something.....
 
-            // global application
-            // retrieve rule
-            // set rule.source = _source
-            // Munger
-            // TODO:dump into a modified car, not _source
-            // ALSo: string builder each time? eh. who knows.
-
-            // returns List<Object> -- how to cast to List<RuleSet>
-            // RuleSet.Rules = Editor.SelectedItems.Cast<ITransformer>().ToList();
             var sets = RuleSetSelector.SelectedItems.Cast<RuleSet>().ToList();
-            // uh, not quite. we need to distinguish between the granularity of the sets.
-
-            // TODO: Markov is a pre-applied global, yeah?
-            // but xray format should be a POST-applied global
-            // so, we can't make these assumptions
-            // ah, whatever....
 
             if (sets.Count > 0)
             {
@@ -119,6 +107,8 @@ namespace GUI
                 }
             }
 
+            // TODO: the richTextBox changes fonts. aaargh
+            // foreign text acting as control-characters?!?!?
             txtOutput.Text = _output;
             btnSave.Visible = true;
         }
@@ -207,7 +197,12 @@ namespace GUI
             }
             else if (rbLibrary.Checked)
             {
-                // TODO: implemnet
+                var libaryPath = ConfigurationManager.AppSettings["LibraryPath"];
+                var l = new frmLibraryPicker(libaryPath);
+                l.ShowDialog();
+
+                rtbSource.AppendText(l.Source);
+                // TODO: implement
                 // read from the app.config setting for library path
             }
             else if (rbFile.Checked)
