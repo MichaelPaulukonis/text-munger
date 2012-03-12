@@ -12,7 +12,6 @@ namespace GUI
     public partial class MungerGui : Form
     {
         private List<RuleSet> _activeEditors = new List<RuleSet>();
-        private string _source;
         private string _output;
 
         public MungerGui()
@@ -29,6 +28,13 @@ namespace GUI
             // or the factory will be giving us defaults I don't like.
             // or, make what I like the defaults... yeah, that makes sense....
 
+            // argh! I missed this for so long.
+            // the RuleSet IS populated. So when the editor is launched, both the Availabled and Selected should be populated
+            // OTHERWISE, we should have the editor populate via factory
+            // -- or, do we just add ALL rules by default???
+            // and delete as we want?
+            // that way, we'd only need special button to add "empty" ruleset, or something like that...
+
             // there is some redundant redundancy, here...
             var g = new RuleSet("temp", Granularity.All);
             g.Rules = new TransformationFactory().GetTransformers(g.Granularity);
@@ -40,46 +46,18 @@ namespace GUI
 
             // oop, I need a RuleSet populated
             var granular = new RuleSet("Granular Rules", Granularity.Word) { Rules = new TransformationFactory().GetTransformers(Granularity.Word) };
-            //var granular = new TransformationFactory().GetTransformers(Granularity.Word);
-            //var granular = new RuleSet("Granular Rules", Granularity.Word)
-            //                   {
-            //                       Rules = new List<ITransformer>
-            //                                   {
-            //                                       new Leet(),
-            //                                       new PigLatin(),
-            //                                       new Shuffle(),
-            //                                       new Disemconsonant(),
-            //                                       new RandomCaps(),
-            //                                       new VowellToPunct(),
-            //                                       new Reverse(),
-            //                                       new Shouty(),
-            //                                       new VowellToPunct(),
-            //                                       new Homophonic(),
-            //                                       new Disemvowell(),
-            //                                   }
-            //                   };
-
-            //granular.AddRule(new Leet()).AddRule(new PigLatin());
-
-            //var grs = new List<ITransformer> {new Leet(), new PigLatin(), new Shuffle(),
-            //new Disemconsonant(),new RandomCaps(),new VowellToPunct(),
-            //new Reverse(),new Shouty(),new VowellToPunct(),
-            //new Homophonic(),new Disemvowell(),};
 
             var rules = new List<object> { globals, granular };
 
             // TODO: better name. It's not just an adder
-            RuleSetAdder.AvailableItems = rules;
+            RuleSetSelector.AvailableItems = rules;
 
-            RuleSetAdder.AddDoubleClickHandler(DisplayRuleSetEditor);
+            RuleSetSelector.AddDoubleClickHandler(DisplayRuleSetEditor);
 
-            // TODO: need to build editors for the RuleSets
-            //       which would be another CustomSelectControl
-            //       and then editors for the varios transformer rules
-            //       which will be interesting. Wonder if it can be abstracted.....
-            var cs = new Runner.ConsoleRunner();
-
-            _source = new ConsoleRunner().GetSource();
+            // Potemkin village presets for testing
+            rtbSource.Text = new ConsoleRunner().GetSource();
+            btnApply.Enabled = true;
+            //rbFile.Checked = true; // don't check it, as we want to keep Edit as default
         }
 
         public void DisplayRuleSetEditor(object sender, EventArgs e)
@@ -90,14 +68,19 @@ namespace GUI
             if (!_activeEditors.Contains(rs))
             {
                 _activeEditors.Add(rs);
-                var ed = new RuleSetEditor(rs, RuleSetAdder, _activeEditors);
+                // TODO: fix this. we will need a different constructor....
+                // if this is created from a non-empty ruleSet
+                // the rules should be in the SELECTED box
+                // the Available column should be all rules of a given granularity
+                // as provided by a factory.....
+                var ed = new RuleSetEditor(rs, RuleSetSelector, _activeEditors);
                 ed.Show();
             }
         }
 
         private void btnApply_Click(object sender, EventArgs e)
         {
-            _output = _source;
+            _output = rtbSource.Text;
             // TODO: apply rules
             // apply globals one by one
             // go through words, apply granulars, based on percentage
@@ -113,7 +96,7 @@ namespace GUI
 
             // returns List<Object> -- how to cast to List<RuleSet>
             // RuleSet.Rules = Editor.SelectedItems.Cast<ITransformer>().ToList();
-            var sets = RuleSetAdder.SelectedItems.Cast<RuleSet>().ToList();
+            var sets = RuleSetSelector.SelectedItems.Cast<RuleSet>().ToList();
             // uh, not quite. we need to distinguish between the granularity of the sets.
 
             // TODO: Markov is a pre-applied global, yeah?
@@ -137,6 +120,7 @@ namespace GUI
             }
 
             txtOutput.Text = _output;
+            btnSave.Visible = true;
         }
 
         private void ApplyGlobals(List<ITransformer> globalRules)
@@ -177,6 +161,60 @@ namespace GUI
             }
 
             _output = sb.ToString();
+        }
+
+        private void rtbSource_TextChanged(object sender, EventArgs e)
+        {
+            // enable/disable RuleApplication based on existence of source text
+            // NOTE: you can edit rules in the absence of a text, and pick out text afterwards
+            // but you can't apply rules to nothing.....
+            btnApply.Enabled = (rtbSource.Text.Length != 0);
+        }
+
+        private void btnClearSource_Click(object sender, EventArgs e)
+        {
+            if (rtbSource.Text.Length > 0)
+            {
+                var result = MessageBox.Show("Are you sure?", "Delete?", MessageBoxButtons.OKCancel);
+                if (result == DialogResult.Cancel)
+                {
+                    return;
+                }
+            }
+            rtbSource.Text = string.Empty;
+        }
+
+        private void btnSave_Click(object sender, EventArgs e)
+        {
+            MessageBox.Show("Not yet implemented!");
+            // TODO: file-save dialog
+        }
+
+        // handler for all radio buttons
+        // http://www.dotnetperls.com/radiobutton
+        private void rbSource_CheckedChanged(object sender, EventArgs e)
+        {
+            // make it visible for all other options, just not edit
+            btnSourceRetrieve.Visible = (!rbEdit.Checked);
+        }
+
+        private void btnSourceRetrieve_Click(object sender, EventArgs e)
+        {
+            if (rbInternet.Checked)
+            {
+                // TODO: implement
+                // form for a URL, and then g-d knows what....
+            }
+            else if (rbLibrary.Checked)
+            {
+                // TODO: implemnet
+                // read from the app.config setting for library path
+            }
+            else if (rbFile.Checked)
+            {
+                // load up a file-dialog
+                // store the last-used path in app.config?
+            }
         }
     }
 }
