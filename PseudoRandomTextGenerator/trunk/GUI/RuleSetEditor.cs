@@ -17,29 +17,48 @@ namespace GUI
             InitializeComponent();
         }
 
-        // TODO: populate Available items from a factory
+        private RuleSetEditor(MultipleSelectionControl control, List<RuleSet> activeEditors)
+            : this()
+        {
+            _control = control;
+            _activeEditors = activeEditors;
+            FormClosing += FormCloser;
+
+            // TODO: trap for empty rule-sets
+            if (RuleSet.Rules.Count > 0)
+            {
+                Editor.AvailableItems = RuleSet.Rules.Cast<object>().ToList();
+            }
+        }
+
+        public RuleSetEditor(TransformationFactory fac, MultipleSelectionControl control, List<RuleSet> activeEditors)
+            : this(control, activeEditors)
+        {
+            RuleSet = new RuleSet(fac.Granularity);
+            RuleSet.Rules = fac.GetTransformers();
+        }
+
         public RuleSetEditor(RuleSet set, MultipleSelectionControl control, List<RuleSet> activeEditors)
             : this()
         {
             RuleSet = set;
 
-            // TODO: populate Available list
-            // TODO: oooooh! we need a Transformer factory, that will give us all transformers of a particular granularity
-            // ??????
+            if (set.Rules != null && set.Rules.Count > 0)
+            {
+                Editor.SelectedItems = RuleSet.Rules.Cast<object>().ToList();
+            }
+
+            // available items is from a factory, based on granularity level
+            Editor.AvailableItems = new TransformationFactory(set.Granularity).GetTransformers().Cast<object>().ToList();
 
             _control = control;
             _activeEditors = activeEditors;
             FormClosing += FormCloser;
-
-            // TODO: available items should be ALL (from a factory)
-            // SELECTED should be the below....
-            Editor.AvailableItems = set.Rules.Cast<object>().ToList();
-
-            //Editor.SelectedItems = set.Rules.Cast<object>().ToList();
         }
 
         // TODO: we also need to create the Transformer editor
         // so that can be added as the double-click handler
+        // f'r instance, ouor Markov editor has crappy settings by default, now...
 
         public void FormCloser(object sender, FormClosingEventArgs e)
         {

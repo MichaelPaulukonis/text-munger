@@ -13,7 +13,7 @@ namespace TextTransformer
     public enum Granularity
     {
         Unknown = -1,
-        Any = 0,
+        //Any = 0,      I don't think we need this; all existing uses have been moved to Word
         //Character = 1,
         Word = 2,
         Sentence = 3,   // yeah, maybe
@@ -67,7 +67,7 @@ namespace TextTransformer
             get { return Munge(); }
         }
 
-        public Granularity Granularity { get { return Granularity.Any; } }
+        public Granularity Granularity { get { return Granularity.Word; } }
 
         private string Munge()
         {
@@ -125,7 +125,7 @@ namespace TextTransformer
             return munged;
         }
 
-        public Granularity Granularity { get { return Granularity.Any; } }
+        public Granularity Granularity { get { return Granularity.Word; } }
     }
 
     public class Disemvowell : ITransformer
@@ -147,7 +147,7 @@ namespace TextTransformer
             return munged;
         }
 
-        public Granularity Granularity { get { return Granularity.Any; } }
+        public Granularity Granularity { get { return Granularity.Word; } }
     }
 
     // clone, as the Mark can be set independently
@@ -217,7 +217,7 @@ namespace TextTransformer
             return munged;
         }
 
-        public Granularity Granularity { get { return Granularity.Any; } }
+        public Granularity Granularity { get { return Granularity.Word; } }
     }
 
     public class Reverse : ITransformer
@@ -267,7 +267,7 @@ namespace TextTransformer
 
         public string Source { get; set; }
 
-        private int _p = 95; // default
+        private int _p = 97; // default
         public int Percentage
         {
             get { return _p; }
