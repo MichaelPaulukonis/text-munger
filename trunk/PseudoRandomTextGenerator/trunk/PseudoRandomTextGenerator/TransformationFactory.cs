@@ -22,26 +22,32 @@ namespace TextTransformer
         // All == all, I guess
         // do we have any any
 
-        public TransformationFactory()
+        public TransformationFactory(Granularity maxGranularity)
         {
+            Granularity = maxGranularity;
         }
 
+        public Granularity Granularity { get; private set; }
+
         // we will return ALL transformers that are up to and including this level
-        public List<ITransformer> GetTransformers(Granularity maxGranularity)
+        public List<ITransformer> GetTransformers()
         {
             var ts = new List<ITransformer>();
 
-            // TODO: other cases
-            // and.. fall-through? things should be added up.....
-            // and actually, "ALL" should include... everything, right?!??!
-            switch (maxGranularity)
+            // cascade through, so the highest granularity (all)
+            // can list everything
+            // although not all lower-level granularities work well on a higher-level
+            // like PigLatin. That just fails at anything other than word
+            // so maybe we need to introduce a Granularity RANGE
+            // Granularity.min and Granularity.max ???
+            switch (Granularity)
             {
                 case Granularity.All:
                     ts.AddRange(GetGranularityAll());
                     goto case Granularity.Sentence;
 
                 case Granularity.Sentence:
-                    // TODO: implement
+                    ts.AddRange(GetGranularitySentence());
                     goto case Granularity.Word;
 
                 case Granularity.Word:
@@ -52,6 +58,11 @@ namespace TextTransformer
             return ts;
         }
 
+        private List<ITransformer> GetGranularitySentence()
+        {
+            return new List<ITransformer> { new PunctuizeWhitespace(), new Density() };
+        }
+
         // TODO: some of these are sentence based -- pull them out
         private List<ITransformer> GetGranularityWord()
         {
@@ -60,19 +71,19 @@ namespace TextTransformer
                 new PigLatin(),
                 new Shuffle(),
                 new Disemconsonant(),
+                new Disemvowell(),
                 new RandomCaps(),
                 new VowellToPunct(),
                 new Reverse(),
                 new Shouty(),
                 new VowellToPunct(),
-                new Homophonic(),
-                new Disemvowell()
+                new Homophonic()
             };
         }
 
         private List<ITransformer> GetGranularityAll()
         {
-            return new List<ITransformer> { new MarkovGenerator(), new XrmlFormat(), new Density() };
+            return new List<ITransformer> { new MarkovGenerator(), new XrmlFormat() };
         }
     }
 }

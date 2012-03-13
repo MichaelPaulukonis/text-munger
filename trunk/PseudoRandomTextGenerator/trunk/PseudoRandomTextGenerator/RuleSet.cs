@@ -32,6 +32,9 @@ namespace TextTransformer
             // as we want to process on the "ALL" level, no matter what.....
         }
 
+        public RuleSet(Granularity granularity)
+            : this(granularity.ToString(), granularity) { }
+
         public override string ToString()
         {
             return string.Format("{0} : {1}", _name, Rules.Count);

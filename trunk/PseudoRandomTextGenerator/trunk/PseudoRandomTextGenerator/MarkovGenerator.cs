@@ -156,8 +156,8 @@ namespace TextTransformer
             _rule = new XrayWordRule();
             //_rule = new XrayCharRule();
 
-            MinLength = 100;
-            MaxLength = 100;
+            MinLength = 2000;
+            MaxLength = 2000;
         }
 
         public MarkovGenerator(IMarkovRules rules, int keySize = 2)

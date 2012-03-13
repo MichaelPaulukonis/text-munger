@@ -37,18 +37,24 @@ namespace GUI
             // that way, we'd only need special button to add "empty" ruleset, or something like that...
 
             // there is some redundant redundancy, here...
-            var g = new RuleSet("temp", Granularity.All);
-            g.Rules = new TransformationFactory().GetTransformers(g.Granularity);
+            //var g = new RuleSet("temp", Granularity.All);
+            //g.Rules = new TransformationFactory(g.Granularity).GetTransformers();
+            //var t = new TransformationFactory(Granularity.All);
+            //var g = new RuleSet(t, )
 
-            var globals = new RuleSet("Global Rules", Granularity.All);
+            //var globals = new RuleSet("Global Rules", Granularity.All);
 
-            var markov = new MarkovGenerator { MinLength = 8000, MaxLength = 10000 };
-            globals.AddRule(markov).AddRule(new Density { Percentage = 97 }).AddRule(new XrmlFormat());
+            //var markov = new MarkovGenerator { MinLength = 8000, MaxLength = 10000 };
+            //globals.AddRule(markov).AddRule(new Density { Percentage = 97 }).AddRule(new XrmlFormat());
 
-            // oop, I need a RuleSet populated
-            var granular = new RuleSet("Granular Rules", Granularity.Word) { Rules = new TransformationFactory().GetTransformers(Granularity.Word) };
+            //// oop, I need a RuleSet populated
+            //var granular = new RuleSet("Granular Rules", Granularity.Word) { Rules = new TransformationFactory(Granularity.Word).GetTransformers() };
 
-            var rules = new List<object> { globals, granular };
+            //var rules = new List<object> { globals, granular };
+            var rules = new List<object> { new RuleSet(Granularity.All),
+                    new RuleSet(Granularity.Sentence),
+                    new RuleSet(Granularity.Word)
+            };
 
             // TODO: better name. It's not just an adder
             RuleSetSelector.AvailableItems = rules;
