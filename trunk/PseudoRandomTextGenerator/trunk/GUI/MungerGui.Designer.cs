@@ -33,7 +33,6 @@
             this.rbEdit = new System.Windows.Forms.RadioButton();
             this.btnSourceRetrieve = new System.Windows.Forms.Button();
             this.btnClearSource = new System.Windows.Forms.Button();
-            this.rtbSource = new System.Windows.Forms.RichTextBox();
             this.rbFile = new System.Windows.Forms.RadioButton();
             this.rbInternet = new System.Windows.Forms.RadioButton();
             this.rbLibrary = new System.Windows.Forms.RadioButton();
@@ -41,17 +40,18 @@
             this.groupBox2 = new System.Windows.Forms.GroupBox();
             this.btnApply = new System.Windows.Forms.Button();
             this.btnSave = new System.Windows.Forms.Button();
-            this.txtOutput = new System.Windows.Forms.RichTextBox();
+            this.Source = new System.Windows.Forms.TextBox();
+            this.txtOutput = new System.Windows.Forms.TextBox();
             this.SourceBox.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.SuspendLayout();
             // 
             // SourceBox
             // 
+            this.SourceBox.Controls.Add(this.Source);
             this.SourceBox.Controls.Add(this.rbEdit);
             this.SourceBox.Controls.Add(this.btnSourceRetrieve);
             this.SourceBox.Controls.Add(this.btnClearSource);
-            this.SourceBox.Controls.Add(this.rtbSource);
             this.SourceBox.Controls.Add(this.rbFile);
             this.SourceBox.Controls.Add(this.rbInternet);
             this.SourceBox.Controls.Add(this.rbLibrary);
@@ -94,15 +94,6 @@
             this.btnClearSource.Text = "Clear";
             this.btnClearSource.UseVisualStyleBackColor = true;
             this.btnClearSource.Click += new System.EventHandler(this.btnClearSource_Click);
-            // 
-            // rtbSource
-            // 
-            this.rtbSource.Location = new System.Drawing.Point(15, 118);
-            this.rtbSource.Name = "rtbSource";
-            this.rtbSource.Size = new System.Drawing.Size(314, 535);
-            this.rtbSource.TabIndex = 7;
-            this.rtbSource.Text = "";
-            this.rtbSource.TextChanged += new System.EventHandler(this.rtbSource_TextChanged);
             // 
             // rbFile
             // 
@@ -178,14 +169,26 @@
             this.btnSave.Visible = false;
             this.btnSave.Click += new System.EventHandler(this.btnSave_Click);
             // 
+            // Source
+            // 
+            this.Source.Font = new System.Drawing.Font("Courier New", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.Source.Location = new System.Drawing.Point(15, 121);
+            this.Source.Multiline = true;
+            this.Source.Name = "Source";
+            this.Source.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
+            this.Source.Size = new System.Drawing.Size(325, 532);
+            this.Source.TabIndex = 11;
+            this.Source.TextChanged += new System.EventHandler(this.rtbSource_TextChanged);
+            // 
             // txtOutput
             // 
-            this.txtOutput.Font = new System.Drawing.Font("Courier New", 6.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.txtOutput.Location = new System.Drawing.Point(384, 363);
+            this.txtOutput.Font = new System.Drawing.Font("Courier New", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.txtOutput.Location = new System.Drawing.Point(385, 373);
+            this.txtOutput.Multiline = true;
             this.txtOutput.Name = "txtOutput";
-            this.txtOutput.Size = new System.Drawing.Size(479, 319);
+            this.txtOutput.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
+            this.txtOutput.Size = new System.Drawing.Size(478, 309);
             this.txtOutput.TabIndex = 13;
-            this.txtOutput.Text = "";
             // 
             // MungerGui
             // 
@@ -203,6 +206,7 @@
             this.SourceBox.PerformLayout();
             this.groupBox2.ResumeLayout(false);
             this.ResumeLayout(false);
+            this.PerformLayout();
 
         }
 
@@ -215,12 +219,12 @@
         private CustomSelectControl.MultipleSelectionControl RuleSetSelector;
         private System.Windows.Forms.GroupBox groupBox2;
         private System.Windows.Forms.Button btnApply;
-        private System.Windows.Forms.RichTextBox rtbSource;
         private System.Windows.Forms.Button btnClearSource;
         private System.Windows.Forms.Button btnSourceRetrieve;
         private System.Windows.Forms.Button btnSave;
-        private System.Windows.Forms.RichTextBox txtOutput;
         private System.Windows.Forms.RadioButton rbEdit;
+        private System.Windows.Forms.TextBox Source;
+        private System.Windows.Forms.TextBox txtOutput;
 
     }
 }

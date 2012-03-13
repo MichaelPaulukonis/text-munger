@@ -12,59 +12,25 @@ namespace GUI
 {
     public partial class MungerGui : Form
     {
-        private List<RuleSet> _activeEditors = new List<RuleSet>();
+        private readonly List<RuleSet> _activeEditors = new List<RuleSet>();
         private string _output;
 
         public MungerGui()
         {
             InitializeComponent();
 
-            // TODO: these can start empty, or with defaults
-            //       name will reflect the quantity within
-            //       and empty-sets can be curated with the editor
-
-            // these are all examples of how to add rules
-
-            // TODO: we need to have an editor for some of these
-            // or the factory will be giving us defaults I don't like.
-            // or, make what I like the defaults... yeah, that makes sense....
-
-            // argh! I missed this for so long.
-            // the RuleSet IS populated. So when the editor is launched, both the Availabled and Selected should be populated
-            // OTHERWISE, we should have the editor populate via factory
-            // -- or, do we just add ALL rules by default???
-            // and delete as we want?
-            // that way, we'd only need special button to add "empty" ruleset, or something like that...
-
-            // there is some redundant redundancy, here...
-            //var g = new RuleSet("temp", Granularity.All);
-            //g.Rules = new TransformationFactory(g.Granularity).GetTransformers();
-            //var t = new TransformationFactory(Granularity.All);
-            //var g = new RuleSet(t, )
-
-            //var globals = new RuleSet("Global Rules", Granularity.All);
-
-            //var markov = new MarkovGenerator { MinLength = 8000, MaxLength = 10000 };
-            //globals.AddRule(markov).AddRule(new Density { Percentage = 97 }).AddRule(new XrmlFormat());
-
-            //// oop, I need a RuleSet populated
-            //var granular = new RuleSet("Granular Rules", Granularity.Word) { Rules = new TransformationFactory(Granularity.Word).GetTransformers() };
-
-            //var rules = new List<object> { globals, granular };
             var rules = new List<object> { new RuleSet(Granularity.All),
                     new RuleSet(Granularity.Sentence),
                     new RuleSet(Granularity.Word)
             };
 
-            // TODO: better name. It's not just an adder
             RuleSetSelector.AvailableItems = rules;
 
             RuleSetSelector.AddDoubleClickHandler(DisplayRuleSetEditor);
 
-            // Potemkin village presets for testing
-            rtbSource.Text = new ConsoleRunner().GetSource();
-            btnApply.Enabled = true;
-            //rbFile.Checked = true; // don't check it, as we want to keep Edit as default
+            // TODO: we could pre-fill the text with a file is some sort of parameter is passed in
+            // TODO: separate out the logic and the GUI as much as possible
+            // that would make this whole thing scriptable.... ?
         }
 
         public void DisplayRuleSetEditor(object sender, EventArgs e)
@@ -75,11 +41,6 @@ namespace GUI
             if (!_activeEditors.Contains(rs))
             {
                 _activeEditors.Add(rs);
-                // TODO: fix this. we will need a different constructor....
-                // if this is created from a non-empty ruleSet
-                // the rules should be in the SELECTED box
-                // the Available column should be all rules of a given granularity
-                // as provided by a factory.....
                 var ed = new RuleSetEditor(rs, RuleSetSelector, _activeEditors);
                 ed.Show();
             }
@@ -87,11 +48,12 @@ namespace GUI
 
         // TODO: throw some logging on here
         // what's taking so much time ?!?!?
+        // TODO: optionally enable visual logging of what's going on....
+        // and maybe even incrementally update the display after each (entire-text) pass...
         private void btnApply_Click(object sender, EventArgs e)
         {
-            _output = rtbSource.Text;
-            // TODO: apply rules
-            // apply globals one by one
+            _output = Source.Text;
+
             // go through words, apply granulars, based on percentage
             // this will be tweaked, so that each rule has it's own percentage.
             // or something.....
@@ -102,6 +64,7 @@ namespace GUI
             {
                 foreach (var ruleset in sets)
                 {
+                    // TODO: hunh. if...else. There's got to be a smarter way.....
                     if (ruleset.Granularity == Granularity.All)
                     {
                         ApplyGlobals(ruleset.Rules);
@@ -113,8 +76,6 @@ namespace GUI
                 }
             }
 
-            // TODO: the richTextBox changes fonts. aaargh
-            // foreign text acting as control-characters?!?!?
             txtOutput.Text = _output;
             btnSave.Visible = true;
         }
@@ -164,12 +125,12 @@ namespace GUI
             // enable/disable RuleApplication based on existence of source text
             // NOTE: you can edit rules in the absence of a text, and pick out text afterwards
             // but you can't apply rules to nothing.....
-            btnApply.Enabled = (rtbSource.Text.Length != 0);
+            btnApply.Enabled = (Source.Text.Length != 0);
         }
 
         private void btnClearSource_Click(object sender, EventArgs e)
         {
-            if (rtbSource.Text.Length > 0)
+            if (Source.Text.Length > 0)
             {
                 var result = MessageBox.Show("Are you sure?", "Delete?", MessageBoxButtons.OKCancel);
                 if (result == DialogResult.Cancel)
@@ -177,7 +138,7 @@ namespace GUI
                     return;
                 }
             }
-            rtbSource.Text = string.Empty;
+            Source.Text = string.Empty;
         }
 
         private void btnSave_Click(object sender, EventArgs e)
@@ -207,7 +168,7 @@ namespace GUI
                 var l = new frmLibraryPicker(libaryPath);
                 l.ShowDialog();
 
-                rtbSource.AppendText(l.Source);
+                Source.AppendText(l.Source);
                 // TODO: implement
                 // read from the app.config setting for library path
             }
