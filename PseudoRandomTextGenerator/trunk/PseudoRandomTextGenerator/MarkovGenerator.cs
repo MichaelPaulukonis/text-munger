@@ -149,7 +149,6 @@ namespace TextTransformer
             if (keySize < 1 || keySize > 5) throw new ArgumentOutOfRangeException("keySize", "Can be 1-5");
 
             _keySize = keySize;
-            _chain = new Dictionary<string, List<string>>();
             _random = new Random();
 
             //_rule = new DefaultRule();
@@ -167,10 +166,12 @@ namespace TextTransformer
         }
 
         // TODO: should there be more params exposed?
+        // TODO: yes, minLengh, maxLength
         public object Clone()
         {
-            var c = new MarkovGenerator(_rule, _keySize);
-
+            // what about the chain?
+            // that might be something to clone, so we process different chained Processors...
+            var c = new MarkovGenerator(_rule, _keySize) { MinLength = this.MinLength, MaxLength = this.MaxLength };
             return c;
         }
 
@@ -205,18 +206,16 @@ namespace TextTransformer
 
             if (tokens.Count < _keySize) throw new ArgumentException("The text is smaller than the key size");
 
+            // RESET THE CHAIN UPON INITIALIZATION, NOT JUST APPEND NEW TOKENS
+            _chain = new Dictionary<string, List<string>>();
             AddTokensToChain(tokens);
         }
 
         private void AddTokensToChain(IList<string> tokens)
         {
-            // TODO: ooooh, Trim() -- that removes any change of significant whitespace!!!!!
             for (var i = _keySize; i < tokens.Count; i++)
             {
                 var nonModifiedClosurei = i;
-                //var keyTokens = Enumerable.Range(0, _keySize).Select(k => tokens[nonModifiedClosurei - (_keySize - k)].Trim());
-
-                //AddToken(keyTokens, tokens[nonModifiedClosurei].Trim());
 
                 var keyTokens = Enumerable.Range(0, _keySize).Select(k => tokens[nonModifiedClosurei - (_keySize - k)]);
 
@@ -234,7 +233,7 @@ namespace TextTransformer
             {
                 if (!_chain[chainKey].Contains(value)) _chain[chainKey].Add(value);
             }
-            else _chain.Add(chainKey, new List<string>() { value });
+            else _chain.Add(chainKey, new List<string> { value });
         }
 
         public int MinLength { get; set; }
@@ -248,18 +247,17 @@ namespace TextTransformer
             get { return _source; }
             set
             {
-                _source = value;
-                InitializeChain();
+                if (_source != value)
+                {
+                    // only go to the trouble of Initialization if and only if the input has changed
+                    _source = value;
+                    InitializeChain();
+                }
             }
         }
 
-        private string _m = null;
-
-        // doh! this means it never re-processes what we've got!
-        // ugh. not what I want...
         public string Munged
         {
-            //get { return _m ?? (_m = Munge()); }
             get { return Munge(); }
         }
 
