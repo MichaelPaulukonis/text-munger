@@ -30,6 +30,7 @@
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MungerGui));
             this.SourceBox = new System.Windows.Forms.GroupBox();
+            this.Source = new System.Windows.Forms.TextBox();
             this.rbEdit = new System.Windows.Forms.RadioButton();
             this.btnSourceRetrieve = new System.Windows.Forms.Button();
             this.btnClearSource = new System.Windows.Forms.Button();
@@ -40,8 +41,8 @@
             this.groupBox2 = new System.Windows.Forms.GroupBox();
             this.btnApply = new System.Windows.Forms.Button();
             this.btnSave = new System.Windows.Forms.Button();
-            this.Source = new System.Windows.Forms.TextBox();
             this.txtOutput = new System.Windows.Forms.TextBox();
+            this.btnClipboard = new System.Windows.Forms.Button();
             this.SourceBox.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.SuspendLayout();
@@ -61,6 +62,17 @@
             this.SourceBox.TabIndex = 4;
             this.SourceBox.TabStop = false;
             this.SourceBox.Text = "Sources";
+            // 
+            // Source
+            // 
+            this.Source.Font = new System.Drawing.Font("Courier New", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.Source.Location = new System.Drawing.Point(15, 121);
+            this.Source.Multiline = true;
+            this.Source.Name = "Source";
+            this.Source.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
+            this.Source.Size = new System.Drawing.Size(325, 532);
+            this.Source.TabIndex = 11;
+            this.Source.TextChanged += new System.EventHandler(this.rtbSource_TextChanged);
             // 
             // rbEdit
             // 
@@ -131,7 +143,7 @@
             // RuleSetSelector
             // 
             this.RuleSetSelector.AllowMultipleItems = true;
-            this.RuleSetSelector.Location = new System.Drawing.Point(6, 19);
+            this.RuleSetSelector.Location = new System.Drawing.Point(6, 20);
             this.RuleSetSelector.Name = "RuleSetSelector";
             this.RuleSetSelector.SelectedItems = ((System.Collections.Generic.List<object>)(resources.GetObject("RuleSetSelector.SelectedItems")));
             this.RuleSetSelector.Size = new System.Drawing.Size(389, 255);
@@ -140,9 +152,9 @@
             // groupBox2
             // 
             this.groupBox2.Controls.Add(this.RuleSetSelector);
-            this.groupBox2.Location = new System.Drawing.Point(384, 29);
+            this.groupBox2.Location = new System.Drawing.Point(364, 29);
             this.groupBox2.Name = "groupBox2";
-            this.groupBox2.Size = new System.Drawing.Size(414, 299);
+            this.groupBox2.Size = new System.Drawing.Size(414, 280);
             this.groupBox2.TabIndex = 9;
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "addRuleSet";
@@ -150,7 +162,7 @@
             // btnApply
             // 
             this.btnApply.Enabled = false;
-            this.btnApply.Location = new System.Drawing.Point(385, 334);
+            this.btnApply.Location = new System.Drawing.Point(364, 314);
             this.btnApply.Name = "btnApply";
             this.btnApply.Size = new System.Drawing.Size(75, 23);
             this.btnApply.TabIndex = 10;
@@ -160,7 +172,7 @@
             // 
             // btnSave
             // 
-            this.btnSave.Location = new System.Drawing.Point(478, 334);
+            this.btnSave.Location = new System.Drawing.Point(551, 314);
             this.btnSave.Name = "btnSave";
             this.btnSave.Size = new System.Drawing.Size(75, 23);
             this.btnSave.TabIndex = 12;
@@ -169,32 +181,32 @@
             this.btnSave.Visible = false;
             this.btnSave.Click += new System.EventHandler(this.btnSave_Click);
             // 
-            // Source
-            // 
-            this.Source.Font = new System.Drawing.Font("Courier New", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.Source.Location = new System.Drawing.Point(15, 121);
-            this.Source.Multiline = true;
-            this.Source.Name = "Source";
-            this.Source.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
-            this.Source.Size = new System.Drawing.Size(325, 532);
-            this.Source.TabIndex = 11;
-            this.Source.TextChanged += new System.EventHandler(this.rtbSource_TextChanged);
-            // 
             // txtOutput
             // 
-            this.txtOutput.Font = new System.Drawing.Font("Courier New", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.txtOutput.Location = new System.Drawing.Point(385, 373);
+            this.txtOutput.Font = new System.Drawing.Font("Courier New", 6.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.txtOutput.Location = new System.Drawing.Point(364, 343);
             this.txtOutput.Multiline = true;
             this.txtOutput.Name = "txtOutput";
             this.txtOutput.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
-            this.txtOutput.Size = new System.Drawing.Size(478, 309);
+            this.txtOutput.Size = new System.Drawing.Size(499, 329);
             this.txtOutput.TabIndex = 13;
+            // 
+            // btnClipboard
+            // 
+            this.btnClipboard.Location = new System.Drawing.Point(446, 314);
+            this.btnClipboard.Name = "btnClipboard";
+            this.btnClipboard.Size = new System.Drawing.Size(99, 23);
+            this.btnClipboard.TabIndex = 14;
+            this.btnClipboard.Text = "Copy to Clipboard";
+            this.btnClipboard.UseVisualStyleBackColor = true;
+            this.btnClipboard.Click += new System.EventHandler(this.btnClipboard_Click);
             // 
             // MungerGui
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(875, 694);
+            this.Controls.Add(this.btnClipboard);
             this.Controls.Add(this.txtOutput);
             this.Controls.Add(this.btnSave);
             this.Controls.Add(this.btnApply);
@@ -225,6 +237,7 @@
         private System.Windows.Forms.RadioButton rbEdit;
         private System.Windows.Forms.TextBox Source;
         private System.Windows.Forms.TextBox txtOutput;
+        private System.Windows.Forms.Button btnClipboard;
 
     }
 }

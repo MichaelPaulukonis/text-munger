@@ -5,7 +5,6 @@ using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Windows.Forms;
-using Runner;
 using TextTransformer;
 
 namespace GUI
@@ -161,6 +160,7 @@ namespace GUI
             {
                 // TODO: implement
                 // form for a URL, and then g-d knows what....
+                MessageBox.Show("Not Yet Implemented.");
             }
             else if (rbLibrary.Checked)
             {
@@ -176,7 +176,13 @@ namespace GUI
             {
                 // load up a file-dialog
                 // store the last-used path in app.config?
+                MessageBox.Show("Not Yet Implemented.");
             }
+        }
+
+        private void btnClipboard_Click(object sender, EventArgs e)
+        {
+            Clipboard.SetDataObject(txtOutput.Text, true);
         }
     }
 }

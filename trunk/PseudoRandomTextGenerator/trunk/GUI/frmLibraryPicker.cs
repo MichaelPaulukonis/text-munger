@@ -1,8 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -30,11 +27,6 @@ namespace GUI
 
             var items = _library.Keys.SelectMany(textKey => _library[textKey]).ToList();
             LibrarySelector.AvailableItems = items.Cast<object>().ToList();
-
-            // although the library is contained in sub-libraries
-            // add each item in each library to the list of available items
-
-            //LibrarySelector.AvailableItems = set.Rules.Cast<object>().ToList();
         }
 
         private void btnExit_Click(object sender, EventArgs e)
@@ -64,10 +56,12 @@ namespace GUI
         {
             // add all files from this path (if any)
             var libname = Path.GetFileName(libraryPath);
-            var lib = new Library(libname) { Parent = parent };
+            var lib = parent; // only re-assign if there are files
             var files = Directory.GetFiles(libraryPath);
             if (files.Length > 0)
             {
+                lib = new Library(libname) { Parent = parent };
+
                 foreach (var f in files)
                 {
                     var tx = new Text(Path.GetFileNameWithoutExtension(f), f);
@@ -76,7 +70,6 @@ namespace GUI
                 libs.Add(libname, lib);
             }
 
-            // TODO: this should be recursive.
             var dirs = Directory.GetDirectories(libraryPath);
             foreach (var d in dirs)
             {
