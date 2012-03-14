@@ -377,5 +377,10 @@ namespace TextTransformer
             var keyIndex = _random.Next(_chain.Count);
             return _chain.Keys.ToArray()[keyIndex];
         }
+
+        public override string ToString()
+        {
+            return "MarkovProcessor";
+        }
     }
 }

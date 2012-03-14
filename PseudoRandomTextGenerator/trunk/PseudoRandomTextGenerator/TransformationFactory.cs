@@ -73,7 +73,6 @@ namespace TextTransformer
                 new Disemconsonant(),
                 new Disemvowell(),
                 new RandomCaps(),
-                new VowellToPunct(),
                 new Reverse(),
                 new Shouty(),
                 new VowellToPunct(),

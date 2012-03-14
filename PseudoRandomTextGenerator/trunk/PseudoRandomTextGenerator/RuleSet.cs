@@ -21,6 +21,7 @@ namespace TextTransformer
             ForcedGranularity = false;
             _name = name;
             Rules = new List<ITransformer>();
+            this.Active = true;
         }
 
         public RuleSet(string name, Granularity granularity)
@@ -34,6 +35,8 @@ namespace TextTransformer
 
         public RuleSet(Granularity granularity)
             : this(granularity.ToString(), granularity) { }
+
+        public bool Active { get; set; }
 
         public override string ToString()
         {
@@ -59,6 +62,8 @@ namespace TextTransformer
 
         public object Clone()
         {
+            // TODO: this is the ONLY instance of using this constructor
+            // all others use new RuleSet(granularity)
             var rs = new RuleSet(_name);
 
             // TODO: uh-oh, this is not a deep copy!

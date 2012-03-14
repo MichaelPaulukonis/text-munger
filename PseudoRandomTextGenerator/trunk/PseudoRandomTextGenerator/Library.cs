@@ -2,8 +2,6 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Text;
 
 // TODO: this shouldn't be stored under the TextTransformers project, should it?
 // a new project, for source-retrievers????
@@ -13,8 +11,7 @@ namespace TextTransformer
     public class Library : IEnumerable<Text>
     {
         public Library()
-        {
-        }
+        { }
 
         public Library(string title)
         {

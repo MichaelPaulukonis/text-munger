@@ -64,14 +64,19 @@ namespace TextTransformer
 
         public string Munged
         {
-            get { return Munge(); }
+            get { return Munge(Source); }
+        }
+
+        private string Munge(string source)
+        {
+            return source.ToUpper();
         }
 
         public Granularity Granularity { get { return Granularity.Word; } }
 
-        private string Munge()
+        public override string ToString()
         {
-            return Source.ToUpper();
+            return Munge("shouty");
         }
     }
 
@@ -84,14 +89,14 @@ namespace TextTransformer
         public string Munged
         {
             //get { return _m ?? (_m = Munge()); }
-            get { return Munge(); }
+            get { return Munge(Source); }
         }
 
-        private string Munge()
+        private string Munge(string source)
         {
             var rnd = new Random();
 
-            var c = Source.ToLower().ToCharArray();
+            var c = source.ToLower().ToCharArray();
             for (var i = 0; i < c.Length; ++i)
             {
                 if (rnd.Next(0, 100) > 50)
@@ -104,6 +109,11 @@ namespace TextTransformer
         }
 
         public Granularity Granularity { get { return Granularity.Word; } }
+
+        public override string ToString()
+        {
+            return Munge("RandomCaps");
+        }
     }
 
     public class Disemconsonant : ITransformer
@@ -126,28 +136,37 @@ namespace TextTransformer
         }
 
         public Granularity Granularity { get { return Granularity.Word; } }
+
+        public override string ToString()
+        {
+            // honestly, removing the consonsants makes this impenetrable
+            return "Disemconsonant";
+        }
     }
 
     public class Disemvowell : ITransformer
     {
         public string Source { get; set; }
 
-        private string _m = null;
-
         public string Munged
         {
-            get { return Munge(); }
+            get { return Munge(Source); }
         }
 
-        private string Munge()
+        private string Munge(string source)
         {
             var regex = new Regex(@"[aeiouAEIOU]+");
-            var munged = regex.Replace(Source, "");
+            var munged = regex.Replace(source, "");
 
             return munged;
         }
 
         public Granularity Granularity { get { return Granularity.Word; } }
+
+        public override string ToString()
+        {
+            return Munge("Disemvowell");
+        }
     }
 
     // clone, as the Mark can be set independently
@@ -166,15 +185,15 @@ namespace TextTransformer
 
         public string Munged
         {
-            get { return Munge(); }
+            get { return Munge(Source); }
         }
 
-        private string Munge()
+        private string Munge(string source)
         {
             // TODO: this is a naive implementation.
             // however, it doesn't replace multiple spaces with a single punct, that's something....
 
-            var output = Regex.Replace(Source, @"\s", Mark);
+            var output = Regex.Replace(source, @"\s", Mark);
 
             return output;
         }
@@ -188,6 +207,11 @@ namespace TextTransformer
             c.Mark = this.Mark;
 
             return c;
+        }
+
+        public override string ToString()
+        {
+            return Munge("Punctuize Whitespace");
         }
     }
 
@@ -206,18 +230,23 @@ namespace TextTransformer
 
         public string Munged
         {
-            get { return Munge(); }
+            get { return Munge(Source); }
         }
 
-        private string Munge()
+        private string Munge(string source)
         {
             var regex = new Regex(@"[aeiouAEIOU]+");
-            var munged = regex.Replace(Source, Mark);
+            var munged = regex.Replace(source, Mark);
 
             return munged;
         }
 
         public Granularity Granularity { get { return Granularity.Word; } }
+
+        public override string ToString()
+        {
+            return Munge("VowellToPunct");
+        }
     }
 
     public class Reverse : ITransformer
@@ -237,6 +266,11 @@ namespace TextTransformer
         }
 
         public Granularity Granularity { get { return Granularity.Word; } }
+
+        public override string ToString()
+        {
+            return "reserveR";
+        }
     }
 
     public class XrmlFormat : ITransformer
@@ -259,6 +293,11 @@ namespace TextTransformer
         }
 
         public Granularity Granularity { get { return Granularity.All; } }
+
+        public override string ToString()
+        {
+            return "XRML format";
+        }
     }
 
     public class Density : ITransformer
@@ -401,6 +440,11 @@ namespace TextTransformer
 
             return (int)Math.Round(offset);
         }
+
+        public override string ToString()
+        {
+            return String.Format("Density {0}%", Percentage);
+        }
     }
 
     // TODO: instead of just homophones, this would lend itself to ANY word-level, list-based transformation
@@ -495,6 +539,11 @@ namespace TextTransformer
                     foreach (var p in Permutations(source.Take(i).Concat(source.Skip(i + 1))))
                         yield return source.Skip(i).Take(1).Concat(p);
         }
+
+        public override string ToString()
+        {
+            return "Homphonerize";
+        }
     }
 
     //       shuffle -- problem: depends upon atomicity
@@ -518,6 +567,11 @@ namespace TextTransformer
             var result = s.OrderBy(item => rnd.Next());
 
             return string.Join(string.Empty, result.ToArray());
+        }
+
+        public override string ToString()
+        {
+            return "Shuffle";
         }
     }
 
@@ -558,6 +612,11 @@ namespace TextTransformer
                 }
             }
             return pigLatinOut;
+        }
+
+        public override string ToString()
+        {
+            return "PigLatin";
         }
     }
 
