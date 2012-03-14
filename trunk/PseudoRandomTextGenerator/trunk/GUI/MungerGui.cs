@@ -18,6 +18,8 @@ namespace GUI
         {
             InitializeComponent();
 
+            txtOutput.Text = string.Empty; // erase dev-guides
+
             var rules = new List<object> { new RuleSet(Granularity.All),
                     new RuleSet(Granularity.Sentence),
                     new RuleSet(Granularity.Word)
@@ -119,7 +121,7 @@ namespace GUI
             _output = sb.ToString();
         }
 
-        private void rtbSource_TextChanged(object sender, EventArgs e)
+        private void Source_TextChanged(object sender, EventArgs e)
         {
             // enable/disable RuleApplication based on existence of source text
             // NOTE: you can edit rules in the absence of a text, and pick out text afterwards
