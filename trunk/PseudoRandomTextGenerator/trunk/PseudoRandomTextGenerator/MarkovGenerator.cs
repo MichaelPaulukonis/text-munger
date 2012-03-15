@@ -6,7 +6,9 @@ using System.Text.RegularExpressions;
 
 namespace TextTransformer
 {
-    public interface IMarkovRules
+    // this is really only used for Tokenizer rule
+    // so... maybe... rename?
+    public interface IMarkovRule
     {
         IList<string> Split(string subject);
 
@@ -15,7 +17,7 @@ namespace TextTransformer
         string Clean(string dirty);
     }
 
-    public class DefaultRule : IMarkovRules
+    public class DefaultRule : IMarkovRule
     {
         public virtual IList<string> Split(string subject)
         {
@@ -126,6 +128,45 @@ namespace TextTransformer
         }
     }
 
+    public enum MarkovRule
+    {
+        Default,
+        XrayWord,
+        XrayChar
+    }
+
+    public class MarkovRuleFactory
+    {
+        public MarkovRuleFactory(MarkovRule rule)
+        {
+            Rule = rule;
+        }
+
+        public MarkovRule Rule { get; set; }
+
+        public IMarkovRule GetRule()
+        {
+            IMarkovRule rule = null;
+
+            switch (Rule)
+            {
+                case MarkovRule.Default:
+                    rule = new DefaultRule();
+                    break;
+                case MarkovRule.XrayWord:
+                    rule = new XrayWordRule();
+                    break;
+                case MarkovRule.XrayChar:
+                    rule = new XrayCharRule();
+                    break;
+                default:
+                    throw new ArgumentOutOfRangeException();
+            }
+
+            return rule;
+        }
+    }
+
     public class Key
     {
         public string Word { get; set; }
@@ -137,32 +178,25 @@ namespace TextTransformer
 
     public class MarkovGenerator : ITransformer, ICloneable
     {
-        private readonly int _keySize;
+        private int _keySize;
         private Dictionary<string, List<string>> _chain;
-        private Random _random;
-        private readonly IMarkovRules _rule;
+        private readonly Random _random;
+        private IMarkovRule _rule;
         private const int FirstWord = 1;
-        private string _wordDelim = Convert.ToChar(6).ToString(); // this is for the storage model only, not for output.
+        private readonly string _wordDelim = Convert.ToChar(6).ToString(); // this is for the storage model only, not for output.
 
-        public MarkovGenerator(int keySize = 2)
+        public MarkovGenerator() : this(new DefaultRule(), 2) { }
+
+        public MarkovGenerator(int keySize) : this(new DefaultRule(), keySize) { }
+
+        public MarkovGenerator(IMarkovRule rules, int keySize)
         {
-            if (keySize < 1 || keySize > 5) throw new ArgumentOutOfRangeException("keySize", "Can be 1-5");
-
-            _keySize = keySize;
+            KeySize = keySize;
+            TokenizerRule = rules;
             _random = new Random();
 
-            //_rule = new DefaultRule();
-            _rule = new XrayWordRule();
-            //_rule = new XrayCharRule();
-
-            MinLength = 2000;
-            MaxLength = 2000;
-        }
-
-        public MarkovGenerator(IMarkovRules rules, int keySize = 2)
-            : this(keySize)
-        {
-            _rule = rules;
+            LengthMin = 2000;
+            LengthMax = 2000;
         }
 
         // TODO: should there be more params exposed?
@@ -171,7 +205,7 @@ namespace TextTransformer
         {
             // what about the chain?
             // that might be something to clone, so we process different chained Processors...
-            var c = new MarkovGenerator(_rule, _keySize) { MinLength = this.MinLength, MaxLength = this.MaxLength };
+            var c = new MarkovGenerator(TokenizerRule, KeySize) { LengthMin = this.LengthMin, LengthMax = this.LengthMax };
             return c;
         }
 
@@ -202,9 +236,9 @@ namespace TextTransformer
 
         private void InitializeChain()
         {
-            var tokens = _rule.Split(Source);
+            var tokens = TokenizerRule.Split(Source);
 
-            if (tokens.Count < _keySize) throw new ArgumentException("The text is smaller than the key size");
+            if (tokens.Count < KeySize) throw new ArgumentException("The text is smaller than the key size");
 
             // RESET THE CHAIN UPON INITIALIZATION, NOT JUST APPEND NEW TOKENS
             _chain = new Dictionary<string, List<string>>();
@@ -213,11 +247,11 @@ namespace TextTransformer
 
         private void AddTokensToChain(IList<string> tokens)
         {
-            for (var i = _keySize; i < tokens.Count; i++)
+            for (var i = KeySize; i < tokens.Count; i++)
             {
                 var nonModifiedClosurei = i;
 
-                var keyTokens = Enumerable.Range(0, _keySize).Select(k => tokens[nonModifiedClosurei - (_keySize - k)]);
+                var keyTokens = Enumerable.Range(0, KeySize).Select(k => tokens[nonModifiedClosurei - (KeySize - k)]);
 
                 AddToken(keyTokens, tokens[nonModifiedClosurei]);
             }
@@ -236,9 +270,9 @@ namespace TextTransformer
             else _chain.Add(chainKey, new List<string> { value });
         }
 
-        public int MinLength { get; set; }
+        public int LengthMin { get; set; }
 
-        public int MaxLength { get; set; }
+        public int LengthMax { get; set; }
 
         private string _source;
 
@@ -263,13 +297,34 @@ namespace TextTransformer
 
         public string Munge()
         {
-            return this.Write(MinLength, MaxLength);
+            return this.Write(LengthMin, LengthMax);
         }
 
         // running Markov on a word-level is a bit silly, but for long words I guess you could do it
         // should we just bite-the-bullet and insist on sentence-level?
         // what about the hundred-letter thunderwords? or a punctuation-and-whitespace-free blob?
         public Granularity Granularity { get { return Granularity.All; } }
+
+        // original code constrained size from 1..5
+        // I'm doing away with that for now
+        // although 1 is ridiculous, it's potentially useful for generating a random string of words?
+
+        public int KeySize
+        {
+            get { return _keySize; }
+            set
+            {
+                if (value < 1) throw new ArgumentOutOfRangeException("keySize", "Cannot be negative");
+
+                _keySize = value;
+            }
+        }
+
+        public IMarkovRule TokenizerRule
+        {
+            get { return _rule; }
+            set { _rule = value; }
+        }
 
         // TODO: overload, to accept a designated seed-string
         // if seed-string does not exist, also use random
@@ -289,7 +344,7 @@ namespace TextTransformer
             var sentenceLength = 0;
             // keep the words in a list, so we aren't doing more string manipulation than necessary
             var words = new List<string>();
-            var ruleDelimLength = _rule.Delimiter.Length; // cache this.
+            var ruleDelimLength = TokenizerRule.Delimiter.Length; // cache this.
 
             // while we haven't reached the length
             // get the next word
@@ -321,7 +376,7 @@ namespace TextTransformer
                 }
             }
 
-            return string.Join(_rule.Delimiter, words);
+            return string.Join(TokenizerRule.Delimiter, words);
         }
 
         // since it's an object, we could just make it by Ref and stop worrying about return values...

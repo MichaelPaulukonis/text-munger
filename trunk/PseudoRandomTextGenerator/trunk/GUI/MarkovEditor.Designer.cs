@@ -47,17 +47,17 @@
             this.label1.Size = new System.Drawing.Size(47, 13);
             this.label1.TabIndex = 1;
             this.label1.Text = "Split rule";
-            this.label1.TextAlign = System.Drawing.ContentAlignment.TopRight;
+            this.label1.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             // 
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(37, 39);
+            this.label2.Location = new System.Drawing.Point(31, 39);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(39, 13);
+            this.label2.Size = new System.Drawing.Size(45, 13);
             this.label2.TabIndex = 2;
-            this.label2.Text = "n-gram";
-            this.label2.TextAlign = System.Drawing.ContentAlignment.TopRight;
+            this.label2.Text = "key size";
+            this.label2.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             // 
             // txtKeySize
             // 
@@ -73,6 +73,7 @@
             this.txtLengthMin.Name = "txtLengthMin";
             this.txtLengthMin.Size = new System.Drawing.Size(68, 20);
             this.txtLengthMin.TabIndex = 5;
+            this.txtLengthMin.TextChanged += new System.EventHandler(this.txtLengthMin_TextChanged);
             // 
             // label3
             // 
@@ -82,7 +83,7 @@
             this.label3.Size = new System.Drawing.Size(59, 13);
             this.label3.TabIndex = 4;
             this.label3.Text = "min Length";
-            this.label3.TextAlign = System.Drawing.ContentAlignment.TopRight;
+            this.label3.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             // 
             // txtLengthMax
             // 
@@ -90,6 +91,7 @@
             this.txtLengthMax.Name = "txtLengthMax";
             this.txtLengthMax.Size = new System.Drawing.Size(68, 20);
             this.txtLengthMax.TabIndex = 7;
+            this.txtLengthMax.TextChanged += new System.EventHandler(this.txtLengthMax_TextChanged);
             // 
             // label4
             // 
@@ -99,17 +101,17 @@
             this.label4.Size = new System.Drawing.Size(62, 13);
             this.label4.TabIndex = 6;
             this.label4.Text = "max Length";
-            this.label4.TextAlign = System.Drawing.ContentAlignment.TopRight;
+            this.label4.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             // 
             // btnSave
             // 
-            this.btnSave.Enabled = false;
             this.btnSave.Location = new System.Drawing.Point(80, 131);
             this.btnSave.Name = "btnSave";
             this.btnSave.Size = new System.Drawing.Size(75, 23);
             this.btnSave.TabIndex = 8;
             this.btnSave.Text = "&Save";
             this.btnSave.UseVisualStyleBackColor = true;
+            this.btnSave.Click += new System.EventHandler(this.btnSave_Click);
             // 
             // cbRules
             // 

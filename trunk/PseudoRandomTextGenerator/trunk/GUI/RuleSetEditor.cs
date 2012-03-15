@@ -58,7 +58,7 @@ namespace GUI
 
         // TODO: we also need to create the Transformer editor
         // so that can be added as the double-click handler
-        // f'r instance, ouor Markov editor has crappy settings by default, now...
+        // f'r instance, ouor MarkovGenerator editor has crappy settings by default, now...
 
         public void FormCloser(object sender, FormClosingEventArgs e)
         {
