@@ -1,0 +1,159 @@
+﻿namespace GUI
+{
+    partial class MarkovEditor
+    {
+        /// <summary>
+        /// Required designer variable.
+        /// </summary>
+        private System.ComponentModel.IContainer components = null;
+
+        /// <summary>
+        /// Clean up any resources being used.
+        /// </summary>
+        /// <param name="disposing">true if managed resources should be disposed; otherwise, false.</param>
+        protected override void Dispose(bool disposing)
+        {
+            if (disposing && (components != null))
+            {
+                components.Dispose();
+            }
+            base.Dispose(disposing);
+        }
+
+        #region Windows Form Designer generated code
+
+        /// <summary>
+        /// Required method for Designer support - do not modify
+        /// the contents of this method with the code editor.
+        /// </summary>
+        private void InitializeComponent()
+        {
+            this.label1 = new System.Windows.Forms.Label();
+            this.label2 = new System.Windows.Forms.Label();
+            this.txtKeySize = new System.Windows.Forms.TextBox();
+            this.txtLengthMin = new System.Windows.Forms.TextBox();
+            this.label3 = new System.Windows.Forms.Label();
+            this.txtLengthMax = new System.Windows.Forms.TextBox();
+            this.label4 = new System.Windows.Forms.Label();
+            this.btnSave = new System.Windows.Forms.Button();
+            this.cbRules = new System.Windows.Forms.ComboBox();
+            this.SuspendLayout();
+            // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Location = new System.Drawing.Point(29, 13);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(47, 13);
+            this.label1.TabIndex = 1;
+            this.label1.Text = "Split rule";
+            this.label1.TextAlign = System.Drawing.ContentAlignment.TopRight;
+            // 
+            // label2
+            // 
+            this.label2.AutoSize = true;
+            this.label2.Location = new System.Drawing.Point(37, 39);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(39, 13);
+            this.label2.TabIndex = 2;
+            this.label2.Text = "n-gram";
+            this.label2.TextAlign = System.Drawing.ContentAlignment.TopRight;
+            // 
+            // txtKeySize
+            // 
+            this.txtKeySize.Location = new System.Drawing.Point(80, 37);
+            this.txtKeySize.Name = "txtKeySize";
+            this.txtKeySize.Size = new System.Drawing.Size(68, 20);
+            this.txtKeySize.TabIndex = 3;
+            this.txtKeySize.TextChanged += new System.EventHandler(this.txtKeySize_TextChanged);
+            // 
+            // txtLengthMin
+            // 
+            this.txtLengthMin.Location = new System.Drawing.Point(80, 64);
+            this.txtLengthMin.Name = "txtLengthMin";
+            this.txtLengthMin.Size = new System.Drawing.Size(68, 20);
+            this.txtLengthMin.TabIndex = 5;
+            // 
+            // label3
+            // 
+            this.label3.AutoSize = true;
+            this.label3.Location = new System.Drawing.Point(17, 65);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(59, 13);
+            this.label3.TabIndex = 4;
+            this.label3.Text = "min Length";
+            this.label3.TextAlign = System.Drawing.ContentAlignment.TopRight;
+            // 
+            // txtLengthMax
+            // 
+            this.txtLengthMax.Location = new System.Drawing.Point(80, 91);
+            this.txtLengthMax.Name = "txtLengthMax";
+            this.txtLengthMax.Size = new System.Drawing.Size(68, 20);
+            this.txtLengthMax.TabIndex = 7;
+            // 
+            // label4
+            // 
+            this.label4.AutoSize = true;
+            this.label4.Location = new System.Drawing.Point(14, 91);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(62, 13);
+            this.label4.TabIndex = 6;
+            this.label4.Text = "max Length";
+            this.label4.TextAlign = System.Drawing.ContentAlignment.TopRight;
+            // 
+            // btnSave
+            // 
+            this.btnSave.Enabled = false;
+            this.btnSave.Location = new System.Drawing.Point(80, 131);
+            this.btnSave.Name = "btnSave";
+            this.btnSave.Size = new System.Drawing.Size(75, 23);
+            this.btnSave.TabIndex = 8;
+            this.btnSave.Text = "&Save";
+            this.btnSave.UseVisualStyleBackColor = true;
+            // 
+            // cbRules
+            // 
+            this.cbRules.FormattingEnabled = true;
+            this.cbRules.Items.AddRange(new object[] {
+            "Generic WordRule",
+            "Xray Word Rule",
+            "Xray Char Rule"});
+            this.cbRules.Location = new System.Drawing.Point(80, 10);
+            this.cbRules.Name = "cbRules";
+            this.cbRules.Size = new System.Drawing.Size(121, 21);
+            this.cbRules.TabIndex = 9;
+            // 
+            // MarkovEditor
+            // 
+            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
+            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.ClientSize = new System.Drawing.Size(219, 179);
+            this.Controls.Add(this.cbRules);
+            this.Controls.Add(this.btnSave);
+            this.Controls.Add(this.txtLengthMax);
+            this.Controls.Add(this.label4);
+            this.Controls.Add(this.txtLengthMin);
+            this.Controls.Add(this.label3);
+            this.Controls.Add(this.txtKeySize);
+            this.Controls.Add(this.label2);
+            this.Controls.Add(this.label1);
+            this.Name = "MarkovEditor";
+            this.Text = "MarkovEditor";
+            this.ResumeLayout(false);
+            this.PerformLayout();
+
+        }
+
+        #endregion
+
+        private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.TextBox txtKeySize;
+        private System.Windows.Forms.TextBox txtLengthMin;
+        private System.Windows.Forms.Label label3;
+        private System.Windows.Forms.TextBox txtLengthMax;
+        private System.Windows.Forms.Label label4;
+        private System.Windows.Forms.Button btnSave;
+        private System.Windows.Forms.ComboBox cbRules;
+    }
+}
