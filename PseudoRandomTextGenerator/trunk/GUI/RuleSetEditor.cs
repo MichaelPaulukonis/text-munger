@@ -9,19 +9,22 @@ namespace GUI
 {
     public partial class RuleSetEditor : Form
     {
-        private List<RuleSet> _activeEditors;
+        private List<RuleSet> _activeRuleSetEditors; // wait, what?!??!
         private MultipleSelectionControl _control;
 
+        // TODO: these overloaded constructors need some work.
         public RuleSetEditor()
         {
             InitializeComponent();
+
+            Editor.AddDoubleClickHandler(DisplayRuleEditor);
         }
 
-        private RuleSetEditor(MultipleSelectionControl control, List<RuleSet> activeEditors)
+        private RuleSetEditor(MultipleSelectionControl control, List<RuleSet> activeRuleSetEditors)
             : this()
         {
             _control = control;
-            _activeEditors = activeEditors;
+            _activeRuleSetEditors = activeRuleSetEditors;
             FormClosing += FormCloser;
 
             // TODO: trap for empty rule-sets
@@ -31,14 +34,14 @@ namespace GUI
             }
         }
 
-        public RuleSetEditor(TransformationFactory fac, MultipleSelectionControl control, List<RuleSet> activeEditors)
-            : this(control, activeEditors)
+        public RuleSetEditor(TransformationFactory fac, MultipleSelectionControl control, List<RuleSet> activeRuleSetEditors)
+            : this(control, activeRuleSetEditors)
         {
             RuleSet = new RuleSet(fac.Granularity);
             RuleSet.Rules = fac.GetTransformers();
         }
 
-        public RuleSetEditor(RuleSet set, MultipleSelectionControl control, List<RuleSet> activeEditors)
+        public RuleSetEditor(RuleSet set, MultipleSelectionControl control, List<RuleSet> activeRuleSetEditors)
             : this()
         {
             RuleSet = set;
@@ -52,7 +55,7 @@ namespace GUI
             Editor.AvailableItems = new TransformationFactory(set.Granularity).GetTransformers().Cast<object>().ToList();
 
             _control = control;
-            _activeEditors = activeEditors;
+            _activeRuleSetEditors = activeRuleSetEditors;
             FormClosing += FormCloser;
         }
 
@@ -64,7 +67,7 @@ namespace GUI
         {
             try
             {
-                _activeEditors.Remove(RuleSet);
+                _activeRuleSetEditors.Remove(RuleSet);
                 RuleSet.Rules = Editor.SelectedItems.Cast<ITransformer>().ToList();
                 _control.UpdateSelected(RuleSet); // so count can change
             }
@@ -72,6 +75,29 @@ namespace GUI
             {
                 // TODO: logging....
                 MessageBox.Show(ex.ToString());
+            }
+        }
+
+        // hey, has anybody noticed that I use "Rule" and "Transformer" interchangebly?
+        // beucase I use "Rule" and "Transformer" interchangebly.
+        public void DisplayRuleEditor(object sender, EventArgs e)
+        {
+            // DAMMIT! we still have implementation details exposed. WTF!!!!
+            // TODO: fix this
+            var rule = (ITransformer)((ListBox)sender).SelectedItem;
+
+            // TODO: using the above as a model
+            // open the appropriate editor
+            // or display a "not available" message
+
+            if (rule.GetType() == typeof(MarkovGenerator))
+            {
+                var ed = new MarkovEditor((MarkovGenerator)rule);
+                ed.ShowDialog();
+            }
+            else
+            {
+                MessageBox.Show("Either no setup is required, or Rule Editor is not yet implemented");
             }
         }
 

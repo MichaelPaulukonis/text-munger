@@ -69,12 +69,6 @@
     <Compile Include="MungerGui.Designer.cs">
       <DependentUpon>MungerGui.cs</DependentUpon>
     </Compile>
-    <Compile Include="oldMungerGui.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="oldMungerGui.Designer.cs">
-      <DependentUpon>oldMungerGui.cs</DependentUpon>
-    </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="RuleSetEditor.cs">
@@ -91,9 +85,6 @@
     </EmbeddedResource>
     <EmbeddedResource Include="MungerGui.resx">
       <DependentUpon>MungerGui.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="oldMungerGui.resx">
-      <DependentUpon>oldMungerGui.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
