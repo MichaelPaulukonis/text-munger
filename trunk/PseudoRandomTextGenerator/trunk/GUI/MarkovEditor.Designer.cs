@@ -124,6 +124,7 @@
             this.cbRules.Name = "cbRules";
             this.cbRules.Size = new System.Drawing.Size(121, 21);
             this.cbRules.TabIndex = 9;
+            this.cbRules.SelectedIndexChanged += new System.EventHandler(this.cbRules_SelectedIndexChanged);
             // 
             // MarkovEditor
             // 

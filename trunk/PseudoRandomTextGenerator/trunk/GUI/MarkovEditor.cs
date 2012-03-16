@@ -12,11 +12,11 @@ namespace GUI
         public MarkovEditor()
             : this(new MarkovGenerator())
         {
-            InitializeComponent();
         }
 
         public MarkovEditor(MarkovGenerator mg)
         {
+            InitializeComponent();
             _m = mg;
             PopulateForm();
         }
@@ -77,6 +77,14 @@ namespace GUI
         private void btnSave_Click(object sender, EventArgs e)
         {
             this.Close();
+        }
+
+        private void cbRules_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            MarkovRule sel;
+            Enum.TryParse(cbRules.SelectedItem.ToString(), true, out sel);
+            var mr = new MarkovRuleFactory(sel).GetRule();
+            MarkovGenerator.TokenizerRule = mr;
         }
     }
 }
