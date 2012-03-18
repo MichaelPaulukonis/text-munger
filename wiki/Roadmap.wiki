@@ -29,6 +29,9 @@ Forthcoming:
   * allow controls to resize when form is resized
   * separation of operation from GUI, so can be scripted
   * more Transformations
+  * build unit-tests
+  * percentage-bias for word-level Transforms
+  * granularity-handler for sentence-level
 
 WAAAY Down the road, but a major goal:
   * planar-output and processing, not linear
