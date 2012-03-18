@@ -1,0 +1,34 @@
+#summary We don't know where we're going, and we don't know where we've been
+#labels Phase-Requirements
+
+= Introduction =
+
+There is no defined goal for TextMunger, beyond being useful.
+
+For certain limited definitions of the word "useful."
+
+
+= Details =
+
+Forthcoming:
+  * save and reload text-sources (if in library or local files)
+  * added percentage bias to text sources
+  * load SOURCE from file
+  * save OUTPUT to file
+  * swap OUTPUT to SOURCE, for re-processing
+  * save and reload configured rule-sets
+  * basic editing control for SOURCE and OUTPUT
+  * more clustering random-walk for Density transform
+  * put density inside of XRML format
+  * drop xray-references in Markov rules
+  * add explanation of rules to rule-editor (and whatever background code)
+  * file-based generic replacement "translator" to read from directory
+  ** ie, multiple user-controlled translators are possible
+  ** that will be an issue for serialization....
+  * improve display in selection editors
+  * allow controls to resize when form is resized
+  * separation of operation from GUI, so can be scripted
+  * more Transformations
+
+WAAAY Down the road, but a major goal:
+  * planar-output and processing, not linear
