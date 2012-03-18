@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Linq;
 using System.Windows.Forms;
 using TextTransformer;
 
@@ -33,6 +32,10 @@ namespace GUI
             txtLengthMin.Text = MarkovGenerator.LengthMin.ToString();
 
             cbRules.DataSource = Enum.GetValues(typeof(MarkovRule));
+            // TODO: pre-select the correct Rule
+            // TODO: I don't think that the Markov Editor exposes that.
+            // it exposes the Tokenizer, but not the enum... we need to convert around.....
+            cbRules.SelectedIndex = (int)MarkovGenerator.MarkovRule;
         }
 
         private void txtKeySize_TextChanged(object sender, EventArgs e)
@@ -79,6 +82,8 @@ namespace GUI
             this.Close();
         }
 
+        // TODO: this runs when we pre-populate the list
+        // so the saved selection is OVERWRITTEN
         private void cbRules_SelectedIndexChanged(object sender, EventArgs e)
         {
             MarkovRule sel;

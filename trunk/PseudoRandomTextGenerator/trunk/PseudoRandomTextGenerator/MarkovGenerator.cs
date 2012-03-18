@@ -15,6 +15,8 @@ namespace TextTransformer
         string Delimiter { get; }
 
         string Clean(string dirty);
+
+        MarkovRule Rule { get; }
     }
 
     public class DefaultRule : IMarkovRule
@@ -43,11 +45,15 @@ namespace TextTransformer
 
             return clean;
         }
+
+        public virtual MarkovRule Rule { get { return MarkovRule.Default; } }
     }
 
     public class XrayWordRule : DefaultRule
     {
         public override string Delimiter { get { return string.Empty; } }
+
+        public override MarkovRule Rule { get { return MarkovRule.XrayWord; } }
 
         public override IList<string> Split(string subject)
         {
@@ -116,6 +122,8 @@ namespace TextTransformer
 
     public class XrayCharRule : XrayWordRule
     {
+        public override MarkovRule Rule { get { return MarkovRule.XrayChar; } }
+
         public override IList<string> Split(string subject)
         {
             var regex = new Regex(@"."); // every char for itself
@@ -324,6 +332,11 @@ namespace TextTransformer
         {
             get { return _rule; }
             set { _rule = value; }
+        }
+
+        public MarkovRule MarkovRule
+        {
+            get { return TokenizerRule.Rule; }
         }
 
         // TODO: overload, to accept a designated seed-string
