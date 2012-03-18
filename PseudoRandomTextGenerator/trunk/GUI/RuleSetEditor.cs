@@ -86,10 +86,6 @@ namespace GUI
             // TODO: fix this
             var rule = (ITransformer)((ListBox)sender).SelectedItem;
 
-            // TODO: using the above as a model
-            // open the appropriate editor
-            // or display a "not available" message
-
             if (rule.GetType() == typeof(MarkovGenerator))
             {
                 var ed = new MarkovEditor((MarkovGenerator)rule);

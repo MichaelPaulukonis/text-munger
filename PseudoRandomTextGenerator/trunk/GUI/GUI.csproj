@@ -35,7 +35,7 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="CustomSelectControl">
+    <Reference Include="CustomSelectControl, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\resources\CustomSelectControl.dll</HintPath>
     </Reference>
     <Reference Include="System" />

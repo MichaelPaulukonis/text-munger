@@ -29,12 +29,15 @@ namespace GUI
             LibrarySelector.AvailableItems = items.Cast<object>().ToList();
         }
 
+        // the label is now "Select" which makes more sense
+        // TODO: make sure all selectors use the same verbiage
         private void btnExit_Click(object sender, EventArgs e)
         {
-            // TODO: is this the best button name?
             this.Close();
         }
 
+        // TODO: expost the actual list of library items for re-selection
+        // and provide ability to pre-populate Selected items
         public string Source
         {
             get
@@ -48,6 +51,16 @@ namespace GUI
                 }
 
                 return sb.ToString();
+            }
+        }
+
+        public List<Text> SelectedTexts
+        {
+            get
+            {
+                var st = new List<Text>();
+                st = LibrarySelector.SelectedItems.Cast<Text>().ToList();
+                return st;
             }
         }
 

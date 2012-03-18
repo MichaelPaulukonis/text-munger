@@ -63,7 +63,7 @@
             this.tabControl1.Location = new System.Drawing.Point(13, 13);
             this.tabControl1.Name = "tabControl1";
             this.tabControl1.SelectedIndex = 0;
-            this.tabControl1.Size = new System.Drawing.Size(699, 754);
+            this.tabControl1.Size = new System.Drawing.Size(699, 700);
             this.tabControl1.TabIndex = 0;
             // 
             // tabPage1
@@ -72,7 +72,7 @@
             this.tabPage1.Location = new System.Drawing.Point(4, 22);
             this.tabPage1.Name = "tabPage1";
             this.tabPage1.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage1.Size = new System.Drawing.Size(691, 728);
+            this.tabPage1.Size = new System.Drawing.Size(691, 674);
             this.tabPage1.TabIndex = 0;
             this.tabPage1.Text = "Get Sources";
             this.tabPage1.UseVisualStyleBackColor = true;
@@ -86,9 +86,9 @@
             this.SourceBox.Controls.Add(this.rbFile);
             this.SourceBox.Controls.Add(this.rbInternet);
             this.SourceBox.Controls.Add(this.rbLibrary);
-            this.SourceBox.Location = new System.Drawing.Point(19, 17);
+            this.SourceBox.Location = new System.Drawing.Point(6, 5);
             this.SourceBox.Name = "SourceBox";
-            this.SourceBox.Size = new System.Drawing.Size(666, 705);
+            this.SourceBox.Size = new System.Drawing.Size(680, 675);
             this.SourceBox.TabIndex = 5;
             this.SourceBox.TabStop = false;
             this.SourceBox.Text = "Sources";
@@ -100,7 +100,7 @@
             this.Source.Multiline = true;
             this.Source.Name = "Source";
             this.Source.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
-            this.Source.Size = new System.Drawing.Size(645, 578);
+            this.Source.Size = new System.Drawing.Size(665, 545);
             this.Source.TabIndex = 11;
             this.Source.TextChanged += new System.EventHandler(this.Source_TextChanged);
             // 
@@ -177,7 +177,7 @@
             this.tabPage2.Location = new System.Drawing.Point(4, 22);
             this.tabPage2.Name = "tabPage2";
             this.tabPage2.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage2.Size = new System.Drawing.Size(691, 728);
+            this.tabPage2.Size = new System.Drawing.Size(691, 674);
             this.tabPage2.TabIndex = 1;
             this.tabPage2.Text = "Select Transforms";
             this.tabPage2.UseVisualStyleBackColor = true;
@@ -209,7 +209,7 @@
             this.tabPage3.Controls.Add(this.btnApply);
             this.tabPage3.Location = new System.Drawing.Point(4, 22);
             this.tabPage3.Name = "tabPage3";
-            this.tabPage3.Size = new System.Drawing.Size(691, 728);
+            this.tabPage3.Size = new System.Drawing.Size(691, 674);
             this.tabPage3.TabIndex = 2;
             this.tabPage3.Text = "Munged Output";
             this.tabPage3.UseVisualStyleBackColor = true;
@@ -232,7 +232,7 @@
             this.txtOutput.Multiline = true;
             this.txtOutput.Name = "txtOutput";
             this.txtOutput.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
-            this.txtOutput.Size = new System.Drawing.Size(685, 682);
+            this.txtOutput.Size = new System.Drawing.Size(685, 630);
             this.txtOutput.TabIndex = 17;
             this.txtOutput.Text = "         1         2         3         4         5         6         7         8\r" +
     "\n1234567890123456789012345678901234567890123456789012345678901234567890123456789" +
@@ -264,7 +264,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(724, 779);
+            this.ClientSize = new System.Drawing.Size(724, 712);
             this.Controls.Add(this.tabControl1);
             this.Name = "MungerGui";
             this.Text = "Text Munger";

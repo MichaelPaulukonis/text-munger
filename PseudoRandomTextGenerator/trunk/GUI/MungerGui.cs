@@ -13,6 +13,7 @@ namespace GUI
     {
         private readonly List<RuleSet> _activeEditors = new List<RuleSet>();
         private string _output;
+        private List<Text> _previouslySelected;
 
         public MungerGui()
         {
@@ -170,9 +171,10 @@ namespace GUI
                 var l = new frmLibraryPicker(libaryPath);
                 l.ShowDialog();
 
+                // TODO: implement some mechanism for re-populating the selections on a load
+                _previouslySelected = l.SelectedTexts;
+
                 Source.AppendText(l.Source);
-                // TODO: implement
-                // read from the app.config setting for library path
             }
             else if (rbFile.Checked)
             {

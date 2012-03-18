@@ -9,6 +9,82 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Runner", "Runner\Runner.csp
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GUI", "GUI\GUI.csproj", "{6C2119D6-0F67-4DDE-B885-CBA180D1C3ED}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Resources", "Resources", "{049C08B1-8F68-4280-96F9-693A81FA2BC2}"
+	ProjectSection(SolutionItems) = preProject
+		resources\CustomSelectControl.dll = resources\CustomSelectControl.dll
+		resources\HtmlAgilityPack.dll = resources\HtmlAgilityPack.dll
+		resources\repositories.config = resources\repositories.config
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "NUnit.2.5.9.10348", "NUnit.2.5.9.10348", "{58136526-237C-448C-B888-36C4615831D1}"
+	ProjectSection(SolutionItems) = preProject
+		resources\NUnit.2.5.9.10348\fit-license.txt = resources\NUnit.2.5.9.10348\fit-license.txt
+		resources\NUnit.2.5.9.10348\license.txt = resources\NUnit.2.5.9.10348\license.txt
+		resources\NUnit.2.5.9.10348\Logo.ico = resources\NUnit.2.5.9.10348\Logo.ico
+		resources\NUnit.2.5.9.10348\NUnit.2.5.9.10348.nupkg = resources\NUnit.2.5.9.10348\NUnit.2.5.9.10348.nupkg
+		resources\NUnit.2.5.9.10348\NUnitFitTests.html = resources\NUnit.2.5.9.10348\NUnitFitTests.html
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "lib", "lib", "{C61847DC-6F12-4B48-BA85-5905A700824F}"
+	ProjectSection(SolutionItems) = preProject
+		resources\NUnit.2.5.9.10348\lib\nunit.framework.dll = resources\NUnit.2.5.9.10348\lib\nunit.framework.dll
+		resources\NUnit.2.5.9.10348\lib\nunit.framework.xml = resources\NUnit.2.5.9.10348\lib\nunit.framework.xml
+		resources\NUnit.2.5.9.10348\lib\nunit.mocks.dll = resources\NUnit.2.5.9.10348\lib\nunit.mocks.dll
+		resources\NUnit.2.5.9.10348\lib\pnunit.framework.dll = resources\NUnit.2.5.9.10348\lib\pnunit.framework.dll
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tools", "Tools", "{8E2A726D-CE13-4914-B053-2285C8BE27A9}"
+	ProjectSection(SolutionItems) = preProject
+		resources\NUnit.2.5.9.10348\Tools\agent.conf = resources\NUnit.2.5.9.10348\Tools\agent.conf
+		resources\NUnit.2.5.9.10348\Tools\agent.log.conf = resources\NUnit.2.5.9.10348\Tools\agent.log.conf
+		resources\NUnit.2.5.9.10348\Tools\launcher.log.conf = resources\NUnit.2.5.9.10348\Tools\launcher.log.conf
+		resources\NUnit.2.5.9.10348\Tools\nunit-agent-x86.exe = resources\NUnit.2.5.9.10348\Tools\nunit-agent-x86.exe
+		resources\NUnit.2.5.9.10348\Tools\nunit-agent-x86.exe.config = resources\NUnit.2.5.9.10348\Tools\nunit-agent-x86.exe.config
+		resources\NUnit.2.5.9.10348\Tools\nunit-agent.exe = resources\NUnit.2.5.9.10348\Tools\nunit-agent.exe
+		resources\NUnit.2.5.9.10348\Tools\nunit-agent.exe.config = resources\NUnit.2.5.9.10348\Tools\nunit-agent.exe.config
+		resources\NUnit.2.5.9.10348\Tools\nunit-console-x86.exe = resources\NUnit.2.5.9.10348\Tools\nunit-console-x86.exe
+		resources\NUnit.2.5.9.10348\Tools\nunit-console-x86.exe.config = resources\NUnit.2.5.9.10348\Tools\nunit-console-x86.exe.config
+		resources\NUnit.2.5.9.10348\Tools\nunit-console.exe = resources\NUnit.2.5.9.10348\Tools\nunit-console.exe
+		resources\NUnit.2.5.9.10348\Tools\nunit-console.exe.config = resources\NUnit.2.5.9.10348\Tools\nunit-console.exe.config
+		resources\NUnit.2.5.9.10348\Tools\nunit-x86.exe = resources\NUnit.2.5.9.10348\Tools\nunit-x86.exe
+		resources\NUnit.2.5.9.10348\Tools\nunit-x86.exe.config = resources\NUnit.2.5.9.10348\Tools\nunit-x86.exe.config
+		resources\NUnit.2.5.9.10348\Tools\nunit.exe = resources\NUnit.2.5.9.10348\Tools\nunit.exe
+		resources\NUnit.2.5.9.10348\Tools\nunit.exe.config = resources\NUnit.2.5.9.10348\Tools\nunit.exe.config
+		resources\NUnit.2.5.9.10348\Tools\nunit.framework.dll = resources\NUnit.2.5.9.10348\Tools\nunit.framework.dll
+		resources\NUnit.2.5.9.10348\Tools\NUnitFitTests.html = resources\NUnit.2.5.9.10348\Tools\NUnitFitTests.html
+		resources\NUnit.2.5.9.10348\Tools\NUnitTests.config = resources\NUnit.2.5.9.10348\Tools\NUnitTests.config
+		resources\NUnit.2.5.9.10348\Tools\NUnitTests.nunit = resources\NUnit.2.5.9.10348\Tools\NUnitTests.nunit
+		resources\NUnit.2.5.9.10348\Tools\pnunit-agent.exe = resources\NUnit.2.5.9.10348\Tools\pnunit-agent.exe
+		resources\NUnit.2.5.9.10348\Tools\pnunit-agent.exe.config = resources\NUnit.2.5.9.10348\Tools\pnunit-agent.exe.config
+		resources\NUnit.2.5.9.10348\Tools\pnunit-launcher.exe = resources\NUnit.2.5.9.10348\Tools\pnunit-launcher.exe
+		resources\NUnit.2.5.9.10348\Tools\pnunit-launcher.exe.config = resources\NUnit.2.5.9.10348\Tools\pnunit-launcher.exe.config
+		resources\NUnit.2.5.9.10348\Tools\pnunit.framework.dll = resources\NUnit.2.5.9.10348\Tools\pnunit.framework.dll
+		resources\NUnit.2.5.9.10348\Tools\pnunit.tests.dll = resources\NUnit.2.5.9.10348\Tools\pnunit.tests.dll
+		resources\NUnit.2.5.9.10348\Tools\runFile.exe = resources\NUnit.2.5.9.10348\Tools\runFile.exe
+		resources\NUnit.2.5.9.10348\Tools\runFile.exe.config = resources\NUnit.2.5.9.10348\Tools\runFile.exe.config
+		resources\NUnit.2.5.9.10348\Tools\runpnunit.bat = resources\NUnit.2.5.9.10348\Tools\runpnunit.bat
+		resources\NUnit.2.5.9.10348\Tools\test.conf = resources\NUnit.2.5.9.10348\Tools\test.conf
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "lib", "lib", "{13748091-FE7B-4D99-9F58-78E8915E5DDB}"
+	ProjectSection(SolutionItems) = preProject
+		resources\NUnit.2.5.9.10348\Tools\lib\Failure.png = resources\NUnit.2.5.9.10348\Tools\lib\Failure.png
+		resources\NUnit.2.5.9.10348\Tools\lib\fit.dll = resources\NUnit.2.5.9.10348\Tools\lib\fit.dll
+		resources\NUnit.2.5.9.10348\Tools\lib\Ignored.png = resources\NUnit.2.5.9.10348\Tools\lib\Ignored.png
+		resources\NUnit.2.5.9.10348\Tools\lib\Inconclusive.png = resources\NUnit.2.5.9.10348\Tools\lib\Inconclusive.png
+		resources\NUnit.2.5.9.10348\Tools\lib\log4net.dll = resources\NUnit.2.5.9.10348\Tools\lib\log4net.dll
+		resources\NUnit.2.5.9.10348\Tools\lib\nunit-console-runner.dll = resources\NUnit.2.5.9.10348\Tools\lib\nunit-console-runner.dll
+		resources\NUnit.2.5.9.10348\Tools\lib\nunit-gui-runner.dll = resources\NUnit.2.5.9.10348\Tools\lib\nunit-gui-runner.dll
+		resources\NUnit.2.5.9.10348\Tools\lib\nunit.core.dll = resources\NUnit.2.5.9.10348\Tools\lib\nunit.core.dll
+		resources\NUnit.2.5.9.10348\Tools\lib\nunit.core.interfaces.dll = resources\NUnit.2.5.9.10348\Tools\lib\nunit.core.interfaces.dll
+		resources\NUnit.2.5.9.10348\Tools\lib\nunit.fixtures.dll = resources\NUnit.2.5.9.10348\Tools\lib\nunit.fixtures.dll
+		resources\NUnit.2.5.9.10348\Tools\lib\nunit.uiexception.dll = resources\NUnit.2.5.9.10348\Tools\lib\nunit.uiexception.dll
+		resources\NUnit.2.5.9.10348\Tools\lib\nunit.uikit.dll = resources\NUnit.2.5.9.10348\Tools\lib\nunit.uikit.dll
+		resources\NUnit.2.5.9.10348\Tools\lib\nunit.util.dll = resources\NUnit.2.5.9.10348\Tools\lib\nunit.util.dll
+		resources\NUnit.2.5.9.10348\Tools\lib\Skipped.png = resources\NUnit.2.5.9.10348\Tools\lib\Skipped.png
+		resources\NUnit.2.5.9.10348\Tools\lib\Success.png = resources\NUnit.2.5.9.10348\Tools\lib\Success.png
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SubversionScc) = preSolution
 		Svn-Managed = True
@@ -36,7 +112,6 @@ Global
 		{0C59DA0F-A2CB-4F72-A8B5-4806A29E1A83}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{0C59DA0F-A2CB-4F72-A8B5-4806A29E1A83}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{0C59DA0F-A2CB-4F72-A8B5-4806A29E1A83}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
-		{0C59DA0F-A2CB-4F72-A8B5-4806A29E1A83}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
 		{0C59DA0F-A2CB-4F72-A8B5-4806A29E1A83}.Debug|x86.ActiveCfg = Debug|Any CPU
 		{0C59DA0F-A2CB-4F72-A8B5-4806A29E1A83}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{0C59DA0F-A2CB-4F72-A8B5-4806A29E1A83}.Release|Any CPU.Build.0 = Release|Any CPU
@@ -66,5 +141,11 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{58136526-237C-448C-B888-36C4615831D1} = {049C08B1-8F68-4280-96F9-693A81FA2BC2}
+		{C61847DC-6F12-4B48-BA85-5905A700824F} = {58136526-237C-448C-B888-36C4615831D1}
+		{8E2A726D-CE13-4914-B053-2285C8BE27A9} = {58136526-237C-448C-B888-36C4615831D1}
+		{13748091-FE7B-4D99-9F58-78E8915E5DDB} = {8E2A726D-CE13-4914-B053-2285C8BE27A9}
 	EndGlobalSection
 EndGlobal
