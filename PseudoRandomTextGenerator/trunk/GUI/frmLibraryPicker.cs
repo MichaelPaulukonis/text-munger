@@ -77,8 +77,11 @@ namespace GUI
 
                 foreach (var f in files)
                 {
-                    var tx = new Text(Path.GetFileNameWithoutExtension(f), f);
-                    lib.AddText(tx);
+                    if (Path.GetExtension(f).ToLower() == ".txt")
+                    {
+                        var tx = new Text(Path.GetFileNameWithoutExtension(f), f);
+                        lib.AddText(tx);
+                    }
                 }
                 libs.Add(libname, lib);
             }

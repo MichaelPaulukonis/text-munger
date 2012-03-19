@@ -77,6 +77,12 @@
     <Compile Include="RuleSetEditor.Designer.cs">
       <DependentUpon>RuleSetEditor.cs</DependentUpon>
     </Compile>
+    <Compile Include="XrayFormatEditor.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="XrayFormatEditor.Designer.cs">
+      <DependentUpon>XrayFormatEditor.cs</DependentUpon>
+    </Compile>
     <EmbeddedResource Include="frmLibraryPicker.resx">
       <DependentUpon>frmLibraryPicker.cs</DependentUpon>
     </EmbeddedResource>

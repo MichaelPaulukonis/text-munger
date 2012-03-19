@@ -60,7 +60,9 @@ namespace TextTransformer
 
         private List<ITransformer> GetGranularitySentence()
         {
-            return new List<ITransformer> { new PunctuizeWhitespace(), new Density() };
+            return new List<ITransformer> { new PunctuizeWhitespace()
+                //, new Density()
+            };
         }
 
         // TODO: some of these are sentence based -- pull them out
