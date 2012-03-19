@@ -56,6 +56,11 @@ namespace GUI
             try
             {
                 MarkovGenerator.LengthMin = int.Parse(txtLengthMin.Text);
+                // if min > max, increase max (use the form so events percolate and run any checks that might exist)
+                if (MarkovGenerator.LengthMin > MarkovGenerator.LengthMax)
+                {
+                    txtLengthMax.Text = txtLengthMin.Text;
+                }
             }
             catch (ArgumentException ex)
             {
@@ -79,17 +84,27 @@ namespace GUI
 
         private void btnSave_Click(object sender, EventArgs e)
         {
+            MarkovGenerator.TokenizerRule = GetMarkovRuleFromForm();
             this.Close();
         }
 
-        // TODO: this runs when we pre-populate the list
-        // so the saved selection is OVERWRITTEN
-        private void cbRules_SelectedIndexChanged(object sender, EventArgs e)
+        private IMarkovRule GetMarkovRuleFromForm()
         {
             MarkovRule sel;
             Enum.TryParse(cbRules.SelectedItem.ToString(), true, out sel);
             var mr = new MarkovRuleFactory(sel).GetRule();
-            MarkovGenerator.TokenizerRule = mr;
+            return mr;
         }
+
+        // TODO: this runs when we pre-populate the list
+        // so the saved selection is OVERWRITTEN
+        // SOLUTION: drop this method, and only populte the MarkovGenerator on save
+        //private void cbRules_SelectedIndexChanged(object sender, EventArgs e)
+        //{
+        //    MarkovRule sel;
+        //    Enum.TryParse(cbRules.SelectedItem.ToString(), true, out sel);
+        //    var mr = new MarkovRuleFactory(sel).GetRule();
+        //    MarkovGenerator.TokenizerRule = mr;
+        //}
     }
 }

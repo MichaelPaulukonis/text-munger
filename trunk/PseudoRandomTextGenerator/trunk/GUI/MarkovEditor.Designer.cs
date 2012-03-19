@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             this.label1 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
             this.txtKeySize = new System.Windows.Forms.TextBox();
@@ -37,6 +38,7 @@
             this.label4 = new System.Windows.Forms.Label();
             this.btnSave = new System.Windows.Forms.Button();
             this.cbRules = new System.Windows.Forms.ComboBox();
+            this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
             this.SuspendLayout();
             // 
             // label1
@@ -73,6 +75,7 @@
             this.txtLengthMin.Name = "txtLengthMin";
             this.txtLengthMin.Size = new System.Drawing.Size(68, 20);
             this.txtLengthMin.TabIndex = 5;
+            this.toolTip1.SetToolTip(this.txtLengthMin, "char size of output");
             this.txtLengthMin.TextChanged += new System.EventHandler(this.txtLengthMin_TextChanged);
             // 
             // label3
@@ -91,6 +94,7 @@
             this.txtLengthMax.Name = "txtLengthMax";
             this.txtLengthMax.Size = new System.Drawing.Size(68, 20);
             this.txtLengthMax.TabIndex = 7;
+            this.toolTip1.SetToolTip(this.txtLengthMax, "char size of output");
             this.txtLengthMax.TextChanged += new System.EventHandler(this.txtLengthMax_TextChanged);
             // 
             // label4
@@ -124,7 +128,6 @@
             this.cbRules.Name = "cbRules";
             this.cbRules.Size = new System.Drawing.Size(121, 21);
             this.cbRules.TabIndex = 9;
-            this.cbRules.SelectedIndexChanged += new System.EventHandler(this.cbRules_SelectedIndexChanged);
             // 
             // MarkovEditor
             // 
@@ -158,5 +161,6 @@
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.Button btnSave;
         private System.Windows.Forms.ComboBox cbRules;
+        private System.Windows.Forms.ToolTip toolTip1;
     }
 }

@@ -293,6 +293,7 @@ namespace TextTransformer
                 {
                     // only go to the trouble of Initialization if and only if the input has changed
                     _source = value;
+                    // TODO: what about when Source is empty?
                     InitializeChain();
                 }
             }
@@ -324,7 +325,15 @@ namespace TextTransformer
             {
                 if (value < 1) throw new ArgumentOutOfRangeException("keySize", "Cannot be negative");
 
+                var _origKeySize = value;
+
                 _keySize = value;
+
+                if (_keySize != _origKeySize)
+                {
+                    // Clear out source on KeySizeChange so that chain can be re-initialized
+                    Source = string.Empty;
+                }
             }
         }
 

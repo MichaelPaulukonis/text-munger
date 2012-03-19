@@ -275,6 +275,13 @@ namespace TextTransformer
 
     public class XrmlFormat : ITransformer
     {
+        public XrmlFormat()
+        {
+            this.Density = new Density();
+        }
+
+        public Density Density { get; set; }
+
         public string Source { get; set; }
 
         private string _m = null;
@@ -288,6 +295,9 @@ namespace TextTransformer
         {
             // 80 character lines. that's about it, so far.....
             var mod = Regex.Replace(Source, "(.{1,81})", "$1\n");
+
+            Density.Source = mod;
+            mod = Density.Munged;
 
             return mod;
         }
