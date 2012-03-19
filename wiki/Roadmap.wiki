@@ -10,16 +10,13 @@ For certain limited definitions of the word "useful."
 
 = Details =
 
-Forthcoming:
+TASKS (in no particular order)
   * save and reload text-sources (if in library or local files)
   * added percentage bias to text sources
-  * load SOURCE from file
-  * save OUTPUT to file
   * swap OUTPUT to SOURCE, for re-processing
   * save and reload configured rule-sets
   * basic editing control for SOURCE and OUTPUT
   * more clustering random-walk for Density transform
-  * put density inside of XRML format
   * drop xray-references in Markov rules
   * add explanation of rules to rule-editor (and whatever background code)
   * file-based generic replacement "translator" to read from directory
@@ -33,5 +30,12 @@ Forthcoming:
   * percentage-bias for word-level Transforms
   * granularity-handler for sentence-level
 
+
 WAAAY Down the road, but a major goal:
-  * planar-output and processing, not linear
+  * planar-output and processing, not just linear
+
+
+COMPLETED TASKS:
+  * put density inside of XRML format 2012.03.18
+  * load SOURCE from file 2012.03.19
+  * save OUTPUT to file 2012.03.19
