@@ -278,13 +278,14 @@ namespace TextTransformer
         public XrmlFormat()
         {
             this.Density = new Density();
+            LineLength = 80;
         }
 
         public Density Density { get; set; }
 
-        public string Source { get; set; }
+        public int LineLength { get; set; }
 
-        private string _m = null;
+        public string Source { get; set; }
 
         public string Munged
         {
@@ -293,11 +294,13 @@ namespace TextTransformer
 
         private string Munge()
         {
-            // 80 character lines. that's about it, so far.....
-            var mod = Regex.Replace(Source, "(.{1,81})", "$1\n");
+            // process density first, as that removes line-breaks
+            Density.Source = Source;
+            var mod = Density.Munged;
 
-            Density.Source = mod;
-            mod = Density.Munged;
+            // "(.{1,81})"
+            var regex = string.Format("(.{{1,{0}}})", LineLength + 1);
+            mod = Regex.Replace(mod, regex, "$1\n");
 
             return mod;
         }

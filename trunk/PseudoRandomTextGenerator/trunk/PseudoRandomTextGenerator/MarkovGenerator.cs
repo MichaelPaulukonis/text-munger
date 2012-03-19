@@ -136,6 +136,8 @@ namespace TextTransformer
         }
     }
 
+    // TODO: the enum-name is too simlar to IMarkovRule
+    //       one of them should change.... BECUASE EVEN I GET CONFUSED
     public enum MarkovRule
     {
         Default,
@@ -192,6 +194,7 @@ namespace TextTransformer
         private IMarkovRule _rule;
         private const int FirstWord = 1;
         private readonly string _wordDelim = Convert.ToChar(6).ToString(); // this is for the storage model only, not for output.
+        private bool _settingsAreDirty = false; // have any settings changed?
 
         public MarkovGenerator() : this(new DefaultRule(), 2) { }
 
@@ -215,6 +218,90 @@ namespace TextTransformer
             // that might be something to clone, so we process different chained Processors...
             var c = new MarkovGenerator(TokenizerRule, KeySize) { LengthMin = this.LengthMin, LengthMax = this.LengthMax };
             return c;
+        }
+
+        public int LengthMin { get; set; }
+
+        public int LengthMax { get; set; }
+
+        private string _source;
+
+        public string Source
+        {
+            get { return _source; }
+            set
+            {
+                if (_source != value)
+                {
+                    // only go to the trouble of Initialization if and only if the input has changed
+                    _source = value;
+                    _settingsAreDirty = true;
+                    // TODO: what about when Source is empty?
+                    //InitializeChain();
+                }
+            }
+        }
+
+        // running Markov on a word-level is a bit silly, but for long words I guess you could do it
+        // should we just bite-the-bullet and insist on sentence-level?
+        // what about the hundred-letter thunderwords? or a punctuation-and-whitespace-free blob?
+        public Granularity Granularity { get { return Granularity.All; } }
+
+        // original code constrained size from 1..5
+        // I'm doing away with that for now
+        // although 1 is ridiculous, it's potentially useful for generating a random string of words?
+
+        public int KeySize
+        {
+            get { return _keySize; }
+            set
+            {
+                if (value < 1) throw new ArgumentOutOfRangeException("keySize", "Cannot be negative");
+
+                var _origKeySize = value;
+
+                _keySize = value;
+
+                if (_keySize != _origKeySize)
+                {
+                    _settingsAreDirty = true;
+                    // Clear out source on KeySizeChange so that chain can be re-initialized
+                    //Source = string.Empty;
+                }
+            }
+        }
+
+        public IMarkovRule TokenizerRule
+        {
+            get { return _rule; }
+            set
+            {
+                if (_rule != value)
+                {
+                    _settingsAreDirty = true;
+                }
+                _rule = value;
+            }
+        }
+
+        public MarkovRule MarkovRule
+        {
+            get { return TokenizerRule.Rule; }
+        }
+
+        public string Munged
+        {
+            get { return Munge(); }
+        }
+
+        public string Munge()
+        {
+            if (_settingsAreDirty)
+            {
+                InitializeChain();
+            }
+
+            return this.Write(LengthMin, LengthMax);
         }
 
         public void ReadTextFile(string filePath)
@@ -276,76 +363,6 @@ namespace TextTransformer
                 if (!_chain[chainKey].Contains(value)) _chain[chainKey].Add(value);
             }
             else _chain.Add(chainKey, new List<string> { value });
-        }
-
-        public int LengthMin { get; set; }
-
-        public int LengthMax { get; set; }
-
-        private string _source;
-
-        public string Source
-        {
-            get { return _source; }
-            set
-            {
-                if (_source != value)
-                {
-                    // only go to the trouble of Initialization if and only if the input has changed
-                    _source = value;
-                    // TODO: what about when Source is empty?
-                    InitializeChain();
-                }
-            }
-        }
-
-        public string Munged
-        {
-            get { return Munge(); }
-        }
-
-        public string Munge()
-        {
-            return this.Write(LengthMin, LengthMax);
-        }
-
-        // running Markov on a word-level is a bit silly, but for long words I guess you could do it
-        // should we just bite-the-bullet and insist on sentence-level?
-        // what about the hundred-letter thunderwords? or a punctuation-and-whitespace-free blob?
-        public Granularity Granularity { get { return Granularity.All; } }
-
-        // original code constrained size from 1..5
-        // I'm doing away with that for now
-        // although 1 is ridiculous, it's potentially useful for generating a random string of words?
-
-        public int KeySize
-        {
-            get { return _keySize; }
-            set
-            {
-                if (value < 1) throw new ArgumentOutOfRangeException("keySize", "Cannot be negative");
-
-                var _origKeySize = value;
-
-                _keySize = value;
-
-                if (_keySize != _origKeySize)
-                {
-                    // Clear out source on KeySizeChange so that chain can be re-initialized
-                    Source = string.Empty;
-                }
-            }
-        }
-
-        public IMarkovRule TokenizerRule
-        {
-            get { return _rule; }
-            set { _rule = value; }
-        }
-
-        public MarkovRule MarkovRule
-        {
-            get { return TokenizerRule.Rule; }
         }
 
         // TODO: overload, to accept a designated seed-string
