@@ -47,6 +47,8 @@
             this.txtOutput = new System.Windows.Forms.TextBox();
             this.btnSave = new System.Windows.Forms.Button();
             this.btnApply = new System.Windows.Forms.Button();
+            this.openFileDialog = new System.Windows.Forms.OpenFileDialog();
+            this.saveFileDialog = new System.Windows.Forms.SaveFileDialog();
             this.tabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
             this.SourceBox.SuspendLayout();
@@ -260,6 +262,11 @@
             this.btnApply.UseVisualStyleBackColor = true;
             this.btnApply.Click += new System.EventHandler(this.btnApply_Click);
             // 
+            // saveFileDialog
+            // 
+            this.saveFileDialog.Filter = "Text files (*.txt)|*.txt|All files (*.*)|*.*";
+            this.saveFileDialog.FileOk += new System.ComponentModel.CancelEventHandler(this.saveFileDialog_FileOk);
+            // 
             // MungerGui
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -300,5 +307,7 @@
         private System.Windows.Forms.TextBox txtOutput;
         private System.Windows.Forms.Button btnSave;
         private System.Windows.Forms.Button btnApply;
+        private System.Windows.Forms.OpenFileDialog openFileDialog;
+        private System.Windows.Forms.SaveFileDialog saveFileDialog;
     }
 }

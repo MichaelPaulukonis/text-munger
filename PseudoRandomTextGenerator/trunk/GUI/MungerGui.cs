@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Configuration;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
@@ -18,6 +19,8 @@ namespace GUI
         public MungerGui()
         {
             InitializeComponent();
+
+            InitializeOpenFileDialog();
 
             txtOutput.Text = string.Empty; // erase dev-guides
 
@@ -145,8 +148,10 @@ namespace GUI
 
         private void btnSave_Click(object sender, EventArgs e)
         {
-            MessageBox.Show("Not yet implemented!");
+            //MessageBox.Show("Not yet implemented!");
             // TODO: file-save dialog
+
+            saveFileDialog.ShowDialog();
         }
 
         // handler for all radio buttons
@@ -159,34 +164,93 @@ namespace GUI
 
         private void btnSourceRetrieve_Click(object sender, EventArgs e)
         {
+            string inText = string.Empty;
+
             if (rbInternet.Checked)
             {
-                // TODO: implement
-                // form for a URL, and then g-d knows what....
-                MessageBox.Show("Not Yet Implemented.");
+                inText = LoadFromInternet();
             }
             else if (rbLibrary.Checked)
             {
-                var libaryPath = ConfigurationManager.AppSettings["LibraryPath"];
-                var l = new frmLibraryPicker(libaryPath);
-                l.ShowDialog();
-
-                // TODO: implement some mechanism for re-populating the selections on a load
-                _previouslySelected = l.SelectedTexts;
-
-                Source.AppendText(l.Source);
+                inText = LoadFromLibrary();
             }
             else if (rbFile.Checked)
             {
-                // load up a file-dialog
-                // store the last-used path in app.config?
-                MessageBox.Show("Not Yet Implemented.");
+                inText = LoadFromFile();
             }
+
+            Source.AppendText(inText);
+        }
+
+        // TODO: refactor into non-GUI class and place into GUI
+        private string LoadFromLibrary()
+        {
+            var libaryPath = ConfigurationManager.AppSettings["LibraryPath"];
+            var l = new frmLibraryPicker(libaryPath);
+            l.ShowDialog();
+
+            // TODO: implement some mechanism for re-populating the selections on a load
+            _previouslySelected = l.SelectedTexts;
+
+            return l.Source;
+        }
+
+        private string LoadFromInternet()
+        {
+            // TODO: implement
+            // load up a file-dialog
+            // store the last-used path in app.config?
+            MessageBox.Show("Not Yet Implemented.");
+
+            return string.Empty;
         }
 
         private void btnClipboard_Click(object sender, EventArgs e)
         {
             Clipboard.SetDataObject(txtOutput.Text, true);
+        }
+
+        // add to OK-click handler?
+        private string LoadFromFile()
+        {
+            // TODO: open the library path by default?
+            // TODO: store the last-used path in app.config?
+
+            var sb = new StringBuilder();
+
+            DialogResult dr = openFileDialog.ShowDialog();
+            if (dr == DialogResult.OK)
+            {
+                foreach (var file in openFileDialog.FileNames)
+                {
+                    using (var sr = new StreamReader(file))
+                    {
+                        sb.Append(sr.ReadToEnd());
+                        sr.Close();
+                    }
+                }
+            }
+
+            return sb.ToString();
+        }
+
+        private void InitializeOpenFileDialog()
+        {
+            // Set the file dialog to filter for graphics files.
+            this.openFileDialog.Filter =
+                "Text (*.txt)|*.TXT|" +
+                "All files (*.*)|*.*";
+
+            // Allow the user to select multiple images.
+            this.openFileDialog.Multiselect = true;
+            this.openFileDialog.Title = "Select Text Sources";
+        }
+
+        private void saveFileDialog_FileOk(object sender, System.ComponentModel.CancelEventArgs e)
+        {
+            var name = saveFileDialog.FileName;
+
+            File.WriteAllText(name, txtOutput.Text);
         }
     }
 }
