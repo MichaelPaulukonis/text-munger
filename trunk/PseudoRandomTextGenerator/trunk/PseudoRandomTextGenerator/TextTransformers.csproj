@@ -46,6 +46,7 @@
     <Compile Include="RuleSet.cs" />
     <Compile Include="Transformation.cs" />
     <Compile Include="TransformationFactory.cs" />
+    <Compile Include="XrmlTranformers.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
