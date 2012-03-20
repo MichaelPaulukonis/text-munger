@@ -205,9 +205,11 @@ namespace TextTransformer
         }
     }
 
-    internal class RandomWalker
+    public class RandomWalker
     {
         private Random _rnd = new Random();
+        private int _yaw;
+        private int _tenacity;
 
         public RandomWalker(int yaw, int warble, int tenacity)
         {
@@ -216,76 +218,40 @@ namespace TextTransformer
             Yaw = yaw;
             Warble = warble;
             Tenacity = tenacity;
+            _tenacity = tenacity;
+            _yaw = yaw;
             //Density = density;
         }
 
-        public int RangeMin { get; set; }
-
-        public int RangeMax { get; set; }
-
         // major-deviation walk
-        public int Yaw { get; set; }
+        public int Yaw
+        {
+            get;
+            set;
+        }
 
         // minor deviation walk around Yaw-point
-        public int Warble { get; set; }
+        public int Warble
+        {
+            get;
+            set;
+        }
 
         // tendancy to warble around Yaw point
         public int Tenacity { get; set; }
 
-        public int Density { get; set; }
-
         public int Next()
         {
-            //xMajor += randomInt(-10, 10);
-            //for (i = 0; i < randomInt(1, n); ++i)
-            //{
-            //    xMinor = randomInt(-3, 3);
-            //    xChange = xMajor + xMinor;
-            //}
-
-            while (true)
+            _tenacity--;
+            if (_tenacity <= 0) // reset yaw and tenacity
             {
-                var major = _rnd.Next(-Yaw, Yaw);
-                var steps = _rnd.Next(0, Tenacity);
-                for (int i = 0; i <= steps; ++i)
-                {
-                    var minor = _rnd.Next(-Warble, Warble);
-                    return major + minor;
-                }
+                _tenacity = _rnd.Next(Tenacity);
+                _yaw += _rnd.Next(-Yaw, Yaw);
             }
-        }
 
-        // TODO: don't need this....
-        private int DensityHoverPoint(int density)
-        {
-            Int32 numberSteps = 101;
-
-            // Positive values produce ascending functions.
-            // Negative values produce descending functions.
-            // Values with smaller magnitude produce more linear functions.
-            // Values with larger magnitude produce more step like functions.
-            // Zero causes an error.
-            // Try for example +1.0, +6.0, +20.0 and -1.0, -6.0, -20.0
-            //Double boundary = +6.0;
-            var boundary = 6.0;
-
-            {
-                Double t = -boundary + 2.0 * boundary * density / (numberSteps - 1);
-                Double correction = 1.0 / (1.0 + Math.Exp(Math.Abs(boundary)));
-                Double value = 1.0 / (1.0 + Math.Exp(-t));
-                Double correctedValue = (value - correction) / (1.0 - 2.0 * correction);
-
-                // TODO: remove the puncts refs
-                var curPuncts = (correctedValue * (RangeMax - RangeMin) + RangeMin);
-
-                var flatPuncts = (int)Math.Round(curPuncts);
-
-                // for whatever reason, it's not always within the range
-                if (flatPuncts > RangeMax) flatPuncts = (int)RangeMax;
-                if (flatPuncts < RangeMin) flatPuncts = (int)RangeMin;
-
-                return flatPuncts;
-            }
+            // new warble each retrieval
+            var warble = _rnd.Next(-Warble, Warble);
+            return _yaw + warble;
         }
     }
 }
