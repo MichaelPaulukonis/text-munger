@@ -25,8 +25,14 @@ namespace Runner
 
         private static void Main(string[] args)
         {
-            var mg = new ConsoleRunner();
-            mg.MungeIt();
+            var walker = new RandomWalker(20, 5, 10);
+            for (int i = 0; i < 1000; ++i)
+            {
+                Console.WriteLine(string.Format("{0}", walker.Next()));
+            }
+
+            //var mg = new ConsoleRunner();
+            //mg.MungeIt();
         }
 
         // I want to get some variance for the density padding
