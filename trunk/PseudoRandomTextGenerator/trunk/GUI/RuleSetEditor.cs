@@ -91,6 +91,11 @@ namespace GUI
                 var ed = new MarkovEditor((MarkovGenerator)rule);
                 ed.ShowDialog();
             }
+            else if (rule.GetType() == typeof(XrmlFormat))
+            {
+                var ed = new XrayFormatEditor((XrmlFormat)rule);
+                ed.ShowDialog();
+            }
             else
             {
                 MessageBox.Show("Either no setup is required, or Rule Editor is not yet implemented");

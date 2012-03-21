@@ -47,7 +47,6 @@ namespace TextTransformer
     public class Density : ITransformer
     {
         private Random _rnd;
-        private RandomWalker _walker;
 
         public Density() : this(percentage: 97) { }
 
@@ -55,8 +54,10 @@ namespace TextTransformer
         {
             _rnd = new Random();
             Percentage = percentage;
-            _walker = new RandomWalker(30, 10, 10);
+            this.RandomWalker = new RandomWalker(30, 10, 10);
         }
+
+        public RandomWalker RandomWalker { get; set; }
 
         public string Source { get; set; }
 
@@ -166,9 +167,9 @@ namespace TextTransformer
 
                 var flatPuncts = (int)Math.Round(curPuncts);
 
-                // TODO: THIS is where RandomWalker goes....
                 var offset = RandomOffset(flatPuncts);
-                //var offset = _walker.Next();
+                // uh.... WAAAAY off, and goes negative, and pretty much stays there... so, needs tweaking
+                //var offset = RandomWalker.Next();
 
                 flatPuncts += offset;
 
@@ -188,7 +189,7 @@ namespace TextTransformer
 
             var u1 = _rnd.NextDouble();
             var u2 = _rnd.NextDouble();
-            // not sure what this line is figureing out
+            // not sure what this line is figuring out
             // ugh.
             var normal = Math.Sqrt(-2 * Math.Log(u1)) * Math.Cos(2 * Math.PI * u2);
             var offset = ((normal * deviation) + mean) / 2;
