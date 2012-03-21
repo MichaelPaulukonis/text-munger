@@ -105,6 +105,9 @@
     <EmbeddedResource Include="RuleSetEditor.resx">
       <DependentUpon>RuleSetEditor.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="XrayFormatEditor.resx">
+      <DependentUpon>XrayFormatEditor.cs</DependentUpon>
+    </EmbeddedResource>
     <None Include="app.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>

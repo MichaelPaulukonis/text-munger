@@ -34,14 +34,15 @@ namespace TextTransformer
 
         public virtual string Delimiter { get { return " "; } }
 
+        // this is pretty much used by all the other rules
         public string Clean(string dirty)
         {
             var clean = dirty;
 
-            clean = clean.Replace("\r", "");
-            clean = clean.Replace("\n", "");
-
-            // TODO: replace HTML character entities
+            // TODO: use a regex to replace multiple instances with one space
+            clean = clean.Replace("\r\n", " ");
+            clean = clean.Replace("\r", " ");
+            clean = clean.Replace("\n", " ");
 
             return clean;
         }
