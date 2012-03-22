@@ -124,10 +124,29 @@ namespace TextSourcers
 
     public class InternetText : Text, IText
     {
-        public InternetText() : base() { }
+        public InternetText(string title, string url) : base(title: title, path: url) { }
 
-        public InternetText(string title, string url) : base(title, url) { }
+        public InternetText(string title, string url, IExtractor ext)
+            : base(title: title, path: url)
+        {
+            _extractor = ext;
+        }
 
-        public override string Contents { get; set; }
+        private IExtractor _extractor;
+
+        private string _contents;
+
+        public override string Contents
+        {
+            get
+            {
+                if (_contents == null)
+                {
+                    _contents = _extractor.Extract(this.Location);
+                }
+                return _contents;
+            }
+            set { _contents = value; }
+        }
     }
 }
