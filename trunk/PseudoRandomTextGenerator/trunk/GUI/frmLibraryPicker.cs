@@ -12,35 +12,19 @@ namespace GUI
 {
     public partial class frmLibraryPicker : Form
     {
-        private Dictionary<string, Library> _libraries;
+        private Dictionary<string, Library> _library;
 
         private frmLibraryPicker()
         {
             InitializeComponent();
         }
 
-        // passed-in externally from app.config
-        // let's leave the control ignorant of app.config.
-        // for awhile ,at least.
-        // TODO: since we can have an Internet Library, now, alternative pass in the library
-        public frmLibraryPicker(string libraryPath)
+        public frmLibraryPicker(ILibraryFetch library)
             : this()
         {
-            _libraries = GetLibraries(libraryPath);
+            _library = library.GetLibrary();
 
-            var items = _libraries.Keys.SelectMany(textKey => _libraries[textKey]).ToList();
-            LibrarySelector.AvailableItems = items.Cast<object>().ToList();
-        }
-
-        // TODO . how to keep from repeating crap. - we don't want to pass in GetLibraries(libraryPath), do we?
-        // TODO: call this so we can test
-        public frmLibraryPicker(Library lib)
-            : this()
-        {
-            _libraries = new Dictionary<string, Library>();
-            _libraries.Add(lib.Title, lib);
-
-            var items = _libraries.Keys.SelectMany(textKey => _libraries[textKey]).ToList();
+            var items = _library.Keys.SelectMany(textKey => _library[textKey]).ToList();
             LibrarySelector.AvailableItems = items.Cast<object>().ToList();
         }
 
@@ -77,45 +61,6 @@ namespace GUI
                 st = LibrarySelector.SelectedItems.Cast<Text>().ToList();
                 return st;
             }
-        }
-
-        // TODO: add a parent-ref to a library, if possible
-        private Dictionary<string, Library> GetLibrary(string libraryPath, Dictionary<string, Library> libs, Library parent)
-        {
-            // add all files from this path (if any)
-            var libname = Path.GetFileName(libraryPath);
-            var lib = parent; // only re-assign if there are files
-            var files = Directory.GetFiles(libraryPath);
-            if (files.Length > 0)
-            {
-                lib = new Library(libname) { Parent = parent };
-
-                foreach (var f in files)
-                {
-                    if (Path.GetExtension(f).ToLower() == ".txt")
-                    {
-                        var tx = new Text(Path.GetFileNameWithoutExtension(f), f);
-                        lib.AddText(tx);
-                    }
-                }
-                libs.Add(libname, lib);
-            }
-
-            var dirs = Directory.GetDirectories(libraryPath);
-            foreach (var d in dirs)
-            {
-                // TODO: this is where we want a parent reference
-                GetLibrary(d, libs, lib);
-            }
-
-            return libs;
-        }
-
-        private Dictionary<string, Library> GetLibraries(string libraryPath)
-        {
-            var libs = new Dictionary<string, Library>();
-
-            return GetLibrary(libraryPath, libs, null);
         }
     }
 }

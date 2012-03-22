@@ -8,7 +8,7 @@ using TextSourcers;
 // TODO: what will be the common element?
 // look at these things, and build an Interface. or something....
 // and SourcerFactory. A SourcerSourcer
-namespace TextSourcerers
+namespace TextSourcers
 {
     internal class GutenbergFetch
     {

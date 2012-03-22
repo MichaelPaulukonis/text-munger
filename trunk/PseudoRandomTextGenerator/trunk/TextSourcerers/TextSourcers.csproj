@@ -44,7 +44,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="FileLibraryFetch.cs" />
     <Compile Include="GutenbergFetch.cs" />
+    <Compile Include="ILibraryFetch.cs" />
     <Compile Include="Library.cs" />
     <Compile Include="XrmlFetch.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

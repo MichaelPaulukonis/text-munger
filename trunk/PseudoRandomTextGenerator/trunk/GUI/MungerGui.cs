@@ -184,10 +184,15 @@ namespace GUI
         }
 
         // TODO: refactor into non-GUI class and place into GUI
+        //       uh, why? The library is a GUI selector.
+        //       if we were scripting, we'd be supplying files in some other fashion
+        //       stop worrying so much.
         private string LoadFromLibrary()
         {
-            var libaryPath = ConfigurationManager.AppSettings["LibraryPath"];
-            var l = new frmLibraryPicker(libaryPath);
+            var libraryPath = ConfigurationManager.AppSettings["LibraryPath"];
+            var lf = new FileLibraryFetch(libraryPath);
+
+            var l = new frmLibraryPicker(lf);
             l.ShowDialog();
 
             // TODO: implement some mechanism for re-populating the selections on a load
@@ -196,14 +201,20 @@ namespace GUI
             return l.Source;
         }
 
+        // TODO: only XRML is available now, and by default.
+        // conceptually it works!
+        // the implementation leaves something to be desired.
         private string LoadFromInternet()
         {
-            // TODO: implement
-            // load up a file-dialog
-            // store the last-used path in app.config?
-            MessageBox.Show("Not Yet Implemented.");
+            var lf = new XrmlFetch();
 
-            return string.Empty;
+            var l = new frmLibraryPicker(lf);
+            l.ShowDialog();
+
+            // TODO: implement some mechanism for re-populating the selections on a load
+            _previouslySelected = l.SelectedTexts;
+
+            return l.Source;
         }
 
         private void btnClipboard_Click(object sender, EventArgs e)
