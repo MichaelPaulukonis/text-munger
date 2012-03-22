@@ -13,4 +13,9 @@ namespace TextSourcers
 
         string LibrarySource { get; set; }
     }
+
+    public interface IExtractor
+    {
+        string Extract(string source);
+    }
 }

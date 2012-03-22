@@ -67,31 +67,14 @@ namespace TextSourcers
 
         private static Library GetXrmlWebTexts(IEnumerable<string> urls)
         {
-            const string xpath = @"//div[@style='font-family: monospace;']";
             var lib = new Library("XRML pages");
 
-            // THIS TAKES FOREVER!!!! well, for 79 URLS, anyway
-            // TODO: remake and sub-class the TEXT class
-            //       so that it will pull the contents
-            //       as defined below
-            //       only when required
-            // TODO: grab the page title to be used in the LibrarySelector
             foreach (var url in urls)
             {
-                try
-                {
-                    var source = WebFetch.Fetch(url);
-                    var doc = new HtmlDocument();
-                    doc.LoadHtml(source);
-                    var target = doc.DocumentNode.SelectSingleNode(xpath);
-                    var text = HttpUtility.HtmlDecode(target.InnerText);
-                    lib.AddText(new InternetText(url, url) { Contents = text });
-                }
-                catch (Exception ex)
-                {
-                    // TODO: swallow it whole!
-                    // yikes. or maybe log the issue, down the road....
-                }
+                var myUri = new Uri(url);
+                var title = System.IO.Path.GetFileName(myUri.AbsolutePath);
+
+                lib.AddText(new InternetText(title, url, new XrmlTextExtractor()));
             }
 
             return lib;
@@ -110,6 +93,21 @@ namespace TextSourcers
             var target = doc.DocumentNode.SelectNodes("//div[@class='mainlist']/div/ul/li/a");
 
             return target.Select(link => link.Attributes["href"].Value).ToList();
+        }
+    }
+
+    public class XrmlTextExtractor : IExtractor
+    {
+        public string Extract(string url)
+        {
+            const string xpath = @"//div[@style='font-family: monospace;']";
+            var source = WebFetch.Fetch(url);
+            var doc = new HtmlDocument();
+            doc.LoadHtml(source);
+            var target = doc.DocumentNode.SelectSingleNode(xpath);
+            var text = HttpUtility.HtmlDecode(target.InnerText);
+
+            return text;
         }
     }
 }
