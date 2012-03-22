@@ -58,6 +58,10 @@
       <Project>{389353F3-0622-4BE1-BA94-DC3AFC565FE5}</Project>
       <Name>TextTransformers</Name>
     </ProjectReference>
+    <ProjectReference Include="..\TextSourcerers\TextSourcers.csproj">
+      <Project>{54B140CC-CBE4-448D-91B1-4C184DD96A24}</Project>
+      <Name>TextSourcers</Name>
+    </ProjectReference>
     <ProjectReference Include="..\UnitTests\UnitTests.csproj">
       <Project>{0C59DA0F-A2CB-4F72-A8B5-4806A29E1A83}</Project>
       <Name>UnitTests</Name>

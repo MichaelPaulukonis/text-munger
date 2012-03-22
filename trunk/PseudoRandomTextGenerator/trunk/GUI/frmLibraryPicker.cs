@@ -4,13 +4,15 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Windows.Forms;
-using TextTransformer;
+
+//using TextTransformer;
+using TextSourcers;
 
 namespace GUI
 {
     public partial class frmLibraryPicker : Form
     {
-        private Dictionary<string, Library> _library;
+        private Dictionary<string, Library> _libraries;
 
         private frmLibraryPicker()
         {
@@ -20,12 +22,25 @@ namespace GUI
         // passed-in externally from app.config
         // let's leave the control ignorant of app.config.
         // for awhile ,at least.
+        // TODO: since we can have an Internet Library, now, alternative pass in the library
         public frmLibraryPicker(string libraryPath)
             : this()
         {
-            _library = GetLibrary(libraryPath);
+            _libraries = GetLibraries(libraryPath);
 
-            var items = _library.Keys.SelectMany(textKey => _library[textKey]).ToList();
+            var items = _libraries.Keys.SelectMany(textKey => _libraries[textKey]).ToList();
+            LibrarySelector.AvailableItems = items.Cast<object>().ToList();
+        }
+
+        // TODO . how to keep from repeating crap. - we don't want to pass in GetLibraries(libraryPath), do we?
+        // TODO: call this so we can test
+        public frmLibraryPicker(Library lib)
+            : this()
+        {
+            _libraries = new Dictionary<string, Library>();
+            _libraries.Add(lib.Title, lib);
+
+            var items = _libraries.Keys.SelectMany(textKey => _libraries[textKey]).ToList();
             LibrarySelector.AvailableItems = items.Cast<object>().ToList();
         }
 
@@ -96,7 +111,7 @@ namespace GUI
             return libs;
         }
 
-        private Dictionary<string, Library> GetLibrary(string libraryPath)
+        private Dictionary<string, Library> GetLibraries(string libraryPath)
         {
             var libs = new Dictionary<string, Library>();
 

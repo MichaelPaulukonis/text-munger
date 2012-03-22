@@ -22,10 +22,10 @@ namespace TextSourcers
             var rnd = new Random();
             var subUrls = urls.OrderBy(x => rnd.Next()).Take(5).ToArray<string>();
 
-            return GetXrmlWebText(subUrls);
+            return GetXrmlTextAll(subUrls);
         }
 
-        private static string GetXrmlWebText(IEnumerable<string> urls)
+        private static string GetXrmlTextAll(IEnumerable<string> urls)
         {
             const string xpath = @"//div[@style='font-family: monospace;']";
             var sb = new StringBuilder();
@@ -50,12 +50,38 @@ namespace TextSourcers
             return sb.ToString();
         }
 
+        private static Library GetXrmlWebTexts(IEnumerable<string> urls)
+        {
+            const string xpath = @"//div[@style='font-family: monospace;']";
+            var lib = new Library("XRML pages");
+
+            foreach (var url in urls)
+            {
+                try
+                {
+                    var source = WebFetch.Fetch(url);
+                    var doc = new HtmlDocument();
+                    doc.LoadHtml(source);
+                    var target = doc.DocumentNode.SelectSingleNode(xpath);
+                    var text = HttpUtility.HtmlDecode(target.InnerText);
+                    lib.AddText(new InternetText(url, url) { Contents = text });
+                }
+                catch (Exception ex)
+                {
+                    // TODO: swallow it whole!
+                    // yikes. or maybe log the issue, down the road....
+                }
+            }
+
+            return lib;
+        }
+
         // perhaps cache this list locally, and only regen as required?
         // because it's a pain to pull....
         // that should be true of all of of web-pulls
         // cache locally, and only rebuild as required.
         // hrm.... MORE COMPLICATED THAT I CURRENTLY REQUIRE
-        private static List<string> GetXrmlPages()
+        private static List<string> GetXrmlPageLinks()
         {
             var source = WebFetch.Fetch("http://www.xradiograph.com/XraysMonaLisa/MappaMundi");
             var doc = new HtmlDocument();
