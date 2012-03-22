@@ -7,8 +7,23 @@ using HtmlAgilityPack;
 
 namespace TextSourcers
 {
-    public class XrmlFetch
+    public class XrmlFetch : ILibraryFetch
     {
+        private string _sourceUrl = @"http://www.xradiograph.com/XraysMonaLisa/MappaMundi";
+
+        public Dictionary<string, Library> GetLibrary()
+        {
+            var lib = GetXrmlWebTexts(GetXrmlPageLinks());
+
+            return new Dictionary<string, Library> { { "XRML", lib } };
+        }
+
+        public string LibrarySource
+        {
+            get { return _sourceUrl; }
+            set { _sourceUrl = value; } // hunh.
+        }
+
         // sample use: _textCache = mg.GetRandomContents(GetXrmlPages(), 60);
         // unfortunately, that relied on randomization... instead of a mechanism for ALL
 
@@ -55,6 +70,12 @@ namespace TextSourcers
             const string xpath = @"//div[@style='font-family: monospace;']";
             var lib = new Library("XRML pages");
 
+            // THIS TAKES FOREVER!!!! well, for 79 URLS, anyway
+            // TODO: remake and sub-class the TEXT class
+            //       so that it will pull the contents
+            //       as defined below
+            //       only when required
+            // TODO: grab the page title to be used in the LibrarySelector
             foreach (var url in urls)
             {
                 try
@@ -81,9 +102,9 @@ namespace TextSourcers
         // that should be true of all of of web-pulls
         // cache locally, and only rebuild as required.
         // hrm.... MORE COMPLICATED THAT I CURRENTLY REQUIRE
-        private static List<string> GetXrmlPageLinks()
+        private List<string> GetXrmlPageLinks()
         {
-            var source = WebFetch.Fetch("http://www.xradiograph.com/XraysMonaLisa/MappaMundi");
+            var source = WebFetch.Fetch(LibrarySource);
             var doc = new HtmlDocument();
             doc.LoadHtml(source);
             var target = doc.DocumentNode.SelectNodes("//div[@class='mainlist']/div/ul/li/a");
