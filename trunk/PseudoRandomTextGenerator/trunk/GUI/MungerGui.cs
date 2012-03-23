@@ -58,39 +58,35 @@ namespace GUI
         // and maybe even incrementally update the display after each (entire-text) pass...
         private void btnApply_Click(object sender, EventArgs e)
         {
-            // TODO: not having an effect. DANG!
-            this.UseWaitCursor = true;
-            this.Refresh();
-            Application.DoEvents();
-
-            _output = Source.Text;
-
-            // go through words, apply granulars, based on percentage
-            // this will be tweaked, so that each rule has it's own percentage.
-            // or something.....
-
-            var sets = RuleSetSelector.SelectedItems.Cast<RuleSet>().ToList();
-
-            if (sets.Count > 0)
+            using (new HourGlass())
             {
-                foreach (var ruleset in sets)
+                _output = Source.Text;
+
+                // go through words, apply granulars, based on percentage
+                // this will be tweaked, so that each rule has it's own percentage.
+                // or something.....
+
+                var sets = RuleSetSelector.SelectedItems.Cast<RuleSet>().ToList();
+
+                if (sets.Count > 0)
                 {
-                    // TODO: hunh. if...else. There's got to be a smarter way.....
-                    if (ruleset.Granularity == Granularity.All)
+                    foreach (var ruleset in sets)
                     {
-                        ApplyGlobals(ruleset.Rules);
-                    }
-                    else
-                    {
-                        ApplyGranularRules(ruleset.Rules);
+                        // TODO: hunh. if...else. There's got to be a smarter way.....
+                        if (ruleset.Granularity == Granularity.All)
+                        {
+                            ApplyGlobals(ruleset.Rules);
+                        }
+                        else
+                        {
+                            ApplyGranularRules(ruleset.Rules);
+                        }
                     }
                 }
+
+                txtOutput.Text = _output;
+                btnSave.Visible = true;
             }
-
-            txtOutput.Text = _output;
-            btnSave.Visible = true;
-
-            this.UseWaitCursor = false;
         }
 
         private void ApplyGlobals(List<ITransformer> globalRules)
@@ -280,5 +276,35 @@ namespace GUI
 
             File.WriteAllText(name, txtOutput.Text);
         }
+    }
+
+    // http://stackoverflow.com/a/302865/41153http://stackoverflow.com/a/302865/41153k
+    public class HourGlass : IDisposable
+    {
+        public HourGlass()
+        {
+            Enabled = true;
+        }
+
+        public void Dispose()
+        {
+            Enabled = false;
+        }
+
+        public static bool Enabled
+        {
+            get { return Application.UseWaitCursor; }
+            set
+            {
+                if (value == Application.UseWaitCursor) return;
+                Application.UseWaitCursor = value;
+                Form f = Form.ActiveForm;
+                if (f != null && f.Handle != null)   // Send WM_SETCURSOR
+                    SendMessage(f.Handle, 0x20, f.Handle, (IntPtr)1);
+            }
+        }
+
+        [System.Runtime.InteropServices.DllImport("user32.dll")]
+        private static extern IntPtr SendMessage(IntPtr hWnd, int msg, IntPtr wp, IntPtr lp);
     }
 }
