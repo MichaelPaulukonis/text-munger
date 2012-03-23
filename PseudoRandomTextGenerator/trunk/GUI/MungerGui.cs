@@ -60,6 +60,7 @@ namespace GUI
         {
             // TODO: not having an effect. DANG!
             this.UseWaitCursor = true;
+            this.Refresh();
             Application.DoEvents();
 
             _output = Source.Text;
