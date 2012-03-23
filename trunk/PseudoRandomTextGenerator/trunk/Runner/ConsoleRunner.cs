@@ -240,7 +240,6 @@ namespace Runner
                 ,new Reverse()
                 ,new Shouty()
                 ,new VowellToPunct()
-                ,new Homophonic()
             };
 
             return l;

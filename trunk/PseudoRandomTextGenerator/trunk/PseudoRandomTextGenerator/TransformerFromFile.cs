@@ -14,7 +14,6 @@ namespace TextTransformer
     {
         public TransformerFromFile(string sourceFile)
         {
-            // eg  @"D:\Dropbox\projects\TextMunger\homophone_list.txt";
             SourceFile = sourceFile;
 
             // TODO: Smart/Dumb setting: smart = whole words only, dumb = inner-strings
@@ -43,21 +42,50 @@ namespace TextTransformer
             var sb = new StringBuilder();
             var rnd = new Random();
 
+            // forget about mixed-caps -- too difficult to replicate with words of different lengths
+            // although, if identical lengths, could make a go at it
+            // but... not worth it?
+            // TODO: look into using a regex for all of this. faster?
+            // hunh. who knows. time it.
+
+            // if word is in dictionary
+            // replace it with replacement
+            // if multiple replacements, select at random
             foreach (var word in words)
             {
                 var replace = word;
-                // if word is in dictionary
-                // replace with a homophone
-                // if multiples, random of quantity
-                if (Replacers.ContainsKey(word))
+
+                // so far, files are lowercase
+                // if not, we will have to change code
+                if (Replacers.ContainsKey(word.ToLower()))
                 {
-                    var index = rnd.Next(0, Replacers[word].Count); // random.next range := 0..(Count-1)
-                    replace = Replacers[word][index];
+                    var index = rnd.Next(0, Replacers[word.ToLower()].Count); // random.next range := 0..(Count-1)
+                    replace = Replacers[word.ToLower()][index];
+
+                    if (AllCaps(word))
+                    {
+                        replace = replace.ToUpper();
+                    }
+                    else if (InitialCap(word))
+                    {
+                        var first = replace[0].ToString().ToUpper();
+                        replace = first + replace.Substring(1);
+                    }
                 }
                 sb.Append(replace + padding);
             }
 
             return sb.ToString();
+        }
+
+        private bool AllCaps(string word)
+        {
+            return (word.ToUpper() == word);
+        }
+
+        private bool InitialCap(string word)
+        {
+            return (word[0].ToString().ToUpper() == word[0].ToString());
         }
 
         public Granularity Granularity { get { return Granularity.Word; } }
