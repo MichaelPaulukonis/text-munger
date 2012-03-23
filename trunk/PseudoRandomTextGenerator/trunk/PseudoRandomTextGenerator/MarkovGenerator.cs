@@ -300,6 +300,7 @@ namespace TextTransformer
             if (_settingsAreDirty)
             {
                 InitializeChain();
+                _settingsAreDirty = false;
             }
 
             return this.Write(LengthMin, LengthMax);

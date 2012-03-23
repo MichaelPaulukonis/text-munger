@@ -58,6 +58,10 @@ namespace GUI
         // and maybe even incrementally update the display after each (entire-text) pass...
         private void btnApply_Click(object sender, EventArgs e)
         {
+            // TODO: not having an effect. DANG!
+            this.UseWaitCursor = true;
+            Application.DoEvents();
+
             _output = Source.Text;
 
             // go through words, apply granulars, based on percentage
@@ -84,6 +88,8 @@ namespace GUI
 
             txtOutput.Text = _output;
             btnSave.Visible = true;
+
+            this.UseWaitCursor = false;
         }
 
         private void ApplyGlobals(List<ITransformer> globalRules)
@@ -192,13 +198,7 @@ namespace GUI
             var libraryPath = ConfigurationManager.AppSettings["LibraryPath"];
             var lf = new FileLibraryFetch(libraryPath);
 
-            var l = new frmLibraryPicker(lf);
-            l.ShowDialog();
-
-            // TODO: implement some mechanism for re-populating the selections on a load
-            _previouslySelected = l.SelectedTexts;
-
-            return l.Source;
+            return LoadFromLibraryPicker(lf);
         }
 
         // TODO: only XRML is available now, and by default.
@@ -208,13 +208,28 @@ namespace GUI
         {
             var lf = new XrmlFetch();
 
-            var l = new frmLibraryPicker(lf);
+            return LoadFromLibraryPicker(lf);
+        }
+
+        private string LoadFromLibraryPicker(ILibraryFetch fetcher)
+        {
+            var l = new frmLibraryPicker(fetcher);
             l.ShowDialog();
 
             // TODO: implement some mechanism for re-populating the selections on a load
+
             _previouslySelected = l.SelectedTexts;
 
-            return l.Source;
+            // for some reason, this is not working
+            // even though it works on the frmLibraryPicker
+            this.UseWaitCursor = true;
+            Application.DoEvents();
+
+            var s = l.Source;
+
+            this.UseWaitCursor = false;
+
+            return s;
         }
 
         private void btnClipboard_Click(object sender, EventArgs e)

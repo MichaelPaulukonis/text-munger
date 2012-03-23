@@ -6,7 +6,7 @@ using System.Text;
 
 namespace TextTransformer
 {
-    // TODO: instead of just homophones, this would lend itself to ANY word-level, list-based transformation
+    // TODO: instead of just Replacers, this would lend itself to ANY word-level, list-based transformation
     //       ie, mis-spellings, etc.
     //       NOT, however, leet-speak or other REGEX-level transformers
     //       or.... would it???
@@ -49,10 +49,10 @@ namespace TextTransformer
                 // if word is in dictionary
                 // replace with a homophone
                 // if multiples, random of quantity
-                if (Homophones.ContainsKey(word))
+                if (Replacers.ContainsKey(word))
                 {
-                    var index = rnd.Next(0, Homophones[word].Count); // random.next range := 0..(Count-1)
-                    replace = Homophones[word][index];
+                    var index = rnd.Next(0, Replacers[word].Count); // random.next range := 0..(Count-1)
+                    replace = Replacers[word][index];
                 }
                 sb.Append(replace + padding);
             }
@@ -62,18 +62,18 @@ namespace TextTransformer
 
         public Granularity Granularity { get { return Granularity.Word; } }
 
-        private Dictionary<string, List<string>> _homophones = null;
+        private Dictionary<string, List<string>> _replacers = null;
 
-        private Dictionary<string, List<string>> Homophones
+        private Dictionary<string, List<string>> Replacers
         {
-            get { return _homophones ?? (_homophones = GetHomophones()); }
+            get { return _replacers ?? (_replacers = GetReplacers()); }
         }
 
-        // TODO: replace "homophones" with something meaningful
+        // TODO: replace "Replacers" with something meaningful
         // pairs? ugh. word-tuples? word-pairs?
-        private Dictionary<string, List<string>> GetHomophones()
+        private Dictionary<string, List<string>> GetReplacers()
         {
-            var homophones = new Dictionary<string, List<string>>();
+            var Replacers = new Dictionary<string, List<string>>();
 
             using (var reader = new StreamReader(SourceFile))
             {
@@ -82,22 +82,35 @@ namespace TextTransformer
                 {
                     if (line.StartsWith("#")) { continue; } // comment-character
 
+                    // TODO: while this works, it makes no sense
+                    // because the file is not read until the rule is used
+                    // we need the method that looks for all file-translators
+                    // to parse the name and return it to the calling factory
+                    if (line.ToUpper().StartsWith("NAME:"))
+                    {
+                        var ps = line.Split(':');
+                        if (ps.Length > 1)
+                        {
+                            Name = ps[1];
+                        }
+                        continue;
+                    }
                     var pieces = line.Split(',');
 
                     var variants = Permutations(pieces);
                     foreach (var variant in variants)
                     {
                         var key = variant.ElementAt(0).Trim();
-                        if (!homophones.ContainsKey(key))
+                        if (!Replacers.ContainsKey(key))
                         {
                             var vals = variant.Skip(1).Take(variant.Count() - 1).ToList();
-                            homophones.Add(key, vals);
+                            Replacers.Add(key, vals);
                         }
                     }
                 }
             }
 
-            return homophones;
+            return Replacers;
         }
 
         // http://stackoverflow.com/a/5129643/41153
@@ -112,9 +125,12 @@ namespace TextTransformer
                         yield return source.Skip(i).Take(1).Concat(p);
         }
 
+        public string Name { get; set; }
+
+        // TODO: take a name from the file
         public override string ToString()
         {
-            return "Homphonerize";
+            return Name ?? "Homphonerize";
         }
     }
 }

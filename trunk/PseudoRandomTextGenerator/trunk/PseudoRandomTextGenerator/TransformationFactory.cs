@@ -78,7 +78,8 @@ namespace TextTransformer
                 new Reverse(),
                 new Shouty(),
                 new VowellToPunct(),
-                new Homophonic()
+                //new Homophonic()
+                new TransformerFromFile(@"D:\Dropbox\projects\TextMunger\homophone_list.txt")
             };
         }
 
