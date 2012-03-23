@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 using System.Text;
 using System.Windows.Forms;
@@ -22,10 +21,16 @@ namespace GUI
         public frmLibraryPicker(ILibraryFetch library)
             : this()
         {
+            var origCursor = this.Cursor;
+            Cursor.Current = Cursors.WaitCursor;
+            Application.DoEvents();
+
             _library = library.GetLibrary();
 
             var items = _library.Keys.SelectMany(textKey => _library[textKey]).ToList();
             LibrarySelector.AvailableItems = items.Cast<object>().ToList();
+
+            this.Cursor = origCursor;
         }
 
         // the label is now "Select" which makes more sense
