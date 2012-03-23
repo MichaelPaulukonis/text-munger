@@ -86,6 +86,11 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "lib", "lib", "{13748091-FE7
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TextSourcers", "TextSourcerers\TextSourcers.csproj", "{54B140CC-CBE4-448D-91B1-4C184DD96A24}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "CustomTransformers", "CustomTransformers", "{14EF3D4E-E6D1-4467-B61F-F20C58F42F67}"
+	ProjectSection(SolutionItems) = preProject
+		CustomTransformers\Homophonerizer.txt = CustomTransformers\Homophonerizer.txt
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SubversionScc) = preSolution
 		Svn-Managed = True

@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Configuration;
 
 namespace TextTransformer
 {
@@ -68,7 +69,7 @@ namespace TextTransformer
         // TODO: some of these are sentence based -- pull them out
         private List<ITransformer> GetGranularityWord()
         {
-            return new List<ITransformer>
+            var l = new List<ITransformer>
             {new Leet(),
                 new PigLatin(),
                 new Shuffle(),
@@ -77,10 +78,13 @@ namespace TextTransformer
                 new RandomCaps(),
                 new Reverse(),
                 new Shouty(),
-                new VowellToPunct(),
-                //new Homophonic()
-                new TransformerFromFile(@"D:\Dropbox\projects\TextMunger\homophone_list.txt")
+                new VowellToPunct()
             };
+
+            var path = ConfigurationManager.AppSettings["CustomTransformerPath"];
+            l.AddRange(new CustomTransformerFactory(path).GetTransformers());
+
+            return l;
         }
 
         private List<ITransformer> GetGranularityAll()
