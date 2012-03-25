@@ -28,8 +28,17 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MungerGui));
             this.tabControl1 = new System.Windows.Forms.TabControl();
+            this.contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.undoToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.cutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.copyToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.pasteToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.copyToSnippetsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.deleteToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.selectAllToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.tabPage1 = new System.Windows.Forms.TabPage();
             this.SourceBox = new System.Windows.Forms.GroupBox();
             this.Source = new System.Windows.Forms.TextBox();
@@ -43,22 +52,30 @@
             this.groupBox2 = new System.Windows.Forms.GroupBox();
             this.RuleSetSelector = new CustomSelectControl.MultipleSelectionControl();
             this.tabPage3 = new System.Windows.Forms.TabPage();
-            this.btnClipboard = new System.Windows.Forms.Button();
-            this.txtOutput = new System.Windows.Forms.TextBox();
+            this.tabOutputs = new System.Windows.Forms.TabControl();
+            this.tabOutput = new System.Windows.Forms.TabPage();
+            this.Output = new System.Windows.Forms.TextBox();
+            this.tabSnippets = new System.Windows.Forms.TabPage();
+            this.Snippets = new System.Windows.Forms.TextBox();
             this.btnSave = new System.Windows.Forms.Button();
             this.btnApply = new System.Windows.Forms.Button();
             this.openFileDialog = new System.Windows.Forms.OpenFileDialog();
             this.saveFileDialog = new System.Windows.Forms.SaveFileDialog();
             this.tabControl1.SuspendLayout();
+            this.contextMenuStrip1.SuspendLayout();
             this.tabPage1.SuspendLayout();
             this.SourceBox.SuspendLayout();
             this.tabPage2.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.tabPage3.SuspendLayout();
+            this.tabOutputs.SuspendLayout();
+            this.tabOutput.SuspendLayout();
+            this.tabSnippets.SuspendLayout();
             this.SuspendLayout();
             // 
             // tabControl1
             // 
+            this.tabControl1.ContextMenuStrip = this.contextMenuStrip1;
             this.tabControl1.Controls.Add(this.tabPage1);
             this.tabControl1.Controls.Add(this.tabPage2);
             this.tabControl1.Controls.Add(this.tabPage3);
@@ -67,6 +84,69 @@
             this.tabControl1.SelectedIndex = 0;
             this.tabControl1.Size = new System.Drawing.Size(699, 700);
             this.tabControl1.TabIndex = 0;
+            // 
+            // contextMenuStrip1
+            // 
+            this.contextMenuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.undoToolStripMenuItem,
+            this.cutToolStripMenuItem,
+            this.copyToolStripMenuItem,
+            this.pasteToolStripMenuItem,
+            this.copyToSnippetsToolStripMenuItem,
+            this.deleteToolStripMenuItem,
+            this.selectAllToolStripMenuItem});
+            this.contextMenuStrip1.Name = "contextMenuStrip1";
+            this.contextMenuStrip1.Size = new System.Drawing.Size(165, 158);
+            this.contextMenuStrip1.Opening += new System.ComponentModel.CancelEventHandler(this.contextMenuStrip1_Opening);
+            // 
+            // undoToolStripMenuItem
+            // 
+            this.undoToolStripMenuItem.Name = "undoToolStripMenuItem";
+            this.undoToolStripMenuItem.Size = new System.Drawing.Size(164, 22);
+            this.undoToolStripMenuItem.Text = "Undo";
+            this.undoToolStripMenuItem.Click += new System.EventHandler(this.ToolStripMenuItem_Click);
+            // 
+            // cutToolStripMenuItem
+            // 
+            this.cutToolStripMenuItem.Name = "cutToolStripMenuItem";
+            this.cutToolStripMenuItem.Size = new System.Drawing.Size(164, 22);
+            this.cutToolStripMenuItem.Text = "Cut";
+            this.cutToolStripMenuItem.Click += new System.EventHandler(this.ToolStripMenuItem_Click);
+            // 
+            // copyToolStripMenuItem
+            // 
+            this.copyToolStripMenuItem.Name = "copyToolStripMenuItem";
+            this.copyToolStripMenuItem.Size = new System.Drawing.Size(164, 22);
+            this.copyToolStripMenuItem.Text = "Copy";
+            this.copyToolStripMenuItem.Click += new System.EventHandler(this.ToolStripMenuItem_Click);
+            // 
+            // pasteToolStripMenuItem
+            // 
+            this.pasteToolStripMenuItem.Name = "pasteToolStripMenuItem";
+            this.pasteToolStripMenuItem.Size = new System.Drawing.Size(164, 22);
+            this.pasteToolStripMenuItem.Text = "Paste";
+            this.pasteToolStripMenuItem.Click += new System.EventHandler(this.ToolStripMenuItem_Click);
+            // 
+            // copyToSnippetsToolStripMenuItem
+            // 
+            this.copyToSnippetsToolStripMenuItem.Name = "copyToSnippetsToolStripMenuItem";
+            this.copyToSnippetsToolStripMenuItem.Size = new System.Drawing.Size(164, 22);
+            this.copyToSnippetsToolStripMenuItem.Text = "Copy to Snippets";
+            this.copyToSnippetsToolStripMenuItem.Click += new System.EventHandler(this.ToolStripMenuItem_Click);
+            // 
+            // deleteToolStripMenuItem
+            // 
+            this.deleteToolStripMenuItem.Name = "deleteToolStripMenuItem";
+            this.deleteToolStripMenuItem.Size = new System.Drawing.Size(164, 22);
+            this.deleteToolStripMenuItem.Text = "Delete";
+            this.deleteToolStripMenuItem.Click += new System.EventHandler(this.ToolStripMenuItem_Click);
+            // 
+            // selectAllToolStripMenuItem
+            // 
+            this.selectAllToolStripMenuItem.Name = "selectAllToolStripMenuItem";
+            this.selectAllToolStripMenuItem.Size = new System.Drawing.Size(164, 22);
+            this.selectAllToolStripMenuItem.Text = "Select All";
+            this.selectAllToolStripMenuItem.Click += new System.EventHandler(this.ToolStripMenuItem_Click);
             // 
             // tabPage1
             // 
@@ -205,8 +285,7 @@
             // 
             // tabPage3
             // 
-            this.tabPage3.Controls.Add(this.btnClipboard);
-            this.tabPage3.Controls.Add(this.txtOutput);
+            this.tabPage3.Controls.Add(this.tabOutputs);
             this.tabPage3.Controls.Add(this.btnSave);
             this.tabPage3.Controls.Add(this.btnApply);
             this.tabPage3.Location = new System.Drawing.Point(4, 22);
@@ -216,39 +295,80 @@
             this.tabPage3.Text = "Munged Output";
             this.tabPage3.UseVisualStyleBackColor = true;
             // 
-            // btnClipboard
+            // tabOutputs
             // 
-            this.btnClipboard.Location = new System.Drawing.Point(95, 14);
-            this.btnClipboard.Name = "btnClipboard";
-            this.btnClipboard.Size = new System.Drawing.Size(99, 23);
-            this.btnClipboard.TabIndex = 18;
-            this.btnClipboard.Text = "Copy to Clipboard";
-            this.btnClipboard.UseVisualStyleBackColor = true;
-            this.btnClipboard.Click += new System.EventHandler(this.btnClipboard_Click);
+            this.tabOutputs.Controls.Add(this.tabOutput);
+            this.tabOutputs.Controls.Add(this.tabSnippets);
+            this.tabOutputs.Location = new System.Drawing.Point(3, 44);
+            this.tabOutputs.Name = "tabOutputs";
+            this.tabOutputs.SelectedIndex = 0;
+            this.tabOutputs.Size = new System.Drawing.Size(688, 634);
+            this.tabOutputs.TabIndex = 17;
+            this.tabOutputs.SelectedIndexChanged += new System.EventHandler(this.tabOutputs_SelectedIndexChanged);
             // 
-            // txtOutput
+            // tabOutput
             // 
-            this.txtOutput.Font = new System.Drawing.Font("Courier New", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.txtOutput.Location = new System.Drawing.Point(3, 43);
-            this.txtOutput.MaxLength = 429496729;
-            this.txtOutput.Multiline = true;
-            this.txtOutput.Name = "txtOutput";
-            this.txtOutput.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
-            this.txtOutput.Size = new System.Drawing.Size(685, 630);
-            this.txtOutput.TabIndex = 17;
-            this.txtOutput.Text = "         1         2         3         4         5         6         7         8\r" +
+            this.tabOutput.Controls.Add(this.Output);
+            this.tabOutput.Location = new System.Drawing.Point(4, 22);
+            this.tabOutput.Name = "tabOutput";
+            this.tabOutput.Padding = new System.Windows.Forms.Padding(3);
+            this.tabOutput.Size = new System.Drawing.Size(680, 608);
+            this.tabOutput.TabIndex = 0;
+            this.tabOutput.Text = "Output";
+            this.tabOutput.UseVisualStyleBackColor = true;
+            // 
+            // Output
+            // 
+            this.Output.ContextMenuStrip = this.contextMenuStrip1;
+            this.Output.Font = new System.Drawing.Font("Courier New", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.Output.Location = new System.Drawing.Point(-2, 1);
+            this.Output.MaxLength = 429496729;
+            this.Output.Multiline = true;
+            this.Output.Name = "Output";
+            this.Output.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
+            this.Output.Size = new System.Drawing.Size(683, 604);
+            this.Output.TabIndex = 18;
+            this.Output.Text = "         1         2         3         4         5         6         7         8\r" +
     "\n1234567890123456789012345678901234567890123456789012345678901234567890123456789" +
     "0";
+            this.Output.TextChanged += new System.EventHandler(this.Output_TextChanged);
+            // 
+            // tabSnippets
+            // 
+            this.tabSnippets.Controls.Add(this.Snippets);
+            this.tabSnippets.Location = new System.Drawing.Point(4, 22);
+            this.tabSnippets.Name = "tabSnippets";
+            this.tabSnippets.Padding = new System.Windows.Forms.Padding(3);
+            this.tabSnippets.Size = new System.Drawing.Size(680, 608);
+            this.tabSnippets.TabIndex = 1;
+            this.tabSnippets.Text = "Snippets";
+            this.tabSnippets.UseVisualStyleBackColor = true;
+            // 
+            // Snippets
+            // 
+            this.Snippets.ContextMenuStrip = this.contextMenuStrip1;
+            this.Snippets.Font = new System.Drawing.Font("Courier New", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.Snippets.Location = new System.Drawing.Point(-1, 2);
+            this.Snippets.MaxLength = 429496729;
+            this.Snippets.Multiline = true;
+            this.Snippets.Name = "Snippets";
+            this.Snippets.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
+            this.Snippets.Size = new System.Drawing.Size(683, 604);
+            this.Snippets.TabIndex = 19;
+            this.Snippets.Text = "         1         2         3         4         5         6         7         8\r" +
+    "\n1234567890123456789012345678901234567890123456789012345678901234567890123456789" +
+    "0";
+            this.Snippets.TextChanged += new System.EventHandler(this.Snippets_TextChanged);
             // 
             // btnSave
             // 
-            this.btnSave.Location = new System.Drawing.Point(200, 14);
+            this.btnSave.Enabled = false;
+            this.btnSave.Location = new System.Drawing.Point(94, 14);
             this.btnSave.Name = "btnSave";
             this.btnSave.Size = new System.Drawing.Size(75, 23);
             this.btnSave.TabIndex = 16;
-            this.btnSave.Text = "Save Output";
+            this.btnSave.Text = "Save";
             this.btnSave.UseVisualStyleBackColor = true;
-            this.btnSave.Visible = false;
             this.btnSave.Click += new System.EventHandler(this.btnSave_Click);
             // 
             // btnApply
@@ -276,13 +396,18 @@
             this.Name = "MungerGui";
             this.Text = "Text Munger";
             this.tabControl1.ResumeLayout(false);
+            this.contextMenuStrip1.ResumeLayout(false);
             this.tabPage1.ResumeLayout(false);
             this.SourceBox.ResumeLayout(false);
             this.SourceBox.PerformLayout();
             this.tabPage2.ResumeLayout(false);
             this.groupBox2.ResumeLayout(false);
             this.tabPage3.ResumeLayout(false);
-            this.tabPage3.PerformLayout();
+            this.tabOutputs.ResumeLayout(false);
+            this.tabOutput.ResumeLayout(false);
+            this.tabOutput.PerformLayout();
+            this.tabSnippets.ResumeLayout(false);
+            this.tabSnippets.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -303,11 +428,22 @@
         private System.Windows.Forms.RadioButton rbLibrary;
         private System.Windows.Forms.GroupBox groupBox2;
         private CustomSelectControl.MultipleSelectionControl RuleSetSelector;
-        private System.Windows.Forms.Button btnClipboard;
-        private System.Windows.Forms.TextBox txtOutput;
         private System.Windows.Forms.Button btnSave;
         private System.Windows.Forms.Button btnApply;
         private System.Windows.Forms.OpenFileDialog openFileDialog;
         private System.Windows.Forms.SaveFileDialog saveFileDialog;
+        private System.Windows.Forms.ContextMenuStrip contextMenuStrip1;
+        private System.Windows.Forms.ToolStripMenuItem undoToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem cutToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem copyToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem pasteToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem copyToSnippetsToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem deleteToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem selectAllToolStripMenuItem;
+        private System.Windows.Forms.TabControl tabOutputs;
+        private System.Windows.Forms.TabPage tabOutput;
+        private System.Windows.Forms.TextBox Output;
+        private System.Windows.Forms.TabPage tabSnippets;
+        private System.Windows.Forms.TextBox Snippets;
     }
 }
