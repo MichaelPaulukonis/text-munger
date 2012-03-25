@@ -23,7 +23,10 @@ namespace GUI
 
             InitializeOpenFileDialog();
 
-            txtOutput.Text = string.Empty; // erase dev-guides
+            // erase dev-guides
+            Output.Text = string.Empty;
+            Snippets.Text = string.Empty;
+            btnSave.Enabled = false; // this should automatically be called due to other
 
             var rules = new List<object> { new RuleSet(Granularity.All),
                     new RuleSet(Granularity.Sentence),
@@ -84,8 +87,7 @@ namespace GUI
                     }
                 }
 
-                txtOutput.Text = _output;
-                btnSave.Visible = true;
+                Output.Text = _output;
             }
         }
 
@@ -152,10 +154,30 @@ namespace GUI
 
         private void btnSave_Click(object sender, EventArgs e)
         {
-            //MessageBox.Show("Not yet implemented!");
-            // TODO: file-save dialog
+            var title = "Save Output";
+            if (tabOutputs.SelectedTab == tabSnippets)
+            {
+                title = "Save Snippepts";
+            }
+            saveFileDialog.Title = title;
 
-            saveFileDialog.ShowDialog();
+            var n = saveFileDialog.ShowDialog();
+        }
+
+        private void saveFileDialog_FileOk(object sender, System.ComponentModel.CancelEventArgs e)
+        {
+            var name = saveFileDialog.FileName;
+
+            var text = string.Empty;
+            if (tabOutputs.SelectedTab == tabOutput)
+            {
+                text = Output.Text;
+            }
+            else
+            {
+                text = Snippets.Text;
+            }
+            File.WriteAllText(name, text);
         }
 
         // handler for all radio buttons
@@ -229,11 +251,6 @@ namespace GUI
             return s;
         }
 
-        private void btnClipboard_Click(object sender, EventArgs e)
-        {
-            Clipboard.SetDataObject(txtOutput.Text, true);
-        }
-
         // add to OK-click handler?
         private string LoadFromFile()
         {
@@ -270,11 +287,59 @@ namespace GUI
             this.openFileDialog.Title = "Select Text Sources";
         }
 
-        private void saveFileDialog_FileOk(object sender, System.ComponentModel.CancelEventArgs e)
+        private void contextMenuStrip1_Opening(object sender, System.ComponentModel.CancelEventArgs e)
         {
-            var name = saveFileDialog.FileName;
+            //this.undoToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            //this.cutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            //this.copyToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            //this.pasteToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            //this.copyToSnippetsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            //this.deleteToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            //this.selectAllToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 
-            File.WriteAllText(name, txtOutput.Text);
+            var somethingSelected = (Output.SelectionLength > 0);
+
+            cutToolStripMenuItem.Enabled = somethingSelected;
+            copyToolStripMenuItem.Enabled = somethingSelected;
+            copyToSnippetsToolStripMenuItem.Enabled = somethingSelected;
+            deleteToolStripMenuItem.Enabled = somethingSelected;
+        }
+
+        private void ToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            var item = (ToolStripMenuItem)sender;
+
+            if (item == undoToolStripMenuItem) { Output.Undo(); }
+            if (item == cutToolStripMenuItem) { Output.Cut(); }
+            if (item == copyToolStripMenuItem) { Output.Copy(); }
+            // I prefer the text bracketed -- suppose this could be optional
+            if (item == copyToSnippetsToolStripMenuItem) { Snippets.AppendText("\r\n" + Output.SelectedText + "\r\n"); }
+            if (item == pasteToolStripMenuItem) { Output.Paste(); }
+            if (item == deleteToolStripMenuItem) { Output.SelectedText = string.Empty; }
+            if (item == selectAllToolStripMenuItem) { Output.SelectAll(); }
+        }
+
+        // TODO: okay, there's a lot of repetition going on, here....
+        private void tabOutputs_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (tabOutputs.SelectedIndex == 0)
+            {
+                btnSave.Enabled = (Output.Text.Length > 0);
+            }
+            else
+            {
+                btnSave.Enabled = (Snippets.Text.Length > 0);
+            }
+        }
+
+        private void Output_TextChanged(object sender, EventArgs e)
+        {
+            btnSave.Enabled = (Output.Text.Length > 0);
+        }
+
+        private void Snippets_TextChanged(object sender, EventArgs e)
+        {
+            btnSave.Enabled = (Snippets.Text.Length > 0);
         }
     }
 
