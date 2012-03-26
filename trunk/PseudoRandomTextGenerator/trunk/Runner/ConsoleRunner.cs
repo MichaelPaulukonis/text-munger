@@ -26,14 +26,47 @@ namespace Runner
 
         private static void Main(string[] args)
         {
-            var walker = new RandomWalker(20, 5, 10);
-            for (int i = 0; i < 1000; ++i)
-            {
-                Console.WriteLine(string.Format("{0}", walker.Next()));
-            }
+            var c = new ConsoleRunner();
+            c.TestSerialization();
+
+            //var walker = new RandomWalker(20, 5, 10);
+            //for (int i = 0; i < 1000; ++i)
+            //{
+            //    Console.WriteLine(string.Format("{0}", walker.Next()));
+            //}
 
             //var mg = new ConsoleRunner();
             //mg.MungeIt();
+        }
+
+        //http://www.joe-stevens.com/2009/12/29/json-serialization-using-the-datacontractjsonserializer-and-c/
+        public void TestSerialization()
+        {
+            var path = @"D:\Dropbox\projects\TextMunger\Library\scripts\SWSECOND.TXT";
+            var path2 = @"D:\Dropbox\projects\TextMunger\Library\scripts\alien_3_fasano_planet_wood.TXT";
+
+            var t = new Text("The Star Wars", path);
+            var t2 = new Text("Alien3", path2);
+
+            var jt = t.ToJSON();
+
+            var l = new Library();
+            l.AddText(t);
+            l.AddText(t2);
+
+            var j = l.ToJSON();
+
+            Console.WriteLine(j);
+
+            // the output has no reference to the class type, nor the Extractor (of course -- it's not serialized)
+            // so, what CAN we serialize? some sort of enum that is passed to a factory?
+            // worry about this later.
+            // serialize the text-based library
+            // which is the most important
+            //var it = new InternetText("Title", "http://www.xradiograph.com/XraysMonaLisa/BlindHag", new XrmlTextExtractor());
+            //var j2 = it.ToJSON();
+
+            Console.ReadKey();
         }
 
         // I want to get some variance for the density padding

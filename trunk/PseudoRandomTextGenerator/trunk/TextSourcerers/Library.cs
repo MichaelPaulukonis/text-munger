@@ -2,9 +2,11 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
+using System.Runtime.Serialization;
 
 namespace TextSourcers
 {
+    [DataContract]
     public class Library : IEnumerable<IText>
     {
         public Library()
@@ -15,13 +17,16 @@ namespace TextSourcers
             Title = title;
         }
 
+        [DataMember]
         public string Title { get; set; }
 
+        [DataMember]
         public string Path { get; set; }
 
-        // TODO: we need key:value pairs on Title:Text
         private Dictionary<string, IText> _contents = new Dictionary<string, IText>();
 
+        //[DataMember]
+        // TODO: failing to serialize
         public Dictionary<string, IText> Contents
         {
             get { return _contents; }
@@ -35,6 +40,7 @@ namespace TextSourcers
             return this;
         }
 
+        [DataMember]
         public Library Parent { get; set; }
 
         public IEnumerator<IText> GetEnumerator()
@@ -70,6 +76,7 @@ namespace TextSourcers
         string Location { get; set; }
     }
 
+    [DataContract]
     public class Text : IText
     {
         public Text() { }
@@ -80,8 +87,17 @@ namespace TextSourcers
             Location = path;
         }
 
+        public Text(string json)
+        {
+            var text = this.FromJSON(json);
+            this.Title = text.Title;
+            this.Location = text.Location;
+        }
+
+        [DataMember]
         public string Title { get; set; }
 
+        [DataMember]
         public string Location { get; set; }
 
         private string _contents;
@@ -118,18 +134,37 @@ namespace TextSourcers
 
         public override string ToString()
         {
-            return String.Format("{0}:{1}", Parent.ToString(), Title);
+            // trap for null Parents (ie, standalone texts)
+            var parent = string.Empty;
+            if (Parent != null)
+            {
+                parent = ":" + parent;
+            }
+            return String.Format("{0}{1}", parent, Title);
         }
     }
 
-    public class InternetText : Text, IText
+    // TODO: serialization model is incomplete for de-serialization
+    [DataContract]
+    public class InternetText : Text
     {
         public InternetText(string title, string url) : base(title: title, path: url) { }
 
         public InternetText(string title, string url, IExtractor ext)
             : base(title: title, path: url)
         {
-            _extractor = ext;
+            Extractor = ext;
+        }
+
+        // TODO: we lack an extractor
+        // so this will fail
+        // need to provide explicitly?
+        // BUT THEN WE CAN'T SERIALIZE
+        public InternetText(string json)
+        {
+            var text = this.FromJSON(json);
+            this.Title = text.Title;
+            this.Location = text.Location;
         }
 
         private IExtractor _extractor;
@@ -142,11 +177,17 @@ namespace TextSourcers
             {
                 if (_contents == null)
                 {
-                    _contents = _extractor.Extract(this.Location);
+                    _contents = Extractor.Extract(this.Location);
                 }
                 return _contents;
             }
             set { _contents = value; }
+        }
+
+        public IExtractor Extractor
+        {
+            get { return _extractor; }
+            set { _extractor = value; }
         }
     }
 }

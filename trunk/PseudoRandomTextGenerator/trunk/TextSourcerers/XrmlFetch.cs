@@ -1,12 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.Serialization;
 using System.Text;
 using System.Web;
 using HtmlAgilityPack;
 
 namespace TextSourcers
 {
+    [DataContract]
     public class XrmlFetch : ILibraryFetch
     {
         private string _sourceUrl = @"http://www.xradiograph.com/XraysMonaLisa/MappaMundi";
@@ -18,6 +20,7 @@ namespace TextSourcers
             return new Dictionary<string, Library> { { "XRML", lib } };
         }
 
+        [DataMember]
         public string LibrarySource
         {
             get { return _sourceUrl; }
@@ -96,6 +99,7 @@ namespace TextSourcers
         }
     }
 
+    [DataContract]
     public class XrmlTextExtractor : IExtractor
     {
         public string Extract(string url)
