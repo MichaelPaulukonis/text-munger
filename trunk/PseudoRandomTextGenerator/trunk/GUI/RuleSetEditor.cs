@@ -121,12 +121,22 @@ namespace GUI
 
         private void Save()
         {
-            this.Close();
+            // TODO: implement
         }
 
         public void AddFormClosingHandler(FormClosingEventHandler h)
         {
             FormClosing += h;
+        }
+
+        private void btnUseSet_Click(object sender, EventArgs e)
+        {
+            Use();
+        }
+
+        private void Use()
+        {
+            this.Close();
         }
     }
 }

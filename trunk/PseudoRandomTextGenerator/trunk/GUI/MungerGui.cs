@@ -161,9 +161,10 @@ namespace GUI
             }
             saveFileDialog.Title = title;
 
-            var n = saveFileDialog.ShowDialog();
+            saveFileDialog.ShowDialog();
         }
 
+        // can't reuse on sub-forms, unless we can parse sender, and apply a different source to save
         private void saveFileDialog_FileOk(object sender, System.ComponentModel.CancelEventArgs e)
         {
             var name = saveFileDialog.FileName;
@@ -232,23 +233,27 @@ namespace GUI
 
         private string LoadFromLibraryPicker(ILibraryFetch fetcher)
         {
+            var source = string.Empty;
+
             var l = new frmLibraryPicker(fetcher);
             l.ShowDialog();
 
             // TODO: implement some mechanism for re-populating the selections on a load
+            if (l.TextsSelected)
+            {
+                _previouslySelected = l.SelectedTexts;
 
-            _previouslySelected = l.SelectedTexts;
+                // for some reason, this is not working
+                // even though it works on the frmLibraryPicker
+                this.UseWaitCursor = true;
+                Application.DoEvents();
 
-            // for some reason, this is not working
-            // even though it works on the frmLibraryPicker
-            this.UseWaitCursor = true;
-            Application.DoEvents();
+                source = l.Source;
 
-            var s = l.Source;
+                this.UseWaitCursor = false;
+            }
 
-            this.UseWaitCursor = false;
-
-            return s;
+            return source;
         }
 
         // add to OK-click handler?

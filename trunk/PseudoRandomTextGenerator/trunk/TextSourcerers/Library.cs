@@ -2,17 +2,25 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Runtime.Serialization;
+using System.Xml.Serialization;
 
 namespace TextSourcers
 {
+    /// <summary>
+    ///  aaaargh! Ienumerable and XmlSerialization only serializes the collectin! waaaah!
+    /// </summary>
     [DataContract]
-    public class Library : IEnumerable<IText>
+    public class Library : IEnumerable<Text>
     {
         public Library()
-        { }
+        {
+            Parent = null;
+        }
 
         public Library(string title)
+            : this()
         {
             Title = title;
         }
@@ -23,17 +31,18 @@ namespace TextSourcers
         [DataMember]
         public string Path { get; set; }
 
-        private Dictionary<string, IText> _contents = new Dictionary<string, IText>();
+        // switched to Text for serialization
+        // Internet texts inherits from Text, not from IText so still works...
+        private Dictionary<string, Text> _contents = new Dictionary<string, Text>();
 
-        //[DataMember]
-        // TODO: failing to serialize
-        public Dictionary<string, IText> Contents
+        [DataMember]
+        public Dictionary<string, Text> Contents
         {
             get { return _contents; }
             set { _contents = value; }
         }
 
-        public Library AddText(Text text)
+        public Library Add(Text text)
         {
             text.Parent = this;
             Contents.Add(text.Title, text);
@@ -43,9 +52,17 @@ namespace TextSourcers
         [DataMember]
         public Library Parent { get; set; }
 
-        public IEnumerator<IText> GetEnumerator()
+        public IEnumerator<Text> GetEnumerator()
         {
             return _contents.Values.GetEnumerator();
+        }
+
+        public Text this[int index]
+        {
+            get
+            {
+                return this.Skip(index).FirstOrDefault();
+            }
         }
 
         public override string ToString()
@@ -79,9 +96,13 @@ namespace TextSourcers
     [DataContract]
     public class Text : IText
     {
-        public Text() { }
+        public Text()
+        {
+            Parent = null;
+        }
 
         public Text(string title, string path)
+            : this()
         {
             Title = title;
             Location = path;
@@ -108,6 +129,7 @@ namespace TextSourcers
         // which would get really, really weird
         // probably better off dumping generated texts into a folder
         // that is then part of the library....
+        [XmlIgnore]
         public virtual string Contents
         {
             get
@@ -130,6 +152,14 @@ namespace TextSourcers
             set { _contents = value; }
         }
 
+        [XmlIgnore]
+        // necessary to avoid a circular reference.
+        // if we serialize Text by itself, Parent is immaterial, as there is nothign to reference
+        // if we serialize the Library itself, the Add() method already sets the Parent ref of children
+        // so functionality should be maintained
+        // TODO: DANG. Deserialiation does not call the Add() method
+        // so, no parent set on children. DAMMIT.
+        // maybe something we create to do that programmatically on a restore?
         public Library Parent { get; set; }
 
         public override string ToString()
@@ -138,7 +168,7 @@ namespace TextSourcers
             var parent = string.Empty;
             if (Parent != null)
             {
-                parent = ":" + parent;
+                parent = Parent + ":";
             }
             return String.Format("{0}{1}", parent, Title);
         }
