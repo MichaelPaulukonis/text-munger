@@ -41,7 +41,7 @@ namespace TextSourcers
                     if (Path.GetExtension(f).ToLower() == ".txt")
                     {
                         var tx = new Text(Path.GetFileNameWithoutExtension(f), f);
-                        lib.AddText(tx);
+                        lib.Add(tx);
                     }
                 }
                 libs.Add(libname, lib);

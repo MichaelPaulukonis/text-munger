@@ -77,7 +77,7 @@ namespace TextSourcers
                 var myUri = new Uri(url);
                 var title = System.IO.Path.GetFileName(myUri.AbsolutePath);
 
-                lib.AddText(new InternetText(title, url, new XrmlTextExtractor()));
+                lib.Add(new InternetText(title, url, new XrmlTextExtractor()));
             }
 
             return lib;

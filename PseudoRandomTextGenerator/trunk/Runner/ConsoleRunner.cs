@@ -6,6 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Web;
+using System.Xml.Serialization;
 using HtmlAgilityPack;
 using TextSourcers;
 using TextTransformer;
@@ -48,15 +49,24 @@ namespace Runner
             var t = new Text("The Star Wars", path);
             var t2 = new Text("Alien3", path2);
 
-            var jt = t.ToJSON();
+            var aa = t.ToXml_nonworking();
+            var bb = new Text().FromXMLnonWorking(aa);
 
-            var l = new Library();
-            l.AddText(t);
-            l.AddText(t2);
+            //Console.WriteLine(aa);
 
-            var j = l.ToJSON();
+            var l = new Library("Test");
+            l.Add(t);
+            l.Add(t2);
 
-            Console.WriteLine(j);
+            // we're getting an array of Text back, not an actual Library
+            // the Title and Path are not included in the XML
+            var ll = l.ToXml();
+
+            Console.WriteLine(ll);
+
+            var mm = new Library().FromXML(ll);
+
+            Console.WriteLine(mm);
 
             // the output has no reference to the class type, nor the Extractor (of course -- it's not serialized)
             // so, what CAN we serialize? some sort of enum that is passed to a factory?
@@ -67,6 +77,26 @@ namespace Runner
             //var j2 = it.ToJSON();
 
             Console.ReadKey();
+        }
+
+        public string TextToXml(Text t)
+        {
+            var serializaer = new XmlSerializer(typeof(Text));
+            var tw = new StringWriter();
+            serializaer.Serialize(tw, t);
+            var s = tw.ToString();
+            tw.Close();
+
+            return s;
+        }
+
+        public Text XmlToText(string xml)
+        {
+            var deserializaer = new XmlSerializer(typeof(Text));
+            var reader = new MemoryStream(Encoding.Unicode.GetBytes(xml));
+            var t = (Text)deserializaer.Deserialize(reader);
+            reader.Close();
+            return t;
         }
 
         // I want to get some variance for the density padding
@@ -411,7 +441,7 @@ namespace Runner
                 foreach (var f in files)
                 {
                     var tx = new Text(Path.GetFileNameWithoutExtension(f), f);
-                    lib.AddText(tx);
+                    lib.Add(tx);
                 }
                 libs.Add(libname, lib);
             }
