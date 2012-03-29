@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Runtime.Serialization;
 using System.Text.RegularExpressions;
 
 namespace TextTransformer
@@ -16,9 +17,10 @@ namespace TextTransformer
 
         string Clean(string dirty);
 
-        MarkovRule Rule { get; }
+        MarkovRuleType Type { get; }
     }
 
+    [DataContract]
     public class DefaultRule : IMarkovRule
     {
         public virtual IList<string> Split(string subject)
@@ -34,7 +36,7 @@ namespace TextTransformer
 
         public virtual string Delimiter { get { return " "; } }
 
-        // this is pretty much used by all the other rules
+        // this is pretty much used by all the other rule
         public string Clean(string dirty)
         {
             var clean = dirty;
@@ -47,61 +49,31 @@ namespace TextTransformer
             return clean;
         }
 
-        public virtual MarkovRule Rule { get { return MarkovRule.Default; } }
+        public virtual MarkovRuleType Type { get { return MarkovRuleType.Default; } }
     }
 
+    [DataContract]
     public class XrayWordRule : DefaultRule
     {
         public override string Delimiter { get { return string.Empty; } }
 
-        public override MarkovRule Rule { get { return MarkovRule.XrayWord; } }
+        public override MarkovRuleType Type { get { return MarkovRuleType.XrayWord; } }
 
         public override IList<string> Split(string subject)
         {
-            // this is NOT tokenizing punctuation the way I would have expected
-            // blocks of "....." ".." are kept contiguous, instead of being split. ugh.
-            var regex = new Regex(@"(\W+)"); // tokenize punctuation
-
-            //var regex = new Regex(@"\W+"); // remove all punctuation
-
-            //var regex = new Regex(@"."); // every char for itself
-
-            // http://blog.figmentengine.com/2008/10/markov-chain-code.html
-            // suggests using
-            // One of the interesting side-effects of tokenizing using a simple regex
-            // is that if the input stream is HTML the Markov chain will treat HTML
-            // as words as well and therefore not only generate text that looks like
-            // the input, but is also formatted like the input - this also works for punctuation.
-
-            // actually, this has somewhat awful results, at least as far as spacing is concerned
-            // perhaps the original source has better output handling
-            //var regex = new Regex(@"(\W+)");
-
-            // okay, now I see.
-            /* the \W+ method makes punctuation, spaces, etc as individual tokens
-             * the use of the keylength allows the engine to select the likelihood of tokens to be followed by other tokens
-             * which in THIS case would be words, whitespace, or punctuation.
-             *
-             * the \s+ method built-in to PseudoRandomTextGenerator has a lot of space-insertion going on
-             * which is basically required to be NOT present in the \W+ method
-             *
-             * Not sure how to synthesize a switch between the two at the moment...
-             *
+            /* Goal: Tokenize words and punctuation
+             * That is, a word is one token, the next group of puncts are another token
+             * for this, we use an algortihm, not a regex
              */
-
-            // we ALSO need to split the punctuation. aaaargh.
 
             subject = this.Clean(subject);
 
-            // instead of regex.split, let's go through it char-by-char
-
-            var splitted = new List<string>();
-            string token = string.Empty;
-            var inWord = false;
+            var tokens = new List<string>();
+            var token = string.Empty;
             foreach (char c in subject)
             {
                 // if we're processing letters, and we find a letter, append to word
-                inWord = (char.IsLetter(c));
+                var inWord = (char.IsLetter(c));
                 if (inWord)
                 {
                     token += c;
@@ -110,20 +82,21 @@ namespace TextTransformer
                 {
                     if (token != string.Empty)
                     {
-                        splitted.Add(token);
+                        tokens.Add(token);
                         token = string.Empty;
                     }
-                    splitted.Add(c.ToString());
+                    tokens.Add(c.ToString());
                 }
             }
 
-            return splitted;
+            return tokens;
         }
     }
 
+    [DataContract]
     public class XrayCharRule : XrayWordRule
     {
-        public override MarkovRule Rule { get { return MarkovRule.XrayChar; } }
+        public override MarkovRuleType Type { get { return MarkovRuleType.XrayChar; } }
 
         public override IList<string> Split(string subject)
         {
@@ -139,7 +112,7 @@ namespace TextTransformer
 
     // TODO: the enum-name is too simlar to IMarkovRule
     //       one of them should change.... BECUASE EVEN I GET CONFUSED
-    public enum MarkovRule
+    public enum MarkovRuleType
     {
         Default,
         XrayWord,
@@ -148,12 +121,12 @@ namespace TextTransformer
 
     public class MarkovRuleFactory
     {
-        public MarkovRuleFactory(MarkovRule rule)
+        public MarkovRuleFactory(MarkovRuleType rule)
         {
             Rule = rule;
         }
 
-        public MarkovRule Rule { get; set; }
+        public MarkovRuleType Rule { get; set; }
 
         public IMarkovRule GetRule()
         {
@@ -161,13 +134,13 @@ namespace TextTransformer
 
             switch (Rule)
             {
-                case MarkovRule.Default:
+                case MarkovRuleType.Default:
                     rule = new DefaultRule();
                     break;
-                case MarkovRule.XrayWord:
+                case MarkovRuleType.XrayWord:
                     rule = new XrayWordRule();
                     break;
-                case MarkovRule.XrayChar:
+                case MarkovRuleType.XrayChar:
                     rule = new XrayCharRule();
                     break;
                 default:
@@ -178,7 +151,7 @@ namespace TextTransformer
         }
     }
 
-    public class Key
+    internal class Key
     {
         public string Word { get; set; }
 
@@ -187,25 +160,31 @@ namespace TextTransformer
         public string Previous { get; set; }
     }
 
+    [DataContract]
     public class MarkovGenerator : ITransformer, ICloneable
     {
         private int _keySize;
         private Dictionary<string, List<string>> _chain;
-        private readonly Random _random;
+        private static readonly Random _random = new Random();
         private IMarkovRule _rule;
         private const int FirstWord = 1;
-        private readonly string _wordDelim = Convert.ToChar(6).ToString(); // this is for the storage model only, not for output.
+        private static readonly string _wordDelim = Convert.ToChar(6).ToString(); // this is for the storage model only, not for output.
         private bool _settingsAreDirty = false; // have any settings changed?
 
         public MarkovGenerator() : this(new DefaultRule(), 2) { }
 
         public MarkovGenerator(int keySize) : this(new DefaultRule(), keySize) { }
 
-        public MarkovGenerator(IMarkovRule rules, int keySize)
+        public MarkovGenerator(MarkovRuleType ruleType, int keySize)
+            : this(new MarkovRuleFactory(ruleType).GetRule(), keySize)
+        {
+            MarkovRuleType = ruleType;
+        }
+
+        public MarkovGenerator(IMarkovRule rule, int keySize)
         {
             KeySize = keySize;
-            TokenizerRule = rules;
-            _random = new Random();
+            TokenizerRule = rule;
 
             LengthMin = 2000;
             LengthMax = 2000;
@@ -221,8 +200,10 @@ namespace TextTransformer
             return c;
         }
 
+        [DataMember]
         public int LengthMin { get; set; }
 
+        [DataMember]
         public int LengthMax { get; set; }
 
         private string _source;
@@ -252,6 +233,7 @@ namespace TextTransformer
         // I'm doing away with that for now
         // although 1 is ridiculous, it's potentially useful for generating a random string of words?
 
+        [DataMember]
         public int KeySize
         {
             get { return _keySize; }
@@ -285,9 +267,17 @@ namespace TextTransformer
             }
         }
 
-        public MarkovRule MarkovRule
+        [DataMember]
+        public MarkovRuleType MarkovRuleType
         {
-            get { return TokenizerRule.Rule; }
+            get { return TokenizerRule.Type; }
+            set
+            {
+                if (TokenizerRule == null || ((TokenizerRule != null) & TokenizerRule.Type != value))
+                {
+                    TokenizerRule = new MarkovRuleFactory(value).GetRule();
+                }
+            }
         }
 
         public string Munged

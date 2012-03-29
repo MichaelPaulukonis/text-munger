@@ -28,7 +28,10 @@ namespace Runner
         private static void Main(string[] args)
         {
             var c = new ConsoleRunner();
-            c.TestSerialization();
+
+            c.TestRuleSerialization();
+
+            //c.TestLibrarySerialization();
 
             //var walker = new RandomWalker(20, 5, 10);
             //for (int i = 0; i < 1000; ++i)
@@ -40,8 +43,28 @@ namespace Runner
             //mg.MungeIt();
         }
 
+        // testing Markov Rules, to start
+        // had to make changes to the Markov Generator.
+        // but now we can serialize/deserialize
+        // plus, some names make a tiny bit more sense
+        // I'm rethinking the whole "MarkovRuleType" necessity.
+        // it's almos all params EXCEPT for the XrayWord type -- that has words and puncts as tokens.
+        // can that be done with a regex?
+        public void TestRuleSerialization()
+        {
+            var m = new MarkovGenerator(MarkovRuleType.XrayChar, 3);
+
+            var xm = m.ToXml();
+
+            var mm = new MarkovGenerator().FromXML(xm);
+
+            mm.Source =
+                "This and that are some. More of the. Oh, whatever the that, then. You know this? This is what I mean. That or that and or of yes.";
+            Console.WriteLine(mm.Munged);
+        }
+
         //http://www.joe-stevens.com/2009/12/29/json-serialization-using-the-datacontractjsonserializer-and-c/
-        public void TestSerialization()
+        public void TestLibrarySerialization()
         {
             var path = @"D:\Dropbox\projects\TextMunger\Library\scripts\SWSECOND.TXT";
             var path2 = @"D:\Dropbox\projects\TextMunger\Library\scripts\alien_3_fasano_planet_wood.TXT";
@@ -77,26 +100,6 @@ namespace Runner
             //var j2 = it.ToJSON();
 
             Console.ReadKey();
-        }
-
-        public string TextToXml(Text t)
-        {
-            var serializaer = new XmlSerializer(typeof(Text));
-            var tw = new StringWriter();
-            serializaer.Serialize(tw, t);
-            var s = tw.ToString();
-            tw.Close();
-
-            return s;
-        }
-
-        public Text XmlToText(string xml)
-        {
-            var deserializaer = new XmlSerializer(typeof(Text));
-            var reader = new MemoryStream(Encoding.Unicode.GetBytes(xml));
-            var t = (Text)deserializaer.Deserialize(reader);
-            reader.Close();
-            return t;
         }
 
         // I want to get some variance for the density padding
