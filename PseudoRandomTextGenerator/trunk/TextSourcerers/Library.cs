@@ -4,7 +4,6 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Runtime.Serialization;
-using System.Xml.Serialization;
 
 namespace TextSourcers
 {
@@ -129,7 +128,6 @@ namespace TextSourcers
         // which would get really, really weird
         // probably better off dumping generated texts into a folder
         // that is then part of the library....
-        [XmlIgnore]
         public virtual string Contents
         {
             get
@@ -152,7 +150,6 @@ namespace TextSourcers
             set { _contents = value; }
         }
 
-        [XmlIgnore]
         // necessary to avoid a circular reference.
         // if we serialize Text by itself, Parent is immaterial, as there is nothign to reference
         // if we serialize the Library itself, the Add() method already sets the Parent ref of children

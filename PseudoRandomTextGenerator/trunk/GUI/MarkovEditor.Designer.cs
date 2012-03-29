@@ -122,8 +122,8 @@
             this.cbRules.FormattingEnabled = true;
             this.cbRules.Items.AddRange(new object[] {
             "Generic WordRule",
-            "Xray Word Rule",
-            "Xray Char Rule"});
+            "Xray Word Type",
+            "Xray Char Type"});
             this.cbRules.Location = new System.Drawing.Point(80, 10);
             this.cbRules.Name = "cbRules";
             this.cbRules.Size = new System.Drawing.Size(121, 21);

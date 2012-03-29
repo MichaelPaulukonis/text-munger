@@ -31,11 +31,11 @@ namespace GUI
             txtLengthMax.Text = MarkovGenerator.LengthMax.ToString();
             txtLengthMin.Text = MarkovGenerator.LengthMin.ToString();
 
-            cbRules.DataSource = Enum.GetValues(typeof(MarkovRule));
-            // TODO: pre-select the correct Rule
+            cbRules.DataSource = Enum.GetValues(typeof(MarkovRuleType));
+            // TODO: pre-select the correct Type
             // TODO: I don't think that the Markov Editor exposes that.
             // it exposes the Tokenizer, but not the enum... we need to convert around.....
-            cbRules.SelectedIndex = (int)MarkovGenerator.MarkovRule;
+            cbRules.SelectedIndex = (int)MarkovGenerator.MarkovRuleType;
         }
 
         private void txtKeySize_TextChanged(object sender, EventArgs e)
@@ -90,7 +90,7 @@ namespace GUI
 
         private IMarkovRule GetMarkovRuleFromForm()
         {
-            MarkovRule sel;
+            MarkovRuleType sel;
             Enum.TryParse(cbRules.SelectedItem.ToString(), true, out sel);
             var mr = new MarkovRuleFactory(sel).GetRule();
             return mr;
@@ -101,7 +101,7 @@ namespace GUI
         // SOLUTION: drop this method, and only populte the MarkovGenerator on save
         //private void cbRules_SelectedIndexChanged(object sender, EventArgs e)
         //{
-        //    MarkovRule sel;
+        //    MarkovRuleType sel;
         //    Enum.TryParse(cbRules.SelectedItem.ToString(), true, out sel);
         //    var mr = new MarkovRuleFactory(sel).GetRule();
         //    MarkovGenerator.TokenizerRule = mr;

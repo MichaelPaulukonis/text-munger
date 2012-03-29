@@ -126,7 +126,7 @@ namespace TextTransformer
                 {
                     Granularity = rule.Granularity;
                     // TODO: better exception reporting
-                    //throw new GranularityViolationException(string.Format("Rule {0} cannot be added to RuleSet", rule.ToString()));
+                    //throw new GranularityViolationException(string.Format("Type {0} cannot be added to RuleSet", rule.ToString()));
                 }
             }
             Rules.Add(rule);

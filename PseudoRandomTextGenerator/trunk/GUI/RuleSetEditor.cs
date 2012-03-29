@@ -78,8 +78,8 @@ namespace GUI
             }
         }
 
-        // hey, has anybody noticed that I use "Rule" and "Transformer" interchangebly?
-        // beucase I use "Rule" and "Transformer" interchangebly.
+        // hey, has anybody noticed that I use "Type" and "Transformer" interchangebly?
+        // beucase I use "Type" and "Transformer" interchangebly.
         public void DisplayRuleEditor(object sender, EventArgs e)
         {
             // DAMMIT! we still have implementation details exposed. WTF!!!!
@@ -98,7 +98,7 @@ namespace GUI
             }
             else
             {
-                MessageBox.Show("Either no setup is required, or Rule Editor is not yet implemented");
+                MessageBox.Show("Either no setup is required, or Type Editor is not yet implemented");
             }
         }
 
