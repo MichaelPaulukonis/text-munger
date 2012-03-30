@@ -31,14 +31,6 @@ namespace Runner
 
             c.TestRuleSerialization();
 
-            //c.TestLibrarySerialization();
-
-            //var walker = new RandomWalker(20, 5, 10);
-            //for (int i = 0; i < 1000; ++i)
-            //{
-            //    Console.WriteLine(string.Format("{0}", walker.Next()));
-            //}
-
             //var mg = new ConsoleRunner();
             //mg.MungeIt();
         }
@@ -52,6 +44,27 @@ namespace Runner
         // can that be done with a regex?
         public void TestRuleSerialization()
         {
+            TestXrmlSerialization();
+        }
+
+        public void TestXrmlSerialization()
+        {
+            var x = new XrmlFormat();
+            x.LineLength = 2;
+            x.Density.Percentage = 50;
+
+            var xx = x.ToXml();
+            var x2 = new XrmlFormat().FromXML(xx);
+
+            x2.Source =
+                "This and that are some. More of the. Oh, whatever the that, then. You know this? This is what I mean. That or that and or of yes.";
+            Console.WriteLine(x2.Munged);
+
+            Console.ReadKey();
+        }
+
+        public void TestMarkovSerialization()
+        {
             var m = new MarkovGenerator(MarkovRuleType.XrayChar, 3);
 
             var xm = m.ToXml();
@@ -61,6 +74,8 @@ namespace Runner
             mm.Source =
                 "This and that are some. More of the. Oh, whatever the that, then. You know this? This is what I mean. That or that and or of yes.";
             Console.WriteLine(mm.Munged);
+
+            Console.ReadKey();
         }
 
         //http://www.joe-stevens.com/2009/12/29/json-serialization-using-the-datacontractjsonserializer-and-c/
@@ -100,6 +115,16 @@ namespace Runner
             //var j2 = it.ToJSON();
 
             Console.ReadKey();
+        }
+
+        // TODO: in XRML, at any rate, this seems to go in reverse and not come back
+        public void TestRandomWalker()
+        {
+            var walker = new RandomWalker(20, 5, 10);
+            for (var i = 0; i < 1000; ++i)
+            {
+                Console.WriteLine(string.Format("{0}", walker.Next()));
+            }
         }
 
         // I want to get some variance for the density padding

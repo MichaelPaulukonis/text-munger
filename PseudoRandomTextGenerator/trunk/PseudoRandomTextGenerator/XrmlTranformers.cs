@@ -1,9 +1,11 @@
 ﻿using System;
+using System.Runtime.Serialization;
 using System.Text;
 using System.Text.RegularExpressions;
 
 namespace TextTransformer
 {
+    [DataContract]
     public class XrmlFormat : ITransformer
     {
         public XrmlFormat()
@@ -12,10 +14,13 @@ namespace TextTransformer
             LineLength = 80;
         }
 
+        [DataMember]
         public Density Density { get; set; }
 
+        [DataMember]
         public int LineLength { get; set; }
 
+        [DataMember]
         public string Source { get; set; }
 
         public string Munged
@@ -29,8 +34,8 @@ namespace TextTransformer
             Density.Source = Source;
             var mod = Density.Munged;
 
-            // "(.{1,81})"
-            var regex = string.Format("(.{{1,{0}}})", LineLength + 1);
+            // "(.{1,80})"
+            var regex = string.Format("(.{{1,{0}}})", LineLength);
             mod = Regex.Replace(mod, regex, "$1\n");
 
             return mod;
@@ -44,24 +49,26 @@ namespace TextTransformer
         }
     }
 
+    [DataContract]
     public class Density : ITransformer
     {
-        private Random _rnd;
+        private static Random _rnd = new Random();
 
         public Density() : this(percentage: 97) { }
 
         public Density(int percentage)
         {
-            _rnd = new Random();
             Percentage = percentage;
             this.RandomWalker = new RandomWalker(30, 10, 10);
         }
 
+        [DataMember]
         public RandomWalker RandomWalker { get; set; }
 
         public string Source { get; set; }
 
         private int _p = 97; // default
+        [DataMember]
         public int Percentage
         {
             get { return _p; }
@@ -133,6 +140,7 @@ namespace TextTransformer
 
         private double _boundary = 6.0;
 
+        [DataMember]
         public double Boundary
         {
             get { return _boundary; }
@@ -206,9 +214,10 @@ namespace TextTransformer
         }
     }
 
+    [DataContract]
     public class RandomWalker
     {
-        private Random _rnd = new Random();
+        private static Random _rnd = new Random();
         private int _yaw;
         private int _tenacity;
 
@@ -225,6 +234,7 @@ namespace TextTransformer
         }
 
         // major-deviation walk
+        [DataMember]
         public int Yaw
         {
             get;
@@ -232,6 +242,7 @@ namespace TextTransformer
         }
 
         // minor deviation walk around Yaw-point
+        [DataMember]
         public int Warble
         {
             get;
@@ -239,6 +250,7 @@ namespace TextTransformer
         }
 
         // tendancy to warble around Yaw point
+        [DataMember]
         public int Tenacity { get; set; }
 
         public int Next()
