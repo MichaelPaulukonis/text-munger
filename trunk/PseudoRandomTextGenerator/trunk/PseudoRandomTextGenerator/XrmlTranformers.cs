@@ -20,7 +20,6 @@ namespace TextTransformer
         [DataMember]
         public int LineLength { get; set; }
 
-        [DataMember]
         public string Source { get; set; }
 
         public string Munged

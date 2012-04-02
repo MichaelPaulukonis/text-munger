@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Runtime.Serialization;
 using System.Text;
 
 namespace TextTransformer
@@ -10,6 +11,7 @@ namespace TextTransformer
     //       ie, mis-spellings, etc.
     //       NOT, however, leet-speak or other REGEX-level transformers
     //       or.... would it???
+    [DataContract]
     public class TransformerFromFile : ITransformer
     {
         public TransformerFromFile(string sourceFile)
@@ -20,11 +22,10 @@ namespace TextTransformer
             //       so we get classic := clbuttic
         }
 
-        public string SourceFile { get; private set; }
+        [DataMember]
+        public string SourceFile { get; set; }
 
         public string Source { get; set; }
-
-        private string _m = null;
 
         public string Munged
         {
@@ -90,7 +91,7 @@ namespace TextTransformer
 
         public Granularity Granularity { get { return Granularity.Word; } }
 
-        private Dictionary<string, List<string>> _replacers = null;
+        private Dictionary<string, List<string>> _replacers;
 
         private Dictionary<string, List<string>> Replacers
         {
@@ -153,12 +154,13 @@ namespace TextTransformer
                         yield return source.Skip(i).Take(1).Concat(p);
         }
 
+        [DataMember]
         public string Name { get; set; }
 
         // TODO: take a name from the file
         public override string ToString()
         {
-            return Name ?? "Homphonerize";
+            return Name ?? SourceFile ?? "TransformerFromFile";
         }
     }
 }

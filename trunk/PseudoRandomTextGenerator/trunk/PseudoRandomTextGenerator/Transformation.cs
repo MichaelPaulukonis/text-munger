@@ -1,8 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
-using System.Text;
+using System.Runtime.Serialization;
 using System.Text.RegularExpressions;
 
 namespace TextTransformer
@@ -56,11 +55,10 @@ namespace TextTransformer
         }
     }
 
+    [DataContract]
     public class Shouty : ITransformer
     {
         public string Source { get; set; }
-
-        private string _m = null;
 
         public string Munged
         {
@@ -80,11 +78,10 @@ namespace TextTransformer
         }
     }
 
+    [DataContract]
     public class RandomCaps : ITransformer
     {
         public string Source { get; set; }
-
-        private string _m = null;
 
         public string Munged
         {
@@ -119,8 +116,6 @@ namespace TextTransformer
     public class Disemconsonant : ITransformer
     {
         public string Source { get; set; }
-
-        private string _m = null;
 
         public string Munged
         {
@@ -170,6 +165,7 @@ namespace TextTransformer
     }
 
     // clone, as the Mark can be set independently
+    [DataContract]
     public class PunctuizeWhitespace : ITransformer, ICloneable
     {
         public PunctuizeWhitespace()
@@ -177,11 +173,10 @@ namespace TextTransformer
             Mark = "."; // default
         }
 
+        [DataMember]
         public string Mark { get; set; }
 
         public string Source { get; set; }
-
-        private string _m = null;
 
         public string Munged
         {
@@ -215,6 +210,7 @@ namespace TextTransformer
         }
     }
 
+    [DataContract]
     public class VowellToPunct : ITransformer
     {
         public VowellToPunct()
@@ -224,9 +220,8 @@ namespace TextTransformer
 
         public string Source { get; set; }
 
+        [DataMember]
         public string Mark { get; set; }
-
-        private string _m = null;
 
         public string Munged
         {
@@ -249,11 +244,10 @@ namespace TextTransformer
         }
     }
 
+    [DataContract]
     public class Reverse : ITransformer
     {
         public string Source { get; set; }
-
-        private string _m = null;
 
         public string Munged
         {
@@ -273,6 +267,7 @@ namespace TextTransformer
         }
     }
 
+    [DataContract]
     public class Shuffle : ITransformer
     {
         public string Source { get; set; }
@@ -300,6 +295,7 @@ namespace TextTransformer
         }
     }
 
+    [DataContract]
     public class PigLatin : ITransformer
     {
         public string Source { get; set; }
@@ -346,18 +342,34 @@ namespace TextTransformer
     }
 
     // TODO: convert to file for TransformerFromFile
+    [DataContract]
     public class Leet : ITransformer
     {
         // transform code based on http://stackoverflow.com/a/3216008/41153
 
         private Dictionary<string, List<string>> _rules;
 
-        private Random _rnd;
+        private static Random _rnd = new Random();
+
+        public Leet()
+        {
+            BuildRuleSet();
+        }
 
         public Leet(Random rnd)
+            : this()
         {
             _rnd = rnd;
+        }
 
+        [OnDeserializing]
+        public void OnDeserializing(StreamingContext ctx)
+        {
+            BuildRuleSet();
+        }
+
+        private void BuildRuleSet()
+        {
             _rules = new Dictionary<string, List<string>>();
 
             // TODO: read these from a file
@@ -412,8 +424,6 @@ namespace TextTransformer
             AddRule("Z", "2");
         }
 
-        public Leet() : this(new Random()) { }
-
         private void AddRule(string plain, string leet)
         {
             if (!_rules.ContainsKey(plain))
@@ -433,8 +443,6 @@ namespace TextTransformer
         {
             get { return Munge(); }
         }
-
-        public Granularity Granularity { get { return Granularity.Word; } }
 
         // as always, we might want to not always replace every single letter
         // so, think about an internal randomizer, that we can configure.....
@@ -468,6 +476,13 @@ namespace TextTransformer
             }
 
             return munged;
+        }
+
+        [DataMember]
+        public Granularity Granularity
+        {
+            get { return Granularity.Word; }
+            set { return; }
         }
 
         public override string ToString()
