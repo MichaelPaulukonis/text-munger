@@ -44,7 +44,19 @@ namespace Runner
         // can that be done with a regex?
         public void TestRuleSerialization()
         {
-            TestXrmlSerialization();
+            // List<ITransformer> globalRules
+
+            //// THIS WORKS
+            //var l = new Leet();
+            //var lx = l.ToXml();
+            //var ll = new Leet().FromXML(lx);
+
+            // THIS does NOT work
+            var tf = new TransformationFactory(Granularity.Word);
+            var rules = tf.GetTransformers();
+            // cannot deserialize Leet....
+            var rx = rules.ToXml();
+            var rr = new List<ITransformer>().FromXML(rx);
         }
 
         public void TestXrmlSerialization()

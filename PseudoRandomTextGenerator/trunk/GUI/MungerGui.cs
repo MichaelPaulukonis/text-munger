@@ -69,6 +69,11 @@ namespace GUI
                 // this will be tweaked, so that each rule has it's own percentage.
                 // or something.....
 
+                // TODO: instead of pulling from the form-control, keep this stored locally
+                // where "locally" probably means inside of some-other class?
+                // hrm. No, probably here in the gui
+                // the "TextMunger" class will apply rules to text
+                // everything should be supplied, not stored
                 var sets = RuleSetSelector.SelectedItems.Cast<RuleSet>().ToList();
 
                 if (sets.Count > 0)
