@@ -3,7 +3,7 @@
 
 = Introduction =
 
-There is no defined goal for TextMunger, beyond being useful.
+There is no defined goal for *TextMunger*, beyond being useful.
 
 For certain limited definitions of the word "useful."
 
@@ -25,22 +25,31 @@ For certain limited definitions of the word "useful."
 ==TASKS (in no particular order)==
   * save and reload configured rule-sets
   * build unit-tests
+  * Markov updates
+   * drop xray-references in Markov rules
+   * add explanation of rules to rule-editor (and whatever background code)
+   * change multiple-Markov rules to one rule, with options
+   * make Markov-analysis case-insensitive for analysis
+    * not for output (optional, I suppose)
+    * optional
   * added percentage bias to text sources
+   * although this can be crudely-done via adding the text more than once
   * swap OUTPUT to SOURCE, for re-processing
   * more clustering random-walk for Density transform
-  * drop xray-references in Markov rules
-  * add explanation of rules to rule-editor (and whatever background code)
   * file-based generic replacement "translator" to read from directory
-  ** ie, multiple user-controlled translators are possible
-  ** that will be an issue for serialization....
+   * ie, multiple user-controlled translators are possible
+   * that will be an issue for serialization....
+   * wait, I think I did this....
   * improve display in selection editors
+   * this is more of a update for [https://code.google.com/p/winforms-custom-select-control/ the winform custom select control project]
   * allow controls to resize when form is resized
   * separation of operation from GUI, so can be scripted
   * more Transformations
   * percentage-bias for word-level Transforms
   * granularity-handler for sentence-level
   * installation project, so installer can exist in project alongside source
-
+  * better movement-controls inside of edit-areas
+   * ie, word-jump, etc
 
 ==WAAAY Down the road, but a major goal:==
   * planar-output and processing, not just linear
