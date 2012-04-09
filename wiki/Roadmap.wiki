@@ -3,7 +3,7 @@
 
 = Introduction =
 
-There is no defined goal for *TextMunger*, beyond being useful.
+There is no defined goal for `TextMunger`, beyond being useful.
 
 For certain limited definitions of the word "useful."
 
@@ -45,6 +45,8 @@ For certain limited definitions of the word "useful."
   * allow controls to resize when form is resized
   * separation of operation from GUI, so can be scripted
   * more Transformations
+   * acrostic/mesostic generator
+   *ee-cummings-ification
   * percentage-bias for word-level Transforms
   * granularity-handler for sentence-level
   * installation project, so installer can exist in project alongside source
