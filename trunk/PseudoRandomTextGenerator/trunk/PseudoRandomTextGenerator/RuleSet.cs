@@ -22,7 +22,7 @@ namespace TextTransformer
         {
             ForcedGranularity = false;
             _name = name;
-            Rules = new List<ITransformer>();
+            Rules = new List<TransformerBase>();
             this.Active = true;
         }
 
@@ -78,9 +78,9 @@ namespace TextTransformer
             return rs;
         }
 
-        private List<ITransformer> _rules = new List<ITransformer>();
+        private List<TransformerBase> _rules = new List<TransformerBase>();
 
-        public List<ITransformer> Rules
+        public List<TransformerBase> Rules
         {
             get { return _rules; }
             set
@@ -114,7 +114,7 @@ namespace TextTransformer
             }
         }
 
-        public RuleSet AddRule(ITransformer rule)
+        public RuleSet AddRule(TransformerBase rule)
         {
             if (Granularity == Granularity.Unknown)
             {
@@ -143,7 +143,7 @@ namespace TextTransformer
             return g;
         }
 
-        public RuleSet DeleteRule(ITransformer rule)
+        public RuleSet DeleteRule(TransformerBase rule)
         {
             for (var i = 0; i < Rules.Count; ++i)
             {

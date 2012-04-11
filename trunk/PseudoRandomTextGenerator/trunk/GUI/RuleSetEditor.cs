@@ -68,7 +68,7 @@ namespace GUI
             try
             {
                 _activeRuleSetEditors.Remove(RuleSet);
-                RuleSet.Rules = Editor.SelectedItems.Cast<ITransformer>().ToList();
+                RuleSet.Rules = Editor.SelectedItems.Cast<TransformerBase>().ToList();
                 _control.UpdateSelected(RuleSet); // so count can change
             }
             catch (Exception ex)
@@ -84,7 +84,7 @@ namespace GUI
         {
             // DAMMIT! we still have implementation details exposed. WTF!!!!
             // TODO: fix this
-            var rule = (ITransformer)((ListBox)sender).SelectedItem;
+            var rule = (TransformerBase)((ListBox)sender).SelectedItem;
 
             if (rule.GetType() == typeof(MarkovGenerator))
             {

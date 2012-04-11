@@ -12,7 +12,7 @@ namespace TextTransformer
     //       NOT, however, leet-speak or other REGEX-level transformers
     //       or.... would it???
     [DataContract]
-    public class TransformerFromFile : ITransformer
+    public class TransformerFromFile : TransformerBase
     {
         public TransformerFromFile(string sourceFile)
         {
@@ -25,9 +25,9 @@ namespace TextTransformer
         [DataMember]
         public string SourceFile { get; set; }
 
-        public string Source { get; set; }
+        public override string Source { get; set; }
 
-        public string Munged
+        public override string Munged
         {
             get { return Munge(); }
         }
@@ -89,7 +89,9 @@ namespace TextTransformer
             return (word[0].ToString().ToUpper() == word[0].ToString());
         }
 
-        public Granularity Granularity { get { return Granularity.Word; } }
+        public override Granularity Granularity { get { return Granularity.Word; }
+            set { return; }
+        }
 
         private Dictionary<string, List<string>> _replacers;
 

@@ -15,9 +15,9 @@ namespace TextTransformer
             _folderPath = path;
         }
 
-        public List<ITransformer> GetTransformers()
+        public List<TransformerBase> GetTransformers()
         {
-            var ts = new List<ITransformer>();
+            var ts = new List<TransformerBase>();
 
             var files = Directory.GetFiles(_folderPath);
             foreach (var file in files)

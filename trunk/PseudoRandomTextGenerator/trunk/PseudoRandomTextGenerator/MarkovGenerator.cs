@@ -161,7 +161,7 @@ namespace TextTransformer
     }
 
     [DataContract]
-    public class MarkovGenerator : ITransformer, ICloneable
+    public class MarkovGenerator : TransformerBase, ICloneable
     {
         private int _keySize;
         private Dictionary<string, List<string>> _chain;
@@ -208,7 +208,7 @@ namespace TextTransformer
 
         private string _source;
 
-        public string Source
+        public override string Source
         {
             get { return _source; }
             set
@@ -227,7 +227,11 @@ namespace TextTransformer
         // running Markov on a word-level is a bit silly, but for long words I guess you could do it
         // should we just bite-the-bullet and insist on sentence-level?
         // what about the hundred-letter thunderwords? or a punctuation-and-whitespace-free blob?
-        public Granularity Granularity { get { return Granularity.All; } }
+        public override Granularity Granularity { get { return Granularity.All; }
+
+            set { return; }
+        
+        }
 
         // original code constrained size from 1..5
         // I'm doing away with that for now
@@ -280,7 +284,7 @@ namespace TextTransformer
             }
         }
 
-        public string Munged
+        public override string Munged
         {
             get { return Munge(); }
         }

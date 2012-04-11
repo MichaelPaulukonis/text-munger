@@ -96,7 +96,7 @@ namespace GUI
             }
         }
 
-        private void ApplyGlobals(List<ITransformer> globalRules)
+        private void ApplyGlobals(List<TransformerBase> globalRules)
         {
             foreach (var rule in globalRules)
             {
@@ -105,7 +105,7 @@ namespace GUI
             }
         }
 
-        private void ApplyGranularRules(List<ITransformer> granulars)
+        private void ApplyGranularRules(List<TransformerBase> granulars)
         {
             const int threshold = 100; // 20% chance of applying the rule
             var sb = new StringBuilder();
