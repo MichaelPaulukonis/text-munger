@@ -23,13 +23,37 @@ namespace TextTransformer
 
     // do NOT implement ICloneable on interface
     // as only those Transformers that have distinct settings require it
-    public interface ITransformer
+    //public interface ITransformer
+    //{
+    //    string Source { get; set; }
+
+    //    string Munged { get; }
+
+    //    Granularity Granularity { get; }
+    //}
+
+    [DataContract]
+    [KnownType(typeof(Shouty))]
+    [KnownType(typeof(RandomCaps))]
+    [KnownType(typeof(Disemconsonant))]
+    [KnownType(typeof(Disemvowell))]
+    [KnownType(typeof(PunctuizeWhitespace))]
+    [KnownType(typeof(VowellToPunct))]
+    [KnownType(typeof(Reverse))]
+    [KnownType(typeof(Shuffle))]
+    [KnownType(typeof(PigLatin))]
+    [KnownType(typeof(Leet))]
+    [KnownType(typeof(TransformerFromFile))]
+    [KnownType(typeof(MarkovGenerator))]
+    [KnownType(typeof(XrmlFormat))]
+    [KnownType(typeof(Density))]
+    public abstract class TransformerBase
     {
-        string Source { get; set; }
+        public abstract string Source { get; set; }
 
-        string Munged { get; }
+        public abstract string Munged { get; }
 
-        Granularity Granularity { get; }
+        public abstract Granularity Granularity { get; set;  }
     }
 
     internal static class TransformerTools
@@ -56,21 +80,24 @@ namespace TextTransformer
     }
 
     [DataContract]
-    public class Shouty : ITransformer
+    public class Shouty : TransformerBase
     {
-        public string Source { get; set; }
+        public override string Source { get; set; }
 
-        public string Munged
+        public override string Munged
         {
             get { return Munge(Source); }
         }
 
-        private string Munge(string source)
+        private  string Munge(string source)
         {
             return source.ToUpper();
         }
 
-        public Granularity Granularity { get { return Granularity.Word; } }
+        public override Granularity Granularity { get { return Granularity.Word; } 
+            set { return; }
+        
+        }
 
         public override string ToString()
         {
@@ -79,11 +106,11 @@ namespace TextTransformer
     }
 
     [DataContract]
-    public class RandomCaps : ITransformer
+    public class RandomCaps : TransformerBase
     {
-        public string Source { get; set; }
+        public override string Source { get; set; }
 
-        public string Munged
+        public override string Munged
         {
             //get { return _m ?? (_m = Munge()); }
             get { return Munge(Source); }
@@ -105,7 +132,10 @@ namespace TextTransformer
             return new string(c);
         }
 
-        public Granularity Granularity { get { return Granularity.Word; } }
+        public override Granularity Granularity { get { return Granularity.Word; } 
+            set { return; }
+        }
+
 
         public override string ToString()
         {
@@ -113,11 +143,11 @@ namespace TextTransformer
         }
     }
 
-    public class Disemconsonant : ITransformer
+    public class Disemconsonant : TransformerBase
     {
-        public string Source { get; set; }
+        public override string Source { get; set; }
 
-        public string Munged
+        public override string Munged
         {
             get { return Munge(); }
         }
@@ -130,7 +160,13 @@ namespace TextTransformer
             return munged;
         }
 
-        public Granularity Granularity { get { return Granularity.Word; } }
+        public override Granularity Granularity
+        {
+            get { return Granularity.Word; }
+            set { return; }
+
+        
+        }
 
         public override string ToString()
         {
@@ -139,11 +175,11 @@ namespace TextTransformer
         }
     }
 
-    public class Disemvowell : ITransformer
+    public class Disemvowell : TransformerBase
     {
-        public string Source { get; set; }
+        public override string Source { get; set; }
 
-        public string Munged
+        public override string Munged
         {
             get { return Munge(Source); }
         }
@@ -156,7 +192,10 @@ namespace TextTransformer
             return munged;
         }
 
-        public Granularity Granularity { get { return Granularity.Word; } }
+        public override Granularity Granularity { get { return Granularity.Word; }
+            set { return; }
+        
+        }
 
         public override string ToString()
         {
@@ -166,7 +205,7 @@ namespace TextTransformer
 
     // clone, as the Mark can be set independently
     [DataContract]
-    public class PunctuizeWhitespace : ITransformer, ICloneable
+    public class PunctuizeWhitespace : TransformerBase, ICloneable
     {
         public PunctuizeWhitespace()
         {
@@ -176,9 +215,9 @@ namespace TextTransformer
         [DataMember]
         public string Mark { get; set; }
 
-        public string Source { get; set; }
+        public override string Source { get; set; }
 
-        public string Munged
+        public override string Munged
         {
             get { return Munge(Source); }
         }
@@ -193,7 +232,10 @@ namespace TextTransformer
             return output;
         }
 
-        public Granularity Granularity { get { return Granularity.Sentence; } }
+        public override Granularity Granularity { get { return Granularity.Sentence; }
+            set { return; }
+        
+        }
 
         public object Clone()
         {
@@ -211,19 +253,19 @@ namespace TextTransformer
     }
 
     [DataContract]
-    public class VowellToPunct : ITransformer
+    public class VowellToPunct : TransformerBase
     {
         public VowellToPunct()
         {
             Mark = "."; // default
         }
 
-        public string Source { get; set; }
+        public override string Source { get; set; }
 
         [DataMember]
         public string Mark { get; set; }
 
-        public string Munged
+        public override string Munged
         {
             get { return Munge(Source); }
         }
@@ -236,7 +278,10 @@ namespace TextTransformer
             return munged;
         }
 
-        public Granularity Granularity { get { return Granularity.Word; } }
+        public override Granularity Granularity { get { return Granularity.Word; }
+            set { return; }
+        
+        }
 
         public override string ToString()
         {
@@ -245,11 +290,11 @@ namespace TextTransformer
     }
 
     [DataContract]
-    public class Reverse : ITransformer
+    public class Reverse : TransformerBase
     {
-        public string Source { get; set; }
+        public override string Source { get; set; }
 
-        public string Munged
+        public override string Munged
         {
             get { return Munge(); }
         }
@@ -259,7 +304,10 @@ namespace TextTransformer
             return new string(Source.Reverse().ToArray());
         }
 
-        public Granularity Granularity { get { return Granularity.Word; } }
+        public override Granularity Granularity { get { return Granularity.Word; }
+            set { return; }
+        
+        }
 
         public override string ToString()
         {
@@ -268,16 +316,19 @@ namespace TextTransformer
     }
 
     [DataContract]
-    public class Shuffle : ITransformer
+    public class Shuffle : TransformerBase
     {
-        public string Source { get; set; }
+        public override string Source { get; set; }
 
-        public string Munged
+        public override string Munged
         {
             get { return Munge(); }
         }
 
-        public Granularity Granularity { get { return Granularity.Word; } }
+        public override Granularity Granularity { get { return Granularity.Word; }
+            set { return; }
+        
+        }
 
         private string Munge()
         {
@@ -296,18 +347,19 @@ namespace TextTransformer
     }
 
     [DataContract]
-    public class PigLatin : ITransformer
+    public class PigLatin : TransformerBase
     {
-        public string Source { get; set; }
+        public override string Source { get; set; }
 
-        public string Munged
+        public override string Munged
         {
             get { return Munge(Source); }
         }
 
-        public Granularity Granularity
+        public override Granularity Granularity
         {
             get { return Granularity.Word; }
+            set { return; }
         }
 
         // based on code @ http://stackoverflow.com/questions/4098178/c-sharp-translator-from-pig-latin-to-english
@@ -343,7 +395,7 @@ namespace TextTransformer
 
     // TODO: convert to file for TransformerFromFile
     [DataContract]
-    public class Leet : ITransformer
+    public class Leet : TransformerBase
     {
         // transform code based on http://stackoverflow.com/a/3216008/41153
 
@@ -437,9 +489,9 @@ namespace TextTransformer
             }
         }
 
-        public string Source { get; set; }
+        public override string Source { get; set; }
 
-        public string Munged
+        public override string Munged
         {
             get { return Munge(); }
         }
@@ -479,7 +531,7 @@ namespace TextTransformer
         }
 
         [DataMember]
-        public Granularity Granularity
+        public override Granularity Granularity
         {
             get { return Granularity.Word; }
             set { return; }

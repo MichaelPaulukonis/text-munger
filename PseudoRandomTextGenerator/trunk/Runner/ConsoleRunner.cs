@@ -56,7 +56,7 @@ namespace Runner
             var rules = tf.GetTransformers();
             // cannot deserialize Leet....
             var rx = rules.ToXml();
-            var rr = new List<ITransformer>().FromXML(rx);
+            var rr = new List<TransformerBase>().FromXML(rx);
         }
 
         public void TestXrmlSerialization()
@@ -189,7 +189,6 @@ namespace Runner
             Console.WriteLine(string.Format("\n\nMinOffset: {0} MaxOffset: {1}", minOffset, maxOffset));
             Console.WriteLine(string.Format("\n\nMinNormal: {0} MaxNormal: {1}", minNormal, maxNormal));
 
-            var x = 0;
         }
 
         public void MungeIt()
@@ -280,9 +279,9 @@ namespace Runner
         }
 
         // this is a set list for testing
-        private static IEnumerable<ITransformer> GetGlobalRules()
+        private static IEnumerable<TransformerBase> GetGlobalRules()
         {
-            var l = new List<ITransformer> {
+            var l = new List<TransformerBase> {
                 //new PunctuizeWhitespace(), // this conflicts with Density....
                 new Density{ Percentage = 97}
                 ,new XrmlFormat()
@@ -329,9 +328,9 @@ namespace Runner
         // in order to get this to work, the rule output-cache was eliminated
         // this means we can't retrieve multiple times,
         // but we can run multiple times and always get new material
-        private static List<ITransformer> GetRulesGranular()
+        private static List<TransformerBase> GetRulesGranular()
         {
-            var l = new List<ITransformer>
+            var l = new List<TransformerBase>
             {
                 new Leet()
                 ,new PigLatin()

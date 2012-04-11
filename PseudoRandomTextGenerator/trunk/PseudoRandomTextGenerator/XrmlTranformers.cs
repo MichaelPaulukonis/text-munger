@@ -6,7 +6,7 @@ using System.Text.RegularExpressions;
 namespace TextTransformer
 {
     [DataContract]
-    public class XrmlFormat : ITransformer
+    public class XrmlFormat : TransformerBase
     {
         public XrmlFormat()
         {
@@ -20,9 +20,9 @@ namespace TextTransformer
         [DataMember]
         public int LineLength { get; set; }
 
-        public string Source { get; set; }
+        public override string Source { get; set; }
 
-        public string Munged
+        public override string Munged
         {
             get { return Munge(); }
         }
@@ -40,7 +40,11 @@ namespace TextTransformer
             return mod;
         }
 
-        public Granularity Granularity { get { return Granularity.All; } }
+        public override  Granularity Granularity { get { return Granularity.All; }
+
+            set { return; }
+        
+        }
 
         public override string ToString()
         {
@@ -49,7 +53,7 @@ namespace TextTransformer
     }
 
     [DataContract]
-    public class Density : ITransformer
+    public class Density : TransformerBase
     {
         private static Random _rnd = new Random();
 
@@ -64,7 +68,7 @@ namespace TextTransformer
         [DataMember]
         public RandomWalker RandomWalker { get; set; }
 
-        public string Source { get; set; }
+        public override string Source { get; set; }
 
         private int _p = 97; // default
         [DataMember]
@@ -82,7 +86,7 @@ namespace TextTransformer
             }
         }
 
-        public string Munged
+        public override string Munged
         {
             get { return Munge(); }
         }
@@ -112,7 +116,11 @@ namespace TextTransformer
             return sb.ToString();
         }
 
-        public Granularity Granularity { get { return Granularity.Sentence; } }
+        public override  Granularity Granularity
+        {
+            get { return Granularity.Sentence; }
+            set { return; }
+        }
 
         // TODO: eventually, drop the word in here, too
         //       so we can break it apart sometimes for lower density

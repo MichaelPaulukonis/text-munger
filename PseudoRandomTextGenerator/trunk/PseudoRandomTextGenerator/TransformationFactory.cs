@@ -31,9 +31,9 @@ namespace TextTransformer
         public Granularity Granularity { get; private set; }
 
         // we will return ALL transformers that are up to and including this level
-        public List<ITransformer> GetTransformers()
+        public List<TransformerBase> GetTransformers()
         {
-            var ts = new List<ITransformer>();
+            var ts = new List<TransformerBase>();
 
             // cascade through, so the highest granularity (all)
             // can list everything
@@ -59,17 +59,17 @@ namespace TextTransformer
             return ts;
         }
 
-        private List<ITransformer> GetGranularitySentence()
+        private List<TransformerBase> GetGranularitySentence()
         {
-            return new List<ITransformer> { new PunctuizeWhitespace()
+            return new List<TransformerBase> { new PunctuizeWhitespace()
                 //, new Density()
             };
         }
 
         // TODO: some of these are sentence based -- pull them out
-        private List<ITransformer> GetGranularityWord()
+        private List<TransformerBase> GetGranularityWord()
         {
-            var l = new List<ITransformer>
+            var l = new List<TransformerBase>
             {new Leet(),
                 new PigLatin(),
                 new Shuffle(),
@@ -87,9 +87,9 @@ namespace TextTransformer
             return l;
         }
 
-        private List<ITransformer> GetGranularityAll()
+        private List<TransformerBase> GetGranularityAll()
         {
-            return new List<ITransformer> { new MarkovGenerator(), new XrmlFormat() };
+            return new List<TransformerBase> { new MarkovGenerator(), new XrmlFormat() };
         }
     }
 }
