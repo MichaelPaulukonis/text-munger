@@ -4,6 +4,8 @@ using System.Linq;
 using System.Windows.Forms;
 using CustomSelectControl;
 using TextTransformer;
+using TextSourcers;
+using System.IO;
 
 namespace GUI
 {
@@ -16,6 +18,8 @@ namespace GUI
         public RuleSetEditor()
         {
             InitializeComponent();
+
+            InitializeOpenFileDialog();
 
             Editor.AddDoubleClickHandler(DisplayRuleEditor);
         }
@@ -102,6 +106,33 @@ namespace GUI
             }
         }
 
+        private void InitializeOpenFileDialog()
+        {
+            // Set the file dialog to filter for graphics files.
+            this.openFileDialog.Filter =
+                "RuleSet (*.rst.xml)|*.rst.xml|" +
+                "All files (*.*)|*.*";
+
+            this.openFileDialog.Multiselect = false;
+            this.openFileDialog.Title = "Select Rule Set";
+        }
+
+        // can't reuse on sub-forms, unless we can parse sender, and apply a different source to save
+        private void saveFileDialog_FileOk(object sender, System.ComponentModel.CancelEventArgs e)
+        {
+            var name = saveFileDialog.FileName;
+
+            var text = string.Empty;
+
+            var rules = Editor.SelectedItems.Cast<TransformerBase>().ToList();
+
+            var xrs = rules.ToXml();
+
+            //var r2 = new List<TransformerBase>().FromXML(xrs);
+            
+            File.WriteAllText(name, xrs);
+        }
+
         // this is distinct from the values contained in the control
         // so when they are edited, this set never gets reset.....
         // TODO: don't store this independently....
@@ -121,6 +152,18 @@ namespace GUI
 
         private void Save()
         {
+
+            saveFileDialog.ShowDialog();
+          
+        }
+
+        private void btnLoad_Click(object sender, EventArgs e)
+        {
+            Load();
+        }
+
+        private void Load()
+        {
             // TODO: implement
         }
 
@@ -138,5 +181,7 @@ namespace GUI
         {
             this.Close();
         }
+
+
     }
 }
