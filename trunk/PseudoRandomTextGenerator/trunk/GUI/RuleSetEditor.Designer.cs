@@ -33,6 +33,8 @@
             this.btnSave = new System.Windows.Forms.Button();
             this.btnUseSet = new System.Windows.Forms.Button();
             this.btnLoad = new System.Windows.Forms.Button();
+            this.openFileDialog = new System.Windows.Forms.OpenFileDialog();
+            this.saveFileDialog = new System.Windows.Forms.SaveFileDialog();
             this.SuspendLayout();
             // 
             // Editor
@@ -72,6 +74,15 @@
             this.btnLoad.TabIndex = 3;
             this.btnLoad.Text = "&Load";
             this.btnLoad.UseVisualStyleBackColor = true;
+            this.btnLoad.Click += new System.EventHandler(this.btnLoad_Click);
+            // 
+            // openFileDialog
+            // 
+            this.openFileDialog.FileName = "openFileDialog1";
+            // 
+            // saveFileDialog
+            // 
+            this.saveFileDialog.FileOk += new System.ComponentModel.CancelEventHandler(this.saveFileDialog_FileOk);
             // 
             // RuleSetEditor
             // 
@@ -94,5 +105,7 @@
         private System.Windows.Forms.Button btnSave;
         private System.Windows.Forms.Button btnUseSet;
         private System.Windows.Forms.Button btnLoad;
+        private System.Windows.Forms.OpenFileDialog openFileDialog;
+        private System.Windows.Forms.SaveFileDialog saveFileDialog;
     }
 }

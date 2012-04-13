@@ -21,17 +21,6 @@ namespace TextTransformer
         All = 100       // leaving room for weird expansion. although refactoring should take care of that. except for serialization...
     }
 
-    // do NOT implement ICloneable on interface
-    // as only those Transformers that have distinct settings require it
-    //public interface ITransformer
-    //{
-    //    string Source { get; set; }
-
-    //    string Munged { get; }
-
-    //    Granularity Granularity { get; }
-    //}
-
     [DataContract]
     [KnownType(typeof(Shouty))]
     [KnownType(typeof(RandomCaps))]
@@ -53,7 +42,7 @@ namespace TextTransformer
 
         public abstract string Munged { get; }
 
-        public abstract Granularity Granularity { get; set;  }
+        public abstract Granularity Granularity { get; set; }
     }
 
     internal static class TransformerTools
