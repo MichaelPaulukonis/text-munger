@@ -20,6 +20,7 @@ namespace GUI
             InitializeComponent();
 
             InitializeOpenFileDialog();
+            InitializeSaveFileDialog();
 
             Editor.AddDoubleClickHandler(DisplayRuleEditor);
         }
@@ -117,6 +118,16 @@ namespace GUI
             this.openFileDialog.Title = "Select Rule Set";
         }
 
+        private void InitializeSaveFileDialog()
+        {
+            // Set the file dialog to filter for graphics files.
+            this.saveFileDialog.Filter =
+                "RuleSet (*.rst.xml)|*.rst.xml|" +
+                "All files (*.*)|*.*";
+
+            this.saveFileDialog.Title = "Save Rule Set";
+        }
+
         // can't reuse on sub-forms, unless we can parse sender, and apply a different source to save
         private void saveFileDialog_FileOk(object sender, System.ComponentModel.CancelEventArgs e)
         {
@@ -159,13 +170,25 @@ namespace GUI
 
         private void btnLoad_Click(object sender, EventArgs e)
         {
-            Load();
+            openFileDialog.ShowDialog();
         }
 
-        private void Load()
+        private void LoadRulesFromFile()
         {
-            // TODO: implement
+
+            var file = openFileDialog.FileName;
+            var xml = string.Empty;
+            using (var sr = new StreamReader(file))
+            {
+                xml = sr.ReadToEnd();
+                sr.Close();
+            }
+
+            var rules = new List<TransformerBase>().FromXML(xml);
+            Editor.SelectedItems = rules.Cast<object>().ToList();
+           
         }
+
 
         public void AddFormClosingHandler(FormClosingEventHandler h)
         {
@@ -180,6 +203,21 @@ namespace GUI
         private void Use()
         {
             this.Close();
+        }
+
+        private void openFileDialog_FileOk(object sender, System.ComponentModel.CancelEventArgs e)
+        {
+            var file = openFileDialog.FileName;
+            var xml = string.Empty;
+            using (var sr = new StreamReader(file))
+            {
+                xml = sr.ReadToEnd();
+                sr.Close();
+            }
+
+            var rules = new List<TransformerBase>().FromXML(xml);
+            Editor.SelectedItems = rules.Cast<object>().ToList();
+
         }
 
 
