@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.Serialization;
+using System.Text;
 using System.Text.RegularExpressions;
 
 namespace TextTransformer
@@ -22,6 +23,7 @@ namespace TextTransformer
     }
 
     [DataContract]
+    [KnownType(typeof(FreeVerse))]
     [KnownType(typeof(Shouty))]
     [KnownType(typeof(RandomCaps))]
     [KnownType(typeof(Disemconsonant))]
@@ -78,14 +80,15 @@ namespace TextTransformer
             get { return Munge(Source); }
         }
 
-        private  string Munge(string source)
+        private string Munge(string source)
         {
             return source.ToUpper();
         }
 
-        public override Granularity Granularity { get { return Granularity.Word; } 
+        public override Granularity Granularity
+        {
+            get { return Granularity.Word; }
             set { return; }
-        
         }
 
         public override string ToString()
@@ -95,24 +98,162 @@ namespace TextTransformer
     }
 
     [DataContract]
-    public class RandomCaps : TransformerBase
+    public class FreeVerse : TransformerBase
     {
+        private static Random _rnd = new Random();
+
+        public FreeVerse()
+        {
+            ProbabilityNewLine = 30;
+            Offset = 10;
+            OffsetVariance = 10;
+            ProbabilityOffset = 50;
+        }
+
+        // probability of adding a newline
+        // probability of inserting a space
+        // number of spaces to insert
+        // plus or minues number of spaces to insert
+        private int _newLineProb;
+
+        public int ProbabilityNewLine
+        {
+            get { return _newLineProb; }
+            set
+            {
+                if (value < 0 || value > 100)
+                {
+                    throw new ArgumentOutOfRangeException(paramName: "NewLineProbability", message: "Probability must be between 0 and 100");
+                }
+
+                _newLineProb = value;
+            }
+        }
+
+        private int _offsetProb;
+
+        private int ProbabilityOffset
+        {
+            get { return _offsetProb; }
+            set
+            {
+                if (value < 0 || value > 100)
+                {
+                    throw new ArgumentOutOfRangeException(paramName: "OffsetProbability", message: "OffsetProbability must be between 0 and 100");
+                }
+                _offsetProb = value;
+            }
+        }
+
+        private int _offset;
+
+        public int Offset
+        {
+            get { return _offset; }
+            set
+            {
+                if (value < 0)
+                {
+                    throw new ArgumentOutOfRangeException("Offset", "Offset must be greater than 0");
+                }
+                _offset = value;
+            }
+        }
+
+        private int _offsetVariance;
+
+        public int OffsetVariance
+        {
+            get { return _offsetVariance; }
+            set
+            {
+                if (value < 0 || value > Offset)
+                {
+                    throw new ArgumentOutOfRangeException("OffsetVariance",
+                                                          "OffsetVariance must be non-zero or less than Offset");
+                }
+
+                _offsetVariance = value;
+            }
+        }
+
         public override string Source { get; set; }
 
         public override string Munged
         {
-            //get { return _m ?? (_m = Munge()); }
             get { return Munge(Source); }
         }
 
         private string Munge(string source)
         {
-            var rnd = new Random();
+            // TODO: implement
+            // add random leading spaces
+            // break line at random length
 
+            var mod = source;
+
+            // TODO: tokenize based on words (preserving punctuation)
+            // ooooh, or total char-split for some eecummings craziness....
+            var words = new DefaultRule().Split(source);
+            var sb = new StringBuilder();
+
+            foreach (var word in words)
+            {
+                sb.Append(word);
+                var newline = _rnd.Next(0, 100);
+                if (newline <= ProbabilityNewLine)
+                {
+                    sb.Append(Environment.NewLine);
+                    // TODO: random offset from start of line
+                    var op = _rnd.Next(0, 100);
+                    if (op <= ProbabilityOffset)
+                    {
+                        var variance = _rnd.Next(-OffsetVariance, OffsetVariance);
+                        var spaceNbr = Offset + variance;
+                        var spaces = new string(' ', spaceNbr);
+                        sb.Append(spaces);
+                    }
+                }
+                else
+                {
+                    // random number of spaces ?
+                    sb.Append(" ");
+                }
+            }
+
+            return sb.ToString();
+        }
+
+        public override Granularity Granularity
+        {
+            get { return Granularity.All; }
+            set { return; }
+        }
+
+        public override string ToString()
+        {
+            return "FreeVerse";
+        }
+    }
+
+    [DataContract]
+    public class RandomCaps : TransformerBase
+    {
+        private static Random _rnd = new Random();
+
+        public override string Source { get; set; }
+
+        public override string Munged
+        {
+            get { return Munge(Source); }
+        }
+
+        private string Munge(string source)
+        {
             var c = source.ToLower().ToCharArray();
             for (var i = 0; i < c.Length; ++i)
             {
-                if (rnd.Next(0, 100) > 50)
+                if (_rnd.Next(0, 100) > 50)
                 {
                     c[i] = c[i].ToString().ToUpper().ToCharArray()[0];
                 }
@@ -121,10 +262,11 @@ namespace TextTransformer
             return new string(c);
         }
 
-        public override Granularity Granularity { get { return Granularity.Word; } 
+        public override Granularity Granularity
+        {
+            get { return Granularity.Word; }
             set { return; }
         }
-
 
         public override string ToString()
         {
@@ -153,8 +295,6 @@ namespace TextTransformer
         {
             get { return Granularity.Word; }
             set { return; }
-
-        
         }
 
         public override string ToString()
@@ -181,9 +321,10 @@ namespace TextTransformer
             return munged;
         }
 
-        public override Granularity Granularity { get { return Granularity.Word; }
+        public override Granularity Granularity
+        {
+            get { return Granularity.Word; }
             set { return; }
-        
         }
 
         public override string ToString()
@@ -221,9 +362,10 @@ namespace TextTransformer
             return output;
         }
 
-        public override Granularity Granularity { get { return Granularity.Sentence; }
+        public override Granularity Granularity
+        {
+            get { return Granularity.Sentence; }
             set { return; }
-        
         }
 
         public object Clone()
@@ -267,9 +409,10 @@ namespace TextTransformer
             return munged;
         }
 
-        public override Granularity Granularity { get { return Granularity.Word; }
+        public override Granularity Granularity
+        {
+            get { return Granularity.Word; }
             set { return; }
-        
         }
 
         public override string ToString()
@@ -293,9 +436,10 @@ namespace TextTransformer
             return new string(Source.Reverse().ToArray());
         }
 
-        public override Granularity Granularity { get { return Granularity.Word; }
+        public override Granularity Granularity
+        {
+            get { return Granularity.Word; }
             set { return; }
-        
         }
 
         public override string ToString()
@@ -314,9 +458,10 @@ namespace TextTransformer
             get { return Munge(); }
         }
 
-        public override Granularity Granularity { get { return Granularity.Word; }
+        public override Granularity Granularity
+        {
+            get { return Granularity.Word; }
             set { return; }
-        
         }
 
         private string Munge()
