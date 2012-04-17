@@ -50,6 +50,13 @@ namespace TextTransformer
         {
             return "XRML format";
         }
+
+        // TODO: make a better description, sheesh!
+        public override string Description
+        {
+            get { return "Formats Source to column-width and punctuated as per XraysMonaLisa."; }
+        }
+
     }
 
     [DataContract]
@@ -219,6 +226,12 @@ namespace TextTransformer
         {
             return String.Format("Density {0}%", Percentage);
         }
+
+        public override string Description
+        {
+            get { return "Punctuizes the Source semi-randomly around the given density."; }
+        }
+
     }
 
     [DataContract]
