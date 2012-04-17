@@ -12,6 +12,10 @@ For certain limited definitions of the word "useful."
 
 
 ==RECENTLY COMPLETED TASKS==
+  * `FreeVerse` transformation rule implementation 2012.04.16
+   * which combines standalone `ShortLines` and `InitialSpace`s transformations
+  * `HeijinianAidToMemory` transformation implementation 2012.04.17
+   * indents lines according to alpha offset
   * save and reload text-sources (if in library or local files) 2012.03.28
   * basic editing control for SOURCE and OUTPUT 2012.03.27
     * This was pretty-much built-on, only now it's accessible via context-menu
@@ -24,6 +28,11 @@ For certain limited definitions of the word "useful."
 
 ==TASKS (in no particular order)==
   * save and reload configured rule-sets
+   * partially working as of 2012.04.12, but needs improvement, including
+  * named rule-sets
+  * auto-loading of saved-rulesets (in predefined location)
+  * some sort of short-cut key to edit a given ruleset(s)
+   * there's a lot of clicking in this interface.
   * build unit-tests
   * Markov updates
    * drop xray-references in Markov rules
