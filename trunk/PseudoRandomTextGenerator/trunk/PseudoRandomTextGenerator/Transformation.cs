@@ -77,6 +77,12 @@ namespace TextTransformer
         {
             return _rnd.Next(0, 101); // EXCLUSIVE upper-bound
         }
+
+        // wrapper for Random-access
+        internal static int GetRandom(int lowerBound, int upperExclusive)
+        {
+            return _rnd.Next(lowerBound, upperExclusive);
+        }
     }
 
     [DataContract]
@@ -358,8 +364,6 @@ namespace TextTransformer
         // as HejinianMemoryAid will need it
         // to align to the leading alpha-spaces
 
-        private static Random _rnd = new Random();
-
         public FreeVerse()
         {
             Init();
@@ -448,10 +452,61 @@ namespace TextTransformer
     }
 
     [DataContract]
+    public class HeijinianAidToMemory : TransformerBase
+    {
+        public override string Source { get; set; }
+
+        public override string Munged
+        {
+            get { return Munge(Source); }
+        }
+
+        private string Munge(string source)
+        {
+            // split by LINES
+            var result = Regex.Split(source, "\r\n|\r|\n");
+            var sb = new StringBuilder();
+            foreach (var line in result)
+            {
+                if (line.Length > 0) // don't waste energy on empty lines. but do preserve them
+                {
+                    // space-number is based on uncased alpha of first char
+                    // a:=0, b:=1..z:=25
+                    // punctuation will be considered as a
+                    var firstLetter = line.ToLower()[0];
+
+                    const int aAsInt = 97;
+                    const int zAsInt = 123;
+                    var offset = ((firstLetter >= aAsInt && firstLetter <= zAsInt) ? firstLetter - aAsInt : 0);
+                    var spaces = new string(' ', offset);
+                    sb.Append(spaces);
+                }
+                sb.Append(line).Append(Environment.NewLine); // invariant
+            }
+
+            return sb.ToString();
+        }
+
+        public override Granularity Granularity
+        {
+            get { return Granularity.All; }
+            set { return; }
+        }
+
+        public override string ToString()
+        {
+            return "HeinjinianAidToMemory";
+        }
+
+        public override string Description
+        {
+            get { return "Offsets line based on first-character a..z."; }
+        }
+    }
+
+    [DataContract]
     public class RandomCaps : TransformerBase
     {
-        private static Random _rnd = new Random();
-
         public override string Source { get; set; }
 
         public override string Munged
@@ -464,7 +519,7 @@ namespace TextTransformer
             var c = source.ToLower().ToCharArray();
             for (var i = 0; i < c.Length; ++i)
             {
-                if (_rnd.Next(0, 100) > 50)
+                if (TransformerTools.GetPercentage() > 50)
                 {
                     c[i] = c[i].ToString().ToUpper().ToCharArray()[0];
                 }
