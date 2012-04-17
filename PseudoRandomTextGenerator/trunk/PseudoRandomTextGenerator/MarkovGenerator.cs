@@ -470,5 +470,13 @@ namespace TextTransformer
         {
             return "MarkovProcessor";
         }
+
+        // TODO: better description
+        // reference tokenizing punctuation, etc.
+        public override string Description
+        {
+            get { return "n-gram/Markov-chain generator based on Source input, and configurable rulesets for character or word-based n-grams, etc.";  }
+        }
+
     }
 }

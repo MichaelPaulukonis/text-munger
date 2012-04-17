@@ -45,10 +45,14 @@ namespace TextTransformer
         public abstract string Munged { get; }
 
         public abstract Granularity Granularity { get; set; }
+
+        public abstract string Description { get; }
     }
 
     internal static class TransformerTools
     {
+        private static Random _rnd = new Random();
+
         // this is ganked from MarkovGenerator.cs:public class DefaultRule : IMarkovRule
         // which suggests it is common code....
         internal static IList<string> SplitToWords(string subject)
@@ -67,6 +71,11 @@ namespace TextTransformer
             var splitted = regex.Split(subject).ToList();
 
             return splitted;
+        }
+
+        internal static int GetPercentage()
+        {
+            return _rnd.Next(0, 101); // EXCLUSIVE upper-bound
         }
     }
 
@@ -95,19 +104,23 @@ namespace TextTransformer
         {
             return Munge("shouty");
         }
+
+        public override string Description
+        {
+            get { return "Converts source to IRRITATING ALL CAPITAL LETTERS."; }
+        }
     }
 
     [DataContract]
-    public class FreeVerse : TransformerBase
+    public class ShortLines : TransformerBase
     {
         private static Random _rnd = new Random();
 
-        public FreeVerse()
+        public ShortLines()
         {
-            ProbabilityNewLine = 30;
-            Offset = 10;
-            OffsetVariance = 10;
-            ProbabilityOffset = 50;
+            ProbabilityNewLine = 20;
+            ProbabilityMultiple = 30;
+            MultipleRange = 3;
         }
 
         // probability of adding a newline
@@ -130,9 +143,115 @@ namespace TextTransformer
             }
         }
 
+        private int _multipleProb;
+
+        private int ProbabilityMultiple
+        {
+            get { return _multipleProb; }
+            set
+            {
+                if (value < 0 || value > 100)
+                {
+                    throw new ArgumentOutOfRangeException(paramName: "ProbabilityMultiple", message: "ProbabilityMultiple must be between 0 and 100");
+                }
+                _multipleProb = value;
+            }
+        }
+
+        private int _multipleRange;
+
+        public int MultipleRange
+        {
+            get { return _multipleRange; }
+            set
+            {
+                if (value < 0)
+                {
+                    throw new ArgumentOutOfRangeException("Range", "Range must be greater than 0");
+                }
+                _multipleRange = value;
+            }
+        }
+
+        public override string Source { get; set; }
+
+        public override string Munged
+        {
+            get { return Munge(Source); }
+        }
+
+        private int GetPercentage()
+        {
+            return _rnd.Next(0, 100);
+        }
+
+        private string Munge(string source)
+        {
+            var mod = source;
+
+            var words = new DefaultRule().Split(source);
+            var sb = new StringBuilder();
+
+            foreach (var word in words)
+            {
+                sb.Append(word);
+                var newline = TransformerTools.GetPercentage();
+                if (newline <= ProbabilityNewLine)
+                {
+                    var lines = 1;
+                    var mult = TransformerTools.GetPercentage();
+                    if (mult <= ProbabilityMultiple)
+                    {
+                        lines += _rnd.Next(0, MultipleRange);
+                    }
+
+                    for (int i = 0; i < lines; i++)
+                    {
+                        sb.Append(Environment.NewLine);
+                    }
+                }
+                else
+                {
+                    // random number of spaces ?
+                    sb.Append(" ");
+                }
+            }
+
+            return sb.ToString();
+        }
+
+        public override Granularity Granularity
+        {
+            get { return Granularity.All; }
+            set { return; }
+        }
+
+        public override string ToString()
+        {
+            return "ShortLines";
+        }
+
+        public override string Description
+        {
+            get { return "Adds newlines after words, configurable probability for likelihood and number of lines."; }
+        }
+    }
+
+    [DataContract]
+    public class InitialSpaces : TransformerBase
+    {
+        private static Random _rnd = new Random();
+
+        public InitialSpaces()
+        {
+            ProbabilityOffset = 20;
+            Offset = 5;
+            OffsetVariance = 5;
+        }
+
         private int _offsetProb;
 
-        private int ProbabilityOffset
+        public int ProbabilityOffset
         {
             get { return _offsetProb; }
             set
@@ -186,39 +305,26 @@ namespace TextTransformer
 
         private string Munge(string source)
         {
-            // TODO: implement
-            // add random leading spaces
-            // break line at random length
+            // split by LINES
+            // go through each line, random offset
 
-            var mod = source;
-
-            // TODO: tokenize based on words (preserving punctuation)
-            // ooooh, or total char-split for some eecummings craziness....
-            var words = new DefaultRule().Split(source);
+            var result = Regex.Split(source, "\r\n|\r|\n");
             var sb = new StringBuilder();
-
-            foreach (var word in words)
+            foreach (var line in result)
             {
-                sb.Append(word);
-                var newline = _rnd.Next(0, 100);
-                if (newline <= ProbabilityNewLine)
+                if (line.Length > 0) // don't waste energy on empty lines. but do preserve them
                 {
-                    sb.Append(Environment.NewLine);
-                    // TODO: random offset from start of line
-                    var op = _rnd.Next(0, 100);
+                    var op = TransformerTools.GetPercentage();
                     if (op <= ProbabilityOffset)
                     {
+                        // TODO: add to TransformerTools ???
                         var variance = _rnd.Next(-OffsetVariance, OffsetVariance);
                         var spaceNbr = Offset + variance;
                         var spaces = new string(' ', spaceNbr);
                         sb.Append(spaces);
                     }
                 }
-                else
-                {
-                    // random number of spaces ?
-                    sb.Append(" ");
-                }
+                sb.Append(line).Append(Environment.NewLine); // invariant
             }
 
             return sb.ToString();
@@ -232,7 +338,112 @@ namespace TextTransformer
 
         public override string ToString()
         {
+            return "InitialSpaces";
+        }
+
+        public override string Description
+        {
+            get { return "Adds randomly configurable spaces to the beginning of lines."; }
+        }
+    }
+
+    /// <summary>
+    /// Composites ShortLines and InitialSpaces for something that doesn't fill the margins...
+    /// </summary>
+    [DataContract]
+    public class FreeVerse : TransformerBase
+    {
+        // TODO: random # of newlines
+        // TODO: move preliminary spaces to new standalone, or Tool function
+        // as HejinianMemoryAid will need it
+        // to align to the leading alpha-spaces
+
+        private static Random _rnd = new Random();
+
+        public FreeVerse()
+        {
+            Init();
+            ProbabilityNewLine = 30;
+            Offset = 10;
+            OffsetVariance = 10;
+            ProbabilityOffset = 50;
+        }
+
+        private InitialSpaces _spacer;
+        private ShortLines _liner;
+
+        // this remind me of olf VB6 object workarounds...
+        private void Init()
+        {
+            _spacer = new InitialSpaces();
+            _liner = new ShortLines();
+        }
+
+        [OnDeserializing]
+        public void OnDeserializing(StreamingContext ctx)
+        {
+            Init();
+        }
+
+        public int ProbabilityNewLine
+        {
+            get { return _liner.ProbabilityNewLine; }
+            set { _liner.ProbabilityNewLine = value; }
+        }
+
+        private int ProbabilityOffset
+        {
+            get { return _spacer.ProbabilityOffset; }
+            set { _spacer.ProbabilityOffset = value; }
+        }
+
+        public int Offset
+        {
+            get { return _spacer.Offset; }
+            set { _spacer.Offset = value; }
+        }
+
+        private int _offsetVariance;
+
+        public int OffsetVariance
+        {
+            get { return _spacer.OffsetVariance; }
+            set { _spacer.OffsetVariance = value; }
+        }
+
+        public override string Source { get; set; }
+
+        public override string Munged
+        {
+            get { return Munge(Source); }
+        }
+
+        private string Munge(string source)
+        {
+            var mod = source;
+
+            _liner.Source = mod;
+            mod = _liner.Munged;
+            _spacer.Source = mod;
+            mod = _spacer.Munged;
+
+            return mod;
+        }
+
+        public override Granularity Granularity
+        {
+            get { return Granularity.All; }
+            set { return; }
+        }
+
+        public override string ToString()
+        {
             return "FreeVerse";
+        }
+
+        public override string Description
+        {
+            get { return "Offsets and newlines"; }
         }
     }
 
@@ -272,6 +483,11 @@ namespace TextTransformer
         {
             return Munge("RandomCaps");
         }
+
+        public override string Description
+        {
+            get { return "Random capitalization (not guaranteed to be different from original)"; }
+        }
     }
 
     public class Disemconsonant : TransformerBase
@@ -302,6 +518,11 @@ namespace TextTransformer
             // honestly, removing the consonsants makes this impenetrable
             return "Disemconsonant";
         }
+
+        public override string Description
+        {
+            get { return "Removes all consonants from Source, leaving onlh vowells behind."; }
+        }
     }
 
     public class Disemvowell : TransformerBase
@@ -330,6 +551,11 @@ namespace TextTransformer
         public override string ToString()
         {
             return Munge("Disemvowell");
+        }
+
+        public override string Description
+        {
+            get { return "Removes all vowells from source, leaving only consonants behind. Inspired by Teresa Nielsen Hayden."; }
         }
     }
 
@@ -381,6 +607,11 @@ namespace TextTransformer
         {
             return Munge("Punctuize Whitespace");
         }
+
+        public override string Description
+        {
+            get { return "Converts all whitespace to a given punctuation mark (configurable)."; }
+        }
     }
 
     [DataContract]
@@ -419,6 +650,11 @@ namespace TextTransformer
         {
             return Munge("VowellToPunct");
         }
+
+        public override string Description
+        {
+            get { return "Converts all vowells to a given punctuation mark (configurable)."; }
+        }
     }
 
     [DataContract]
@@ -446,11 +682,18 @@ namespace TextTransformer
         {
             return "reserveR";
         }
+
+        public override string Description
+        {
+            get { return "Reverses the Source.ecruoS eht sesreveR"; }
+        }
     }
 
     [DataContract]
     public class Shuffle : TransformerBase
     {
+        // TODO: optionally preserve the first and last letters of each word
+
         public override string Source { get; set; }
 
         public override string Munged
@@ -477,6 +720,11 @@ namespace TextTransformer
         public override string ToString()
         {
             return "Shuffle";
+        }
+
+        public override string Description
+        {
+            get { return "Randoms the letters in Source."; }
         }
     }
 
@@ -524,6 +772,11 @@ namespace TextTransformer
         public override string ToString()
         {
             return "PigLatin";
+        }
+
+        public override string Description
+        {
+            get { return "Translates Source to PigLatin (anslatesTray ourceSay otay igLatinPay). Naive implementation does not preserve capitalization"; }
         }
     }
 
@@ -674,6 +927,11 @@ namespace TextTransformer
         public override string ToString()
         {
             return "L33t";
+        }
+
+        public override string Description
+        {
+            get { return "Translates the source into 1337-5p34k (uses internal rule-set)"; }
         }
     }
 }

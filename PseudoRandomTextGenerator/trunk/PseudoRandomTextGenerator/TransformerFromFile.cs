@@ -164,5 +164,14 @@ namespace TextTransformer
         {
             return Name ?? SourceFile ?? "TransformerFromFile";
         }
+
+        private string _desc = "Translation based on rules obtained from a file.";
+        public override string Description
+        {
+            get { return _desc; }
+            // what about set? need to read it from a file, and nothing else needs it. ouch.
+        }
+
+
     }
 }
