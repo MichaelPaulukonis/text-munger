@@ -29,10 +29,28 @@ namespace Runner
         {
             var c = new ConsoleRunner();
 
-            c.TestRuleSerialization();
+            c.TestAlphaSpacing();
+
+            //c.TestRuleSerialization();
 
             //var mg = new ConsoleRunner();
             //mg.MungeIt();
+        }
+
+        public void TestAlphaSpacing()
+        {
+            var source = "apple\nbaker\nzebra\n!whatever\n\n....;'hello";
+            var lines = Regex.Split(source, "\r\n|\r|\n");
+            foreach (var line in lines)
+            {
+                if (line.Length > 0)
+                {
+                    var firstLetter = line.ToLower()[0];
+                    const int aAsInt = 97;
+                    const int zAsInt = 123;
+                    var offset = ((firstLetter >= aAsInt && firstLetter <= zAsInt) ? firstLetter - aAsInt : 0);
+                }
+            }
         }
 
         // testing Markov Rules, to start
@@ -188,7 +206,6 @@ namespace Runner
             Console.WriteLine(string.Format("Average offset: {0}", maxOffset / 100));
             Console.WriteLine(string.Format("\n\nMinOffset: {0} MaxOffset: {1}", minOffset, maxOffset));
             Console.WriteLine(string.Format("\n\nMinNormal: {0} MaxNormal: {1}", minNormal, maxNormal));
-
         }
 
         public void MungeIt()
