@@ -62,6 +62,7 @@
             this.btnApply = new System.Windows.Forms.Button();
             this.openFileDialog = new System.Windows.Forms.OpenFileDialog();
             this.saveFileDialog = new System.Windows.Forms.SaveFileDialog();
+            this.btnLoadRules = new System.Windows.Forms.Button();
             this.tabControl1.SuspendLayout();
             this.contextMenuStrip1.SuspendLayout();
             this.tabPage1.SuspendLayout();
@@ -256,6 +257,7 @@
             // 
             // tabPage2
             // 
+            this.tabPage2.Controls.Add(this.btnLoadRules);
             this.tabPage2.Controls.Add(this.btnSaveRules);
             this.tabPage2.Controls.Add(this.groupBox2);
             this.tabPage2.Location = new System.Drawing.Point(4, 22);
@@ -268,11 +270,11 @@
             // 
             // btnSaveRules
             // 
-            this.btnSaveRules.Location = new System.Drawing.Point(541, 156);
+            this.btnSaveRules.Location = new System.Drawing.Point(541, 250);
             this.btnSaveRules.Name = "btnSaveRules";
             this.btnSaveRules.Size = new System.Drawing.Size(119, 23);
             this.btnSaveRules.TabIndex = 11;
-            this.btnSaveRules.Text = "SaveRuleSequence";
+            this.btnSaveRules.Text = "Save Rules";
             this.btnSaveRules.UseVisualStyleBackColor = true;
             this.btnSaveRules.Click += new System.EventHandler(this.btnSaveRules_Click);
             // 
@@ -341,8 +343,8 @@
             this.Output.Size = new System.Drawing.Size(683, 604);
             this.Output.TabIndex = 18;
             this.Output.Text = "         1         2         3         4         5         6         7         8\r" +
-                "\n1234567890123456789012345678901234567890123456789012345678901234567890123456789" +
-                "0";
+    "\n1234567890123456789012345678901234567890123456789012345678901234567890123456789" +
+    "0";
             this.Output.TextChanged += new System.EventHandler(this.Output_TextChanged);
             // 
             // tabSnippets
@@ -368,8 +370,8 @@
             this.Snippets.Size = new System.Drawing.Size(683, 604);
             this.Snippets.TabIndex = 19;
             this.Snippets.Text = "         1         2         3         4         5         6         7         8\r" +
-                "\n1234567890123456789012345678901234567890123456789012345678901234567890123456789" +
-                "0";
+    "\n1234567890123456789012345678901234567890123456789012345678901234567890123456789" +
+    "0";
             this.Snippets.TextChanged += new System.EventHandler(this.Snippets_TextChanged);
             // 
             // btnSave
@@ -393,6 +395,16 @@
             this.btnApply.Text = "ApplyRules";
             this.btnApply.UseVisualStyleBackColor = true;
             this.btnApply.Click += new System.EventHandler(this.btnApply_Click);
+            // 
+            // btnLoadRules
+            // 
+            this.btnLoadRules.Location = new System.Drawing.Point(541, 279);
+            this.btnLoadRules.Name = "btnLoadRules";
+            this.btnLoadRules.Size = new System.Drawing.Size(119, 23);
+            this.btnLoadRules.TabIndex = 12;
+            this.btnLoadRules.Text = "Load Rules";
+            this.btnLoadRules.UseVisualStyleBackColor = true;
+            this.btnLoadRules.Click += new System.EventHandler(this.btnLoadRules_Click);
             // 
             // MungerGui
             // 
@@ -453,5 +465,6 @@
         private System.Windows.Forms.TabPage tabSnippets;
         private System.Windows.Forms.TextBox Snippets;
         private System.Windows.Forms.Button btnSaveRules;
+        private System.Windows.Forms.Button btnLoadRules;
     }
 }
