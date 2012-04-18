@@ -49,6 +49,7 @@
             this.rbInternet = new System.Windows.Forms.RadioButton();
             this.rbLibrary = new System.Windows.Forms.RadioButton();
             this.tabPage2 = new System.Windows.Forms.TabPage();
+            this.btnSaveRules = new System.Windows.Forms.Button();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
             this.RuleSetSelector = new CustomSelectControl.MultipleSelectionControl();
             this.tabPage3 = new System.Windows.Forms.TabPage();
@@ -255,6 +256,7 @@
             // 
             // tabPage2
             // 
+            this.tabPage2.Controls.Add(this.btnSaveRules);
             this.tabPage2.Controls.Add(this.groupBox2);
             this.tabPage2.Location = new System.Drawing.Point(4, 22);
             this.tabPage2.Name = "tabPage2";
@@ -263,6 +265,16 @@
             this.tabPage2.TabIndex = 1;
             this.tabPage2.Text = "Select Transforms";
             this.tabPage2.UseVisualStyleBackColor = true;
+            // 
+            // btnSaveRules
+            // 
+            this.btnSaveRules.Location = new System.Drawing.Point(541, 156);
+            this.btnSaveRules.Name = "btnSaveRules";
+            this.btnSaveRules.Size = new System.Drawing.Size(119, 23);
+            this.btnSaveRules.TabIndex = 11;
+            this.btnSaveRules.Text = "SaveRuleSequence";
+            this.btnSaveRules.UseVisualStyleBackColor = true;
+            this.btnSaveRules.Click += new System.EventHandler(this.btnSaveRules_Click);
             // 
             // groupBox2
             // 
@@ -329,8 +341,8 @@
             this.Output.Size = new System.Drawing.Size(683, 604);
             this.Output.TabIndex = 18;
             this.Output.Text = "         1         2         3         4         5         6         7         8\r" +
-    "\n1234567890123456789012345678901234567890123456789012345678901234567890123456789" +
-    "0";
+                "\n1234567890123456789012345678901234567890123456789012345678901234567890123456789" +
+                "0";
             this.Output.TextChanged += new System.EventHandler(this.Output_TextChanged);
             // 
             // tabSnippets
@@ -356,8 +368,8 @@
             this.Snippets.Size = new System.Drawing.Size(683, 604);
             this.Snippets.TabIndex = 19;
             this.Snippets.Text = "         1         2         3         4         5         6         7         8\r" +
-    "\n1234567890123456789012345678901234567890123456789012345678901234567890123456789" +
-    "0";
+                "\n1234567890123456789012345678901234567890123456789012345678901234567890123456789" +
+                "0";
             this.Snippets.TextChanged += new System.EventHandler(this.Snippets_TextChanged);
             // 
             // btnSave
@@ -381,11 +393,6 @@
             this.btnApply.Text = "ApplyRules";
             this.btnApply.UseVisualStyleBackColor = true;
             this.btnApply.Click += new System.EventHandler(this.btnApply_Click);
-            // 
-            // saveFileDialog
-            // 
-            this.saveFileDialog.Filter = "Text files (*.txt)|*.txt|All files (*.*)|*.*";
-            this.saveFileDialog.FileOk += new System.ComponentModel.CancelEventHandler(this.saveFileDialog_FileOk);
             // 
             // MungerGui
             // 
@@ -445,5 +452,6 @@
         private System.Windows.Forms.TextBox Output;
         private System.Windows.Forms.TabPage tabSnippets;
         private System.Windows.Forms.TextBox Snippets;
+        private System.Windows.Forms.Button btnSaveRules;
     }
 }

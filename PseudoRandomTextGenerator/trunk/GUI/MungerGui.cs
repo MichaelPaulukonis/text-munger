@@ -157,33 +157,57 @@ namespace GUI
             Source.Text = string.Empty;
         }
 
+        private void btnSaveRules_Click(object sender, EventArgs e)
+        {
+            saveFileDialog.Title = "Save RuleSet Sequences";
+            saveFileDialog.Filter = "RuleSet sequences (*.sqn.xml)|*.sqn.xml|All files (*.*)|*.*";
+
+            if (saveFileDialog.ShowDialog() == DialogResult.OK)
+            {
+                var name = saveFileDialog.FileName;
+
+                var rules = RuleSetSelector.SelectedItems.Cast<RuleSet>().ToList();
+
+                var xrs = rules.ToXml();
+
+                File.WriteAllText(name, xrs);
+            }
+        }
+
+        // TODO: okay, now I'm going to be using this for the RuleSet lists.
+        // aaaargh.
         private void btnSave_Click(object sender, EventArgs e)
         {
+            saveFileDialog.Filter = "Text files (*.txt)|*.txt|All files (*.*)|*.*";
+
             var title = "Save Output";
+            var fileName = "output.";
+
             if (tabOutputs.SelectedTab == tabSnippets)
             {
                 title = "Save Snippepts";
+                fileName = "snippets.";
             }
             saveFileDialog.Title = title;
 
-            saveFileDialog.ShowDialog();
-        }
+            fileName += DateTime.Now.ToString("yyyy.MM.dd") + ".txt";
+            saveFileDialog.FileName = fileName;
 
-        // can't reuse on sub-forms, unless we can parse sender, and apply a different source to save
-        private void saveFileDialog_FileOk(object sender, System.ComponentModel.CancelEventArgs e)
-        {
-            var name = saveFileDialog.FileName;
+            if (saveFileDialog.ShowDialog() == DialogResult.OK)
+            {
+                var name = saveFileDialog.FileName;
 
-            var text = string.Empty;
-            if (tabOutputs.SelectedTab == tabOutput)
-            {
-                text = Output.Text;
+                var text = string.Empty;
+                if (tabOutputs.SelectedTab == tabOutput)
+                {
+                    text = Output.Text;
+                }
+                else
+                {
+                    text = Snippets.Text;
+                }
+                File.WriteAllText(name, text);
             }
-            else
-            {
-                text = Snippets.Text;
-            }
-            File.WriteAllText(name, text);
         }
 
         // handler for all radio buttons
