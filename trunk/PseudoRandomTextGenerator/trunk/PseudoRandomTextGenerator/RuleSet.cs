@@ -38,6 +38,14 @@ namespace TextTransformer
         public RuleSet(Granularity granularity)
             : this(granularity.ToString(), granularity) { }
 
+        [DataMember]
+        public string Name
+        {
+            get { return _name; }
+            set { _name = value; }
+        }
+
+        [DataMember]
         public bool Active { get; set; }
 
         public override string ToString()
@@ -50,6 +58,7 @@ namespace TextTransformer
         // if Granularity was supplied on construction, do not allow a reset
         private Granularity _g = Granularity.Unknown;
 
+        [DataMember]
         public Granularity Granularity
         {
             get { return _g; }
@@ -80,6 +89,7 @@ namespace TextTransformer
 
         private List<TransformerBase> _rules = new List<TransformerBase>();
 
+        [DataMember]
         public List<TransformerBase> Rules
         {
             get { return _rules; }

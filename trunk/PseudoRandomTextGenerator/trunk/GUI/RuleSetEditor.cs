@@ -1,11 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Windows.Forms;
 using CustomSelectControl;
-using TextTransformer;
 using TextSourcers;
-using System.IO;
+using TextTransformer;
 
 namespace GUI
 {
@@ -50,6 +50,7 @@ namespace GUI
             : this()
         {
             RuleSet = set;
+            this.txtSetName.Text = RuleSet.Name;
 
             if (set.Rules != null && set.Rules.Count > 0)
             {
@@ -133,14 +134,10 @@ namespace GUI
         {
             var name = saveFileDialog.FileName;
 
-            var text = string.Empty;
-
             var rules = Editor.SelectedItems.Cast<TransformerBase>().ToList();
 
             var xrs = rules.ToXml();
 
-            //var r2 = new List<TransformerBase>().FromXML(xrs);
-            
             File.WriteAllText(name, xrs);
         }
 
@@ -163,9 +160,7 @@ namespace GUI
 
         private void Save()
         {
-
             saveFileDialog.ShowDialog();
-          
         }
 
         private void btnLoad_Click(object sender, EventArgs e)
@@ -175,7 +170,6 @@ namespace GUI
 
         private void LoadRulesFromFile()
         {
-
             var file = openFileDialog.FileName;
             var xml = string.Empty;
             using (var sr = new StreamReader(file))
@@ -186,9 +180,7 @@ namespace GUI
 
             var rules = new List<TransformerBase>().FromXML(xml);
             Editor.SelectedItems = rules.Cast<object>().ToList();
-           
         }
-
 
         public void AddFormClosingHandler(FormClosingEventHandler h)
         {
@@ -217,9 +209,11 @@ namespace GUI
 
             var rules = new List<TransformerBase>().FromXML(xml);
             Editor.SelectedItems = rules.Cast<object>().ToList();
-
         }
 
-
+        private void txtSetName_TextChanged(object sender, EventArgs e)
+        {
+            this.RuleSet.Name = txtSetName.Text;
+        }
     }
 }

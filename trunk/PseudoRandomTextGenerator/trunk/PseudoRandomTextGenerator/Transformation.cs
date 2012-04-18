@@ -24,6 +24,9 @@ namespace TextTransformer
 
     [DataContract]
     [KnownType(typeof(FreeVerse))]
+    [KnownType(typeof(ShortLines))]
+    [KnownType(typeof(InitialSpaces))]
+    [KnownType(typeof(HeijinianAidToMemory))]
     [KnownType(typeof(Shouty))]
     [KnownType(typeof(RandomCaps))]
     [KnownType(typeof(Disemconsonant))]
@@ -135,6 +138,7 @@ namespace TextTransformer
         // plus or minues number of spaces to insert
         private int _newLineProb;
 
+        [DataMember]
         public int ProbabilityNewLine
         {
             get { return _newLineProb; }
@@ -151,7 +155,8 @@ namespace TextTransformer
 
         private int _multipleProb;
 
-        private int ProbabilityMultiple
+        [DataMember]
+        public int ProbabilityMultiple
         {
             get { return _multipleProb; }
             set
@@ -166,6 +171,7 @@ namespace TextTransformer
 
         private int _multipleRange;
 
+        [DataMember]
         public int MultipleRange
         {
             get { return _multipleRange; }
@@ -257,6 +263,7 @@ namespace TextTransformer
 
         private int _offsetProb;
 
+        [DataMember]
         public int ProbabilityOffset
         {
             get { return _offsetProb; }
@@ -272,6 +279,7 @@ namespace TextTransformer
 
         private int _offset;
 
+        [DataMember]
         public int Offset
         {
             get { return _offset; }
@@ -287,6 +295,7 @@ namespace TextTransformer
 
         private int _offsetVariance;
 
+        [DataMember]
         public int OffsetVariance
         {
             get { return _offsetVariance; }
@@ -389,18 +398,21 @@ namespace TextTransformer
             Init();
         }
 
+        [DataMember]
         public int ProbabilityNewLine
         {
             get { return _liner.ProbabilityNewLine; }
             set { _liner.ProbabilityNewLine = value; }
         }
 
-        private int ProbabilityOffset
+        [DataMember]
+        public int ProbabilityOffset
         {
             get { return _spacer.ProbabilityOffset; }
             set { _spacer.ProbabilityOffset = value; }
         }
 
+        [DataMember]
         public int Offset
         {
             get { return _spacer.Offset; }
@@ -409,6 +421,7 @@ namespace TextTransformer
 
         private int _offsetVariance;
 
+        [DataMember]
         public int OffsetVariance
         {
             get { return _spacer.OffsetVariance; }

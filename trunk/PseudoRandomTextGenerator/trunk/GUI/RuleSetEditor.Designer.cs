@@ -35,6 +35,8 @@
             this.btnLoad = new System.Windows.Forms.Button();
             this.openFileDialog = new System.Windows.Forms.OpenFileDialog();
             this.saveFileDialog = new System.Windows.Forms.SaveFileDialog();
+            this.txtSetName = new System.Windows.Forms.TextBox();
+            this.label1 = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // Editor
@@ -85,11 +87,30 @@
             // 
             this.saveFileDialog.FileOk += new System.ComponentModel.CancelEventHandler(this.saveFileDialog_FileOk);
             // 
+            // txtSetName
+            // 
+            this.txtSetName.Location = new System.Drawing.Point(226, 22);
+            this.txtSetName.Name = "txtSetName";
+            this.txtSetName.Size = new System.Drawing.Size(144, 20);
+            this.txtSetName.TabIndex = 4;
+            this.txtSetName.TextChanged += new System.EventHandler(this.txtSetName_TextChanged);
+            // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Location = new System.Drawing.Point(175, 28);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(51, 13);
+            this.label1.TabIndex = 5;
+            this.label1.Text = "SetName";
+            // 
             // RuleSetEditor
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(383, 292);
+            this.Controls.Add(this.label1);
+            this.Controls.Add(this.txtSetName);
             this.Controls.Add(this.btnLoad);
             this.Controls.Add(this.btnUseSet);
             this.Controls.Add(this.btnSave);
@@ -97,6 +118,7 @@
             this.Name = "RuleSetEditor";
             this.Text = "RuleSetEditor";
             this.ResumeLayout(false);
+            this.PerformLayout();
 
         }
 
@@ -108,5 +130,7 @@
         private System.Windows.Forms.Button btnLoad;
         private System.Windows.Forms.OpenFileDialog openFileDialog;
         private System.Windows.Forms.SaveFileDialog saveFileDialog;
+        private System.Windows.Forms.TextBox txtSetName;
+        private System.Windows.Forms.Label label1;
     }
 }
