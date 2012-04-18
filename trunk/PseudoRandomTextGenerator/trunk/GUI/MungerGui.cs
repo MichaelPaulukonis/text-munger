@@ -16,6 +16,7 @@ namespace GUI
         private readonly List<RuleSet> _activeEditors = new List<RuleSet>();
         private string _output;
         private List<Text> _previouslySelected;
+        private const string RuleSetSuffix = ".sqn.xml";
 
         public MungerGui()
         {
@@ -28,18 +29,51 @@ namespace GUI
             Snippets.Text = string.Empty;
             btnSave.Enabled = false; // this should automatically be called due to other
 
-            var rules = new List<object> { new RuleSet(Granularity.All),
-                    new RuleSet(Granularity.Sentence),
-                    new RuleSet(Granularity.Word)
-            };
-
-            RuleSetSelector.AvailableItems = rules;
-
-            RuleSetSelector.AddDoubleClickHandler(DisplayRuleSetEditor);
+            PopulateAvailableRulesets();
 
             // TODO: we could pre-fill the text with a file is some sort of parameter is passed in
             // TODO: separate out the logic and the GUI as much as possible
             // that would make this whole thing scriptable.... ?
+        }
+
+        private void PopulateAvailableRulesets()
+        {
+            var rules = new List<object>
+                            {
+                                new RuleSet(Granularity.All),
+                                new RuleSet(Granularity.Sentence),
+                                new RuleSet(Granularity.Word)
+                            };
+
+            rules.AddRange(LoadPredefinedRuleSets());
+
+            RuleSetSelector.AvailableItems = rules;
+            RuleSetSelector.AddDoubleClickHandler(DisplayRuleSetEditor);
+
+            LoadPredefinedRuleSets();
+        }
+
+        // I'm going to have to think about this.....
+        // the sets are not what I thought
+        // Also, there's not way to mix from a predefined set, since they were originally based on aparticular level
+        // that might not be true in the future?
+        public List<RuleSet> LoadPredefinedRuleSets()
+        {
+            var sets = new List<RuleSet>();
+
+            var sourcePath = ConfigurationManager.AppSettings["RuleSetsPath"];
+            var files = Directory.GetFiles(sourcePath);
+            var fs = from file in files
+                     where file.ToLower().EndsWith(RuleSetSuffix)
+                     select file;
+
+            foreach (var file in fs)
+            {
+                var x = LoadRules(file);
+                sets.AddRange(x);
+            }
+
+            return sets;
         }
 
         public void DisplayRuleSetEditor(object sender, EventArgs e)
@@ -159,8 +193,9 @@ namespace GUI
 
         private void btnSaveRules_Click(object sender, EventArgs e)
         {
-            saveFileDialog.Title = "Save RuleSet Sequences";
-            saveFileDialog.Filter = "RuleSet sequences (*.sqn.xml)|*.sqn.xml|All files (*.*)|*.*";
+            saveFileDialog.Title = "Save RuleSets";
+            saveFileDialog.Filter = string.Format("RuleSet sequences (*{0})|*{1}|All files (*.*)|*.*",
+                                                  RuleSetSuffix, RuleSetSuffix);
 
             if (saveFileDialog.ShowDialog() == DialogResult.OK)
             {
@@ -172,6 +207,38 @@ namespace GUI
 
                 File.WriteAllText(name, xrs);
             }
+        }
+
+        private void btnLoadRules_Click(object sender, EventArgs e)
+        {
+            // we should be calling the load-file dialog in here,
+            // but the actual heavy lifting in the other function
+
+            // TODO: prep the dialog for this type of load
+            openFileDialog.Title = "Load RuleSets";
+            openFileDialog.Filter = "RuleSet sequences (*.sqn.xml)|*.sqn.xml|All files (*.*)|*.*";
+
+            var dr = openFileDialog.ShowDialog();
+            if (dr == DialogResult.OK)
+            {
+                var rules = LoadRules(openFileDialog.FileName); // externalize, becuase we're going to call this programmtically, as well
+
+                RuleSetSelector.SelectedItems = rules.Cast<object>().ToList();
+            }
+        }
+
+        private List<RuleSet> LoadRules(string rulesFile)
+        {
+            string xml;
+            using (var sr = new StreamReader(rulesFile))
+            {
+                xml = sr.ReadToEnd();
+                sr.Close();
+            }
+
+            var rules = new List<RuleSet>().FromXML(xml);
+
+            return rules;
         }
 
         // TODO: okay, now I'm going to be using this for the RuleSet lists.
@@ -312,9 +379,7 @@ namespace GUI
         private void InitializeOpenFileDialog()
         {
             // Set the file dialog to filter for graphics files.
-            this.openFileDialog.Filter =
-                "Text (*.txt)|*.TXT|" +
-                "All files (*.*)|*.*";
+            this.openFileDialog.Filter = "Text (*.txt)|*.TXT|" + "All files (*.*)|*.*";
 
             // Allow the user to select multiple images.
             this.openFileDialog.Multiselect = true;

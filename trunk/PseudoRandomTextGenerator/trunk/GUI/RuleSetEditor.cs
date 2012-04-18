@@ -111,9 +111,7 @@ namespace GUI
         private void InitializeOpenFileDialog()
         {
             // Set the file dialog to filter for graphics files.
-            this.openFileDialog.Filter =
-                "RuleSet (*.rst.xml)|*.rst.xml|" +
-                "All files (*.*)|*.*";
+            this.openFileDialog.Filter = "RuleSet (*.rst.xml)|*.rst.xml|" + "All files (*.*)|*.*";
 
             this.openFileDialog.Multiselect = false;
             this.openFileDialog.Title = "Select Rule Set";
@@ -122,9 +120,7 @@ namespace GUI
         private void InitializeSaveFileDialog()
         {
             // Set the file dialog to filter for graphics files.
-            this.saveFileDialog.Filter =
-                "RuleSet (*.rst.xml)|*.rst.xml|" +
-                "All files (*.*)|*.*";
+            this.saveFileDialog.Filter = "RuleSet (*.rst.xml)|*.rst.xml|" + "All files (*.*)|*.*";
 
             this.saveFileDialog.Title = "Save Rule Set";
         }
@@ -165,12 +161,15 @@ namespace GUI
 
         private void btnLoad_Click(object sender, EventArgs e)
         {
-            openFileDialog.ShowDialog();
+            var dr = openFileDialog.ShowDialog();
+            if (dr == DialogResult.OK)
+            {
+                LoadRulesFromFile(openFileDialog.FileName);
+            }
         }
 
-        private void LoadRulesFromFile()
+        private void LoadRulesFromFile(string file)
         {
-            var file = openFileDialog.FileName;
             var xml = string.Empty;
             using (var sr = new StreamReader(file))
             {
