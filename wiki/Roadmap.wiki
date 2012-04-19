@@ -50,7 +50,7 @@ For certain limited definitions of the word "useful."
    * that will be an issue for serialization....
    * wait, I think I did this....
   * improve display in selection editors
-   * this is more of a update for [https://code.google.com/p/winforms-custom-select-control/ the winform custom select control project]
+   * implemented for library selector; need more roll-out and testing
   * allow controls to resize when form is resized
   * separation of operation from GUI, so can be scripted
   * more Transformations
@@ -61,6 +61,8 @@ For certain limited definitions of the word "useful."
   * installation project, so installer can exist in project alongside source
   * better movement-controls inside of edit-areas
    * ie, word-jump, etc
+  * (better) error-handling. Right now, TM expects loaded data to be valid, etc. This task probably goes hand-in-hand with
+  * add log4net
 
 ==WAAAY Down the road, but a major goal:==
   * planar-output and processing, not just linear
