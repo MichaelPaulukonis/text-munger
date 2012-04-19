@@ -11,6 +11,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GUI", "GUI\GUI.csproj", "{6
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Resources", "Resources", "{049C08B1-8F68-4280-96F9-693A81FA2BC2}"
 	ProjectSection(SolutionItems) = preProject
+		resources\CustomSelectControl.dll = resources\CustomSelectControl.dll
 		resources\HtmlAgilityPack.dll = resources\HtmlAgilityPack.dll
 		resources\repositories.config = resources\repositories.config
 	EndProjectSection
