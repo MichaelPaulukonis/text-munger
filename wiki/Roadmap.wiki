@@ -63,6 +63,12 @@ For certain limited definitions of the word "useful."
    * ie, word-jump, etc
   * (better) error-handling. Right now, TM expects loaded data to be valid, etc. This task probably goes hand-in-hand with
   * add log4net
+  * apply rule/ruleset to selected text in OUTPUT
+  * formatting category for rules (ie, XRML, shortlines, Heijinian, etc.)
+  * re-think of rule selection/layout -- too many clicks, currently.
+  * more formatters (Howlish paragraphs, right-justify [from position `n`])
+  * custom rules have scripting of some kind
+  * splitters -- word, char, sentence, other. punctuation-sensitive or not.
 
 ==WAAAY Down the road, but a major goal:==
   * planar-output and processing, not just linear
