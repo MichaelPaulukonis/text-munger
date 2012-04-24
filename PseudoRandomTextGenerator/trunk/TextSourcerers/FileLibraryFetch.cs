@@ -34,17 +34,25 @@ namespace TextSourcers
             var files = Directory.GetFiles(libraryPath);
             if (files.Length > 0)
             {
-                lib = new Library(libname) { Parent = parent };
+                var tempLib = lib;
+                tempLib = new Library(libname) { Parent = parent };
 
                 foreach (var f in files)
                 {
                     if (Path.GetExtension(f).ToLower() == ".txt")
                     {
                         var tx = new Text(Path.GetFileNameWithoutExtension(f), f);
-                        lib.Add(tx);
+                        tempLib.Add(tx);
                     }
                 }
-                libs.Add(libname, lib);
+
+                // if a non-.txt file is in files, we will create a lib, but it will be empty
+                // disregard
+                if (tempLib.Count() > 0)
+                {
+                    libs.Add(libname, tempLib);
+                    lib = tempLib;
+                }
             }
 
             var dirs = Directory.GetDirectories(libraryPath);
