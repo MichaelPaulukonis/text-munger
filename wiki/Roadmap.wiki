@@ -12,6 +12,8 @@ For certain limited definitions of the word "useful."
 
 
 ==RECENTLY COMPLETED TASKS==
+  * improved display in selection editors 2012.04.16
+   * Library, rule-selectors and editors.
   * `FreeVerse` transformation rule implementation 2012.04.16
    * which combines standalone `ShortLines` and `InitialSpace`s transformations
   * `HeijinianAidToMemory` transformation implementation 2012.04.17
@@ -34,6 +36,38 @@ For certain limited definitions of the word "useful."
   * some sort of short-cut key to edit a given ruleset(s)
    * there's a lot of clicking in this interface.
   * build unit-tests
+  * added percentage bias to text sources
+   * although this can be crudely-done via adding the text more than once
+  * swap OUTPUT to SOURCE, for re-processing
+  * allow controls to resize when form is resized
+  * separation of operation from GUI, so can be scripted
+  * percentage-bias for word-level Transforms
+   * i.e., don't apply to EVERY word
+  * installation project, so installer can exist in project alongside source
+  * better movement-controls inside of edit-areas
+   * i.e., word-jump, etc
+  * (better) error-handling. Right now, TM expects loaded data to be valid, etc. This task probably goes hand-in-hand with
+  * add log4net
+  * apply rule/ruleset to selected text in OUTPUT
+  * re-think of rule selection/layout -- too many clicks, currently.
+  * common tokenizer -- word, char, sentence, other. punctuation-sensitive or not.
+  * Attempt to delete Gutenberg boilerplate
+
+
+== Transformation Rules Additions and Enhancements ==
+  * vowell-to-punct rule: randomize the punctuation -- a la expletive deleted
+  * BOWDLERIZER -- configurable regex rules, transforms words or phrases into something else
+  * more Transformations
+   * acrostic/mesostic generator
+   *ee-cummings-ification
+  * more clustering random-walk for Density transform
+  * file-based generic replacement "translator" to read from directory
+   * ie, multiple user-controlled translators are possible
+   * that will be an issue for serialization....
+   * wait, I think I did this....
+  * formatting category for rules (ie, XRML, shortlines, Heijinian, etc.)
+  * more formatters (Howlish paragraphs, right-justify [from position `n`])
+  * custom rules have scripting of some kind
   * Markov updates
    * drop xray-references in Markov rules
    * add explanation of rules to rule-editor (and whatever background code)
@@ -41,34 +75,7 @@ For certain limited definitions of the word "useful."
    * make Markov-analysis case-insensitive for analysis
     * not for output (optional, I suppose)
     * optional
-  * added percentage bias to text sources
-   * although this can be crudely-done via adding the text more than once
-  * swap OUTPUT to SOURCE, for re-processing
-  * more clustering random-walk for Density transform
-  * file-based generic replacement "translator" to read from directory
-   * ie, multiple user-controlled translators are possible
-   * that will be an issue for serialization....
-   * wait, I think I did this....
-  * improve display in selection editors
-   * implemented for library selector; need more roll-out and testing
-  * allow controls to resize when form is resized
-  * separation of operation from GUI, so can be scripted
-  * more Transformations
-   * acrostic/mesostic generator
-   *ee-cummings-ification
-  * percentage-bias for word-level Transforms
-  * granularity-handler for sentence-level
-  * installation project, so installer can exist in project alongside source
-  * better movement-controls inside of edit-areas
-   * ie, word-jump, etc
-  * (better) error-handling. Right now, TM expects loaded data to be valid, etc. This task probably goes hand-in-hand with
-  * add log4net
-  * apply rule/ruleset to selected text in OUTPUT
-  * formatting category for rules (ie, XRML, shortlines, Heijinian, etc.)
-  * re-think of rule selection/layout -- too many clicks, currently.
-  * more formatters (Howlish paragraphs, right-justify [from position `n`])
-  * custom rules have scripting of some kind
-  * splitters -- word, char, sentence, other. punctuation-sensitive or not.
+
 
 ==WAAAY Down the road, but a major goal:==
   * planar-output and processing, not just linear
