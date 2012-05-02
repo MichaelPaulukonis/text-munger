@@ -102,6 +102,11 @@ namespace GUI
                 var ed = new XrayFormatEditor((XrmlFormat)rule);
                 ed.ShowDialog();
             }
+            else if (rule.GetType() == typeof(InitialSpaces))
+            {
+                var ed = new EditorInitialSpaces((InitialSpaces)rule);
+                ed.ShowDialog();
+            }
             else
             {
                 MessageBox.Show("Either no setup is required, or Type Editor is not yet implemented");
@@ -217,7 +222,6 @@ namespace GUI
 
         private void label1_Click(object sender, EventArgs e)
         {
-
         }
     }
 }
