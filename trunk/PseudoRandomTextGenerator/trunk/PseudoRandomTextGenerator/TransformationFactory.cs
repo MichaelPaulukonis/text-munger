@@ -90,7 +90,8 @@ namespace TextTransformer
         private List<TransformerBase> GetGranularityAll()
         {
             return new List<TransformerBase> { new MarkovGenerator(), new XrmlFormat(),
-                new FreeVerse(), new ShortLines(), new InitialSpaces(), new HeijinianAidToMemory() };
+                new FreeVerse(), new ShortLines(), new InitialSpaces(), new HeijinianAidToMemory()
+            , new ShuffleParagraph() };
         }
     }
 }

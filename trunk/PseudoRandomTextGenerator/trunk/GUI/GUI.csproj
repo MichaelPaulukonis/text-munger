@@ -116,6 +116,9 @@
     <EmbeddedResource Include="EditorInitialSpaces.resx">
       <DependentUpon>EditorInitialSpaces.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="EditorShortLines.resx">
+      <DependentUpon>EditorShortLines.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="frmLibraryPicker.resx">
       <DependentUpon>frmLibraryPicker.cs</DependentUpon>
     </EmbeddedResource>

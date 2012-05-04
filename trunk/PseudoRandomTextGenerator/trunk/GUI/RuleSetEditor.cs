@@ -107,6 +107,11 @@ namespace GUI
                 var ed = new EditorInitialSpaces((InitialSpaces)rule);
                 ed.ShowDialog();
             }
+            else if (rule.GetType() == typeof(ShortLines))
+            {
+                var ed = new EditorShortLines((ShortLines)rule);
+                ed.ShowDialog();
+            }
             else
             {
                 MessageBox.Show("Either no setup is required, or Type Editor is not yet implemented");

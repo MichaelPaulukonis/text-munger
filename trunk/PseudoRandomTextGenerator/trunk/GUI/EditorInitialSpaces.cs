@@ -41,6 +41,10 @@ namespace GUI
 
         private void btnSave_Click(object sender, EventArgs e)
         {
+            if (txtProbability.Text.Length == 0) _ins.ProbabilityOffset = 0;
+            if (txtVariance.Text.Length == 0) _ins.OffsetVariance = 0;
+            if (txtOffset.Text.Length == 0) _ins.Offset = 0;
+
             this.Close();
         }
 
@@ -61,12 +65,6 @@ namespace GUI
         {
             try
             {
-                // not sure if this is the way to go about it....
-                // if empty, probably in the middle of an edit
-                // so ignore it
-                // HOWEVER, if we save without typing more
-                // the LAST DIGIT present, now invisible, will be the value
-                // yarg
                 if (txtVariance.Text.Length > 0)
                 {
                     _ins.OffsetVariance = int.Parse(txtVariance.Text);
