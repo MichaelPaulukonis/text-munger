@@ -17,7 +17,7 @@ namespace TextTransformer
         //Character = 1,
         Word = 2,
         Sentence = 3,   // yeah, maybe
-        //Paragraph = 4,  // yeah. okay. so what?
+        Paragraph = 4,  // yeah. okay. so what?
         //Page = 5,       // no idea how this would be defined
         All = 100       // leaving room for weird expansion. although refactoring should take care of that. except for serialization...
     }
@@ -34,6 +34,7 @@ namespace TextTransformer
     [KnownType(typeof(PunctuizeWhitespace))]
     [KnownType(typeof(VowellToPunct))]
     [KnownType(typeof(Reverse))]
+    [KnownType(typeof(ShuffleParagraph))]
     [KnownType(typeof(Shuffle))]
     [KnownType(typeof(PigLatin))]
     [KnownType(typeof(Leet))]
@@ -52,28 +53,41 @@ namespace TextTransformer
         public abstract string Description { get; }
     }
 
-    internal static class TransformerTools
+    public static class TransformerTools
     {
         private static Random _rnd = new Random();
 
         // this is ganked from MarkovGenerator.cs:public class DefaultRule : IMarkovRule
         // which suggests it is common code....
-        internal static IList<string> SplitToWords(string subject)
+        internal static IList<string> SplitToWords(string source)
         {
             var regex = new Regex(@"\s+");
 
-            var splitted = regex.Split(subject).ToList();
+            var splitted = regex.Split(source).ToList();
 
             return splitted;
         }
 
-        internal static IList<string> SplitToChars(string subject)
+        internal static IList<string> SplitToChars(string source)
         {
             var regex = new Regex(@".");
 
-            var splitted = regex.Split(subject).ToList();
+            var splitted = regex.Split(source).ToList();
 
             return splitted;
+        }
+
+        internal static IList<string> SplitToLines(string source)
+        {
+            var result = Regex.Split(source, "\r\n|\r|\n");
+            return result;
+        }
+
+        internal static IList<string> SplitToParagraphs(string source)
+        {
+            // TODO: two OR MORE instances of each....
+            var result = Regex.Split(source, "\r\n\r\n|\r\r|\n\n").ToList();
+            return result;
         }
 
         internal static int GetPercentage()
@@ -476,8 +490,7 @@ namespace TextTransformer
 
         private string Munge(string source)
         {
-            // split by LINES
-            var result = Regex.Split(source, "\r\n|\r|\n");
+            var result = TransformerTools.SplitToLines(source);
             var sb = new StringBuilder();
             foreach (var line in result)
             {
@@ -758,10 +771,56 @@ namespace TextTransformer
     }
 
     [DataContract]
+    public class ShuffleParagraph : TransformerBase
+    {
+        public override string Source { get; set; }
+
+        public override string Munged
+        {
+            get { return Munge(); }
+        }
+
+        public override Granularity Granularity
+        {
+            get { return Granularity.Paragraph; }
+            set { return; }
+        }
+
+        private string Munge()
+        {
+            var s = TransformerTools.SplitToParagraphs(Source);
+            var rnd = new Random();
+            var result = s.OrderBy(item => rnd.Next());
+
+            return string.Join("\r\n\r\n", result.ToArray());
+        }
+
+        public override string ToString()
+        {
+            return "ShuffleParagraphs";
+        }
+
+        public override string Description
+        {
+            get { return "Reorganizes the paragraphs."; }
+        }
+    }
+
+    [DataContract]
     public class Shuffle : TransformerBase
     {
         // TODO: optionally preserve the first and last letters of each word
-
+        // TODO: hey, WHAT IF it took a splitter-class as an option
+        // instead of deciding to split on chars
+        // and then shuffled what it had....
+        // how to join back together?
+        // splitter has granularity?
+        // char = nothing
+        // word = space
+        // sentence = space
+        // paragraph = \n\n ?????
+        //
+        // the stand-alone ShuffleParagraphs should start to give you an idea....
         public override string Source { get; set; }
 
         public override string Munged
