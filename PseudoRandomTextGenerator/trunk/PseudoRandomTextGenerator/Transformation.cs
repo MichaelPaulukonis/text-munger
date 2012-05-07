@@ -14,11 +14,11 @@ namespace TextTransformer
     {
         Unknown = -1,
         //Any = 0,      I don't think we need this; all existing uses have been moved to Word
-        //Character = 1,
+        Character = 1,
         Word = 2,
         Sentence = 3,   // yeah, maybe
-        Paragraph = 4,  // yeah. okay. so what?
-        //Page = 5,       // no idea how this would be defined
+        Paragraph = 4,
+        Line = 5,       // THIS, we can define
         All = 100       // leaving room for weird expansion. although refactoring should take care of that. except for serialization...
     }
 
@@ -61,11 +61,16 @@ namespace TextTransformer
         // which suggests it is common code....
         internal static IList<string> SplitToWords(string source)
         {
-            var regex = new Regex(@"\s+");
+            //var regex = new Regex(@"\s+");
 
-            var splitted = regex.Split(source).ToList();
+            //var splitted = regex.Split(source).ToList();
 
-            return splitted;
+            //return splitted;
+
+            // THIS WORKS!
+            // TODO: refactor all refs to the TextTokenizer directly
+            //return new TextTokenizer { Granularity = Granularity.Word, Source = source }.Tokens;
+            return new TextTokenizer { Source = source }.Tokens;
         }
 
         internal static IList<string> SplitToChars(string source)
@@ -206,16 +211,9 @@ namespace TextTransformer
             get { return Munge(Source); }
         }
 
-        private int GetPercentage()
-        {
-            return _rnd.Next(0, 100);
-        }
-
         private string Munge(string source)
         {
-            var mod = source;
-
-            var words = new DefaultRule().Split(source);
+            var words = TransformerTools.SplitToWords(source);
             var sb = new StringBuilder();
 
             foreach (var word in words)
