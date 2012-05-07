@@ -63,6 +63,7 @@ namespace TextTransformer
         {
             /* Goal: Tokenize words and punctuation
              * That is, a word is one token, the next group of puncts are another token
+             * NOTE: that is incorrect. all of the puncts are SEPARATE TOKENS, not as a group
              * for this, we use an algortihm, not a regex
              */
 
@@ -227,10 +228,11 @@ namespace TextTransformer
         // running Markov on a word-level is a bit silly, but for long words I guess you could do it
         // should we just bite-the-bullet and insist on sentence-level?
         // what about the hundred-letter thunderwords? or a punctuation-and-whitespace-free blob?
-        public override Granularity Granularity { get { return Granularity.All; }
+        public override Granularity Granularity
+        {
+            get { return Granularity.All; }
 
             set { return; }
-        
         }
 
         // original code constrained size from 1..5
@@ -475,8 +477,7 @@ namespace TextTransformer
         // reference tokenizing punctuation, etc.
         public override string Description
         {
-            get { return "n-gram/Markov-chain generator based on Source input, and configurable rulesets for character or word-based n-grams, etc.";  }
+            get { return "n-gram/Markov-chain generator based on Source input, and configurable rulesets for character or word-based n-grams, etc."; }
         }
-
     }
 }
