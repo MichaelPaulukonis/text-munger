@@ -41,6 +41,10 @@
             this.label5 = new System.Windows.Forms.Label();
             this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
             this.btnSave = new System.Windows.Forms.Button();
+            this.panelDensity = new System.Windows.Forms.Panel();
+            this.rbFillIn = new System.Windows.Forms.RadioButton();
+            this.rbDensity = new System.Windows.Forms.RadioButton();
+            this.panelDensity.SuspendLayout();
             this.SuspendLayout();
             // 
             // label1
@@ -63,7 +67,7 @@
             // 
             // txtDensity
             // 
-            this.txtDensity.Location = new System.Drawing.Point(70, 36);
+            this.txtDensity.Location = new System.Drawing.Point(57, 3);
             this.txtDensity.Name = "txtDensity";
             this.txtDensity.Size = new System.Drawing.Size(100, 20);
             this.txtDensity.TabIndex = 3;
@@ -72,7 +76,7 @@
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(25, 39);
+            this.label2.Location = new System.Drawing.Point(12, 6);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(42, 13);
             this.label2.TabIndex = 2;
@@ -81,7 +85,7 @@
             // 
             // txtYaw
             // 
-            this.txtYaw.Location = new System.Drawing.Point(70, 62);
+            this.txtYaw.Location = new System.Drawing.Point(57, 29);
             this.txtYaw.Name = "txtYaw";
             this.txtYaw.Size = new System.Drawing.Size(100, 20);
             this.txtYaw.TabIndex = 5;
@@ -90,7 +94,7 @@
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(39, 65);
+            this.label3.Location = new System.Drawing.Point(26, 32);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(28, 13);
             this.label3.TabIndex = 4;
@@ -99,7 +103,7 @@
             // 
             // txtWarble
             // 
-            this.txtWarble.Location = new System.Drawing.Point(70, 88);
+            this.txtWarble.Location = new System.Drawing.Point(57, 55);
             this.txtWarble.Name = "txtWarble";
             this.txtWarble.Size = new System.Drawing.Size(100, 20);
             this.txtWarble.TabIndex = 7;
@@ -108,7 +112,7 @@
             // label4
             // 
             this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(26, 91);
+            this.label4.Location = new System.Drawing.Point(13, 58);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(41, 13);
             this.label4.TabIndex = 6;
@@ -117,7 +121,7 @@
             // 
             // txtTenacity
             // 
-            this.txtTenacity.Location = new System.Drawing.Point(70, 114);
+            this.txtTenacity.Location = new System.Drawing.Point(57, 81);
             this.txtTenacity.Name = "txtTenacity";
             this.txtTenacity.Size = new System.Drawing.Size(100, 20);
             this.txtTenacity.TabIndex = 9;
@@ -126,7 +130,7 @@
             // label5
             // 
             this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(19, 117);
+            this.label5.Location = new System.Drawing.Point(6, 84);
             this.label5.Name = "label5";
             this.label5.Size = new System.Drawing.Size(48, 13);
             this.label5.TabIndex = 8;
@@ -135,7 +139,7 @@
             // 
             // btnSave
             // 
-            this.btnSave.Location = new System.Drawing.Point(63, 156);
+            this.btnSave.Location = new System.Drawing.Point(66, 206);
             this.btnSave.Name = "btnSave";
             this.btnSave.Size = new System.Drawing.Size(75, 23);
             this.btnSave.TabIndex = 10;
@@ -143,24 +147,61 @@
             this.btnSave.UseVisualStyleBackColor = true;
             this.btnSave.Click += new System.EventHandler(this.btnSave_Click);
             // 
+            // panelDensity
+            // 
+            this.panelDensity.Controls.Add(this.txtDensity);
+            this.panelDensity.Controls.Add(this.label2);
+            this.panelDensity.Controls.Add(this.txtTenacity);
+            this.panelDensity.Controls.Add(this.label3);
+            this.panelDensity.Controls.Add(this.label5);
+            this.panelDensity.Controls.Add(this.txtYaw);
+            this.panelDensity.Controls.Add(this.txtWarble);
+            this.panelDensity.Controls.Add(this.label4);
+            this.panelDensity.Enabled = false;
+            this.panelDensity.Location = new System.Drawing.Point(10, 85);
+            this.panelDensity.Name = "panelDensity";
+            this.panelDensity.Size = new System.Drawing.Size(176, 115);
+            this.panelDensity.TabIndex = 11;
+            // 
+            // rbFillIn
+            // 
+            this.rbFillIn.AutoSize = true;
+            this.rbFillIn.Checked = true;
+            this.rbFillIn.Location = new System.Drawing.Point(70, 39);
+            this.rbFillIn.Name = "rbFillIn";
+            this.rbFillIn.Size = new System.Drawing.Size(71, 17);
+            this.rbFillIn.TabIndex = 12;
+            this.rbFillIn.TabStop = true;
+            this.rbFillIn.Text = "FillAround";
+            this.rbFillIn.UseVisualStyleBackColor = true;
+            this.rbFillIn.CheckedChanged += new System.EventHandler(this.rbDensity_CheckedChanged);
+            // 
+            // rbDensity
+            // 
+            this.rbDensity.AutoSize = true;
+            this.rbDensity.Location = new System.Drawing.Point(70, 62);
+            this.rbDensity.Name = "rbDensity";
+            this.rbDensity.Size = new System.Drawing.Size(75, 17);
+            this.rbDensity.TabIndex = 14;
+            this.rbDensity.Text = "Density Fill";
+            this.rbDensity.UseVisualStyleBackColor = true;
+            this.rbDensity.CheckedChanged += new System.EventHandler(this.rbDensity_CheckedChanged);
+            // 
             // XrayFormatEditor
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(201, 191);
+            this.ClientSize = new System.Drawing.Size(201, 235);
+            this.Controls.Add(this.rbDensity);
+            this.Controls.Add(this.rbFillIn);
+            this.Controls.Add(this.panelDensity);
             this.Controls.Add(this.btnSave);
-            this.Controls.Add(this.txtTenacity);
-            this.Controls.Add(this.label5);
-            this.Controls.Add(this.txtWarble);
-            this.Controls.Add(this.label4);
-            this.Controls.Add(this.txtYaw);
-            this.Controls.Add(this.label3);
-            this.Controls.Add(this.txtDensity);
-            this.Controls.Add(this.label2);
             this.Controls.Add(this.txtLineLength);
             this.Controls.Add(this.label1);
             this.Name = "XrayFormatEditor";
             this.Text = "XrayFormatEditor";
+            this.panelDensity.ResumeLayout(false);
+            this.panelDensity.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -180,5 +221,8 @@
         private System.Windows.Forms.Label label5;
         private System.Windows.Forms.ToolTip toolTip1;
         private System.Windows.Forms.Button btnSave;
+        private System.Windows.Forms.Panel panelDensity;
+        private System.Windows.Forms.RadioButton rbFillIn;
+        private System.Windows.Forms.RadioButton rbDensity;
     }
 }

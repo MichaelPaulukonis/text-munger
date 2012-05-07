@@ -28,6 +28,7 @@ namespace GUI
             txtYaw.Text = _xray.Density.RandomWalker.Yaw.ToString();
             txtWarble.Text = _xray.Density.RandomWalker.Warble.ToString();
             txtTenacity.Text = _xray.Density.RandomWalker.Tenacity.ToString();
+            rbFillIn.Checked = _xray.RetainAlignment;
         }
 
         private void btnSave_Click(object sender, System.EventArgs e)
@@ -58,6 +59,14 @@ namespace GUI
         private void txtTenacity_TextChanged(object sender, System.EventArgs e)
         {
             _xray.Density.RandomWalker.Tenacity = int.Parse(txtTenacity.Text);
+        }
+
+        private void rbDensity_CheckedChanged(object sender, System.EventArgs e)
+        {
+            // one of these will have to be negative
+            // depending upon which retains the handler...
+            _xray.RetainAlignment = !rbDensity.Checked;
+            panelDensity.Enabled = rbDensity.Checked;
         }
 
         // TODO: form elemements:

@@ -10,6 +10,7 @@ namespace TextTransformer
     {
         public XrmlFormat()
         {
+            RetainAlignment = true;
             this.Density = new Density();
             LineLength = 80;
         }
@@ -20,6 +21,12 @@ namespace TextTransformer
         [DataMember]
         public int LineLength { get; set; }
 
+        /// <summary>
+        /// Retain original spacing, or fill in with Density
+        /// </summary>
+        [DataMember]
+        public Boolean RetainAlignment { get; set; }
+
         public override string Source { get; set; }
 
         public override string Munged
@@ -29,21 +36,57 @@ namespace TextTransformer
 
         private string Munge()
         {
-            // process density first, as that removes line-breaks
-            Density.Source = Source;
-            var mod = Density.Munged;
+            var mod = Source;
 
+            // this is a pre-line-length operation
+            if (!RetainAlignment)
+            {
+                // process density first, as that removes line-breaks
+                Density.Source = mod;
+                mod = Density.Munged;
+            }
+
+            // sadly, does NOT pad with spaces at the end. waaaaah!
             // "(.{1,80})"
             var regex = string.Format("(.{{1,{0}}})", LineLength);
             mod = Regex.Replace(mod, regex, "$1\n");
+            mod = PadItOut(mod);
+
+            // this is a post-line-length operation
+            if (RetainAlignment)
+            {
+                // TODO: what if we get tabs, etc?
+                mod = mod.Replace(" ", ".");
+            }
 
             return mod;
         }
 
-        public override  Granularity Granularity { get { return Granularity.All; }
+        private string PadItOut(string source)
+        {
+            var lines = TransformerTools.SplitToLines(source);
+            var sb = new StringBuilder();
+
+            foreach (var line in lines)
+            {
+                var append = string.Empty;
+                var l = line.Length;
+                if (l < LineLength)
+                {
+                    append = new String(' ', LineLength - l);
+                }
+                // TODO: aargh, string concatenation inside of string-buildering!
+                sb.AppendLine(line + append);
+            }
+
+            return sb.ToString();
+        }
+
+        public override Granularity Granularity
+        {
+            get { return Granularity.All; }
 
             set { return; }
-        
         }
 
         public override string ToString()
@@ -56,7 +99,55 @@ namespace TextTransformer
         {
             get { return "Formats Source to column-width and punctuated as per XraysMonaLisa."; }
         }
+    }
 
+    [DataContract]
+    public class PunctArount : TransformerBase
+    {
+        public override string Source { get; set; }
+
+        public override string Munged
+        {
+            get { return Munge(); }
+        }
+
+        private string Munge()
+        {
+            return string.Empty;
+        }
+
+        public override Granularity Granularity
+        {
+            // TODO: sentence? what about LINE
+            // that makes more sense.
+            get { return Granularity.Sentence; }
+            set { return; }
+        }
+
+        public override string ToString()
+        {
+            var lines = TransformerTools.SplitToLines(Source);
+
+            var sb = new StringBuilder();
+
+            foreach (var line in lines)
+            {
+                // TODO: we need the line-length set
+                // TODO: fill in all white-space with "."
+                // if line > length, CHOP IT OFF
+            }
+
+            return sb.ToString();
+        }
+
+        public override string Description
+        {
+            get
+            {
+                return "Takes positioning as a given, and fills all spaces"
+                  + " (including leading and trailing) with default punct-mark.";
+            }
+        }
     }
 
     [DataContract]
@@ -78,6 +169,7 @@ namespace TextTransformer
         public override string Source { get; set; }
 
         private int _p = 97; // default
+
         [DataMember]
         public int Percentage
         {
@@ -123,7 +215,7 @@ namespace TextTransformer
             return sb.ToString();
         }
 
-        public override  Granularity Granularity
+        public override Granularity Granularity
         {
             get { return Granularity.Sentence; }
             set { return; }
@@ -231,7 +323,6 @@ namespace TextTransformer
         {
             get { return "Punctuizes the Source semi-randomly around the given density."; }
         }
-
     }
 
     [DataContract]
