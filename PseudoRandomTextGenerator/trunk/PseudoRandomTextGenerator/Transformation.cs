@@ -57,44 +57,6 @@ namespace TextTransformer
     {
         private static Random _rnd = new Random();
 
-        // this is ganked from MarkovGenerator.cs:public class DefaultRule : IMarkovRule
-        // which suggests it is common code....
-        internal static IList<string> SplitToWords(string source)
-        {
-            //var regex = new Regex(@"\s+");
-
-            //var splitted = regex.Split(source).ToList();
-
-            //return splitted;
-
-            // THIS WORKS!
-            // TODO: refactor all refs to the TextTokenizer directly
-            //return new TextTokenizer { Granularity = Granularity.Word, Source = source }.Tokens;
-            return new TextTokenizer { Source = source }.Tokens;
-        }
-
-        internal static IList<string> SplitToChars(string source)
-        {
-            var regex = new Regex(@".");
-
-            var splitted = regex.Split(source).ToList();
-
-            return splitted;
-        }
-
-        internal static IList<string> SplitToLines(string source)
-        {
-            var result = Regex.Split(source, "\r\n|\r|\n");
-            return result;
-        }
-
-        internal static IList<string> SplitToParagraphs(string source)
-        {
-            // TODO: two OR MORE instances of each....
-            var result = Regex.Split(source, "\r\n\r\n|\r\r|\n\n").ToList();
-            return result;
-        }
-
         internal static int GetPercentage()
         {
             return _rnd.Next(0, 101); // EXCLUSIVE upper-bound
@@ -213,7 +175,7 @@ namespace TextTransformer
 
         private string Munge(string source)
         {
-            var words = TransformerTools.SplitToWords(source);
+            var words = new TextTokenizer(Granularity.Word, source).Tokens;
             var sb = new StringBuilder();
 
             foreach (var word in words)
@@ -488,9 +450,10 @@ namespace TextTransformer
 
         private string Munge(string source)
         {
-            var result = TransformerTools.SplitToLines(source);
+            var lines = new TextTokenizer(Granularity.Line, source).Tokens;
+
             var sb = new StringBuilder();
-            foreach (var line in result)
+            foreach (var line in lines)
             {
                 if (line.Length > 0) // don't waste energy on empty lines. but do preserve them
                 {
@@ -786,7 +749,7 @@ namespace TextTransformer
 
         private string Munge()
         {
-            var s = TransformerTools.SplitToParagraphs(Source);
+            var s = new TextTokenizer(Granularity.Paragraph, Source).Tokens;
             var rnd = new Random();
             var result = s.OrderBy(item => rnd.Next());
 
@@ -850,6 +813,68 @@ namespace TextTransformer
         public override string Description
         {
             get { return "Randoms the letters in Source."; }
+        }
+    }
+
+    // TODO: provide the various shufflers...
+    [DataContract]
+    public class Shuffler : TransformerBase
+    {
+        public Shuffler() : this(Granularity.Character) { }
+
+        public Shuffler(Granularity g)
+        {
+            Granularity = g;
+        }
+
+        // the stand-alone ShuffleParagraphs should start to give you an idea....
+        public override string Source { get; set; }
+
+        public override string Munged
+        {
+            get { return Munge(); }
+        }
+
+        public override Granularity Granularity
+        {
+            get;
+            set;
+        }
+
+        private string Munge()
+        {
+            // http://stackoverflow.com/a/5383519/41153
+            //var s = Source.ToCharArray();
+            var s = new TextTokenizer(Granularity, Source).Tokens;
+
+            var rnd = new Random();
+            var result = s.OrderBy(item => rnd.Next());
+
+            var joiner = string.Empty;
+
+            switch (Granularity)
+            {
+                case Granularity.Character:
+                    joiner = string.Empty;
+                    break;
+                case Granularity.Paragraph:
+                    joiner = "\r\n\r\n";
+                    break;
+                default:
+                    throw new ArgumentNullException(string.Format("{0} is not supported for Shuffler.", Granularity));
+            }
+
+            return string.Join(joiner, result.ToArray());
+        }
+
+        public override string ToString()
+        {
+            return Granularity + "Shuffle";
+        }
+
+        public override string Description
+        {
+            get { return string.Format("Randoms Source based on Granularity {0}.", Granularity); }
         }
     }
 

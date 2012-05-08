@@ -64,7 +64,7 @@ namespace TextTransformer
 
         private string PadItOut(string source)
         {
-            var lines = TransformerTools.SplitToLines(source);
+            var lines = new TextTokenizer(Granularity.Line, source).Tokens;
             var sb = new StringBuilder();
 
             foreach (var line in lines)
@@ -98,55 +98,6 @@ namespace TextTransformer
         public override string Description
         {
             get { return "Formats Source to column-width and punctuated as per XraysMonaLisa."; }
-        }
-    }
-
-    [DataContract]
-    public class PunctArount : TransformerBase
-    {
-        public override string Source { get; set; }
-
-        public override string Munged
-        {
-            get { return Munge(); }
-        }
-
-        private string Munge()
-        {
-            return string.Empty;
-        }
-
-        public override Granularity Granularity
-        {
-            // TODO: sentence? what about LINE
-            // that makes more sense.
-            get { return Granularity.Sentence; }
-            set { return; }
-        }
-
-        public override string ToString()
-        {
-            var lines = TransformerTools.SplitToLines(Source);
-
-            var sb = new StringBuilder();
-
-            foreach (var line in lines)
-            {
-                // TODO: we need the line-length set
-                // TODO: fill in all white-space with "."
-                // if line > length, CHOP IT OFF
-            }
-
-            return sb.ToString();
-        }
-
-        public override string Description
-        {
-            get
-            {
-                return "Takes positioning as a given, and fills all spaces"
-                  + " (including leading and trailing) with default punct-mark.";
-            }
         }
     }
 
@@ -199,7 +150,8 @@ namespace TextTransformer
             // depending upon density
             // 0 = all punct, no source
             // 100 = all source, no punct
-            var words = TransformerTools.SplitToWords(Source);
+            var words = new TextTokenizer(Granularity.Word, Source).Tokens;
+
             var sb = new StringBuilder();
             foreach (var word in words)
             {
