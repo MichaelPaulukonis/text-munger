@@ -101,8 +101,6 @@ namespace TextTransformer
 
         public override IList<string> Split(string subject)
         {
-            var regex = new Regex(@"."); // every char for itself
-
             subject = this.Clean(subject);
 
             var splitted = subject.ToCharArray().Select(c => c.ToString()).ToList();

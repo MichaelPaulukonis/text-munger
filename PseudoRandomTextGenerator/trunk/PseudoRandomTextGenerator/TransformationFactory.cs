@@ -73,6 +73,8 @@ namespace TextTransformer
             {new Leet(),
                 new PigLatin(),
                 new Shuffle(),
+                new Shuffler(Granularity.Character),
+                new Shuffler(Granularity.Word),
                 new Disemconsonant(),
                 new Disemvowell(),
                 new RandomCaps(),
@@ -91,7 +93,9 @@ namespace TextTransformer
         {
             return new List<TransformerBase> { new MarkovGenerator(), new XrmlFormat(),
                 new FreeVerse(), new ShortLines(), new InitialSpaces(), new HeijinianAidToMemory()
-            , new ShuffleParagraph() };
+            , new ShuffleParagraph()
+            , new Shuffler(Granularity.Paragraph)
+            };
         }
     }
 }
