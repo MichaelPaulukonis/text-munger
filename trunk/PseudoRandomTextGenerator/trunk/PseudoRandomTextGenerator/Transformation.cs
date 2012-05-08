@@ -36,6 +36,7 @@ namespace TextTransformer
     [KnownType(typeof(Reverse))]
     [KnownType(typeof(ShuffleParagraph))]
     [KnownType(typeof(Shuffle))]
+    [KnownType(typeof(Shuffler))]
     [KnownType(typeof(PigLatin))]
     [KnownType(typeof(Leet))]
     [KnownType(typeof(TransformerFromFile))]
@@ -848,6 +849,8 @@ namespace TextTransformer
             var s = new TextTokenizer(Granularity, Source).Tokens;
 
             var rnd = new Random();
+            // TODO: if char-level, optionall preserve first and last chars...
+            // see algorithm @ http://stackoverflow.com/questions/273313/randomize-a-listt-in-c-sharp
             var result = s.OrderBy(item => rnd.Next());
 
             var joiner = string.Empty;
@@ -856,6 +859,9 @@ namespace TextTransformer
             {
                 case Granularity.Character:
                     joiner = string.Empty;
+                    break;
+                case Granularity.Word:
+                    joiner = " ";
                     break;
                 case Granularity.Paragraph:
                     joiner = "\r\n\r\n";
@@ -869,12 +875,12 @@ namespace TextTransformer
 
         public override string ToString()
         {
-            return Granularity + "Shuffle";
+            return Granularity + "Shuffler";
         }
 
         public override string Description
         {
-            get { return string.Format("Randoms Source based on Granularity {0}.", Granularity); }
+            get { return string.Format("Shuffles Source based on Granularity {0}.", Granularity); }
         }
     }
 

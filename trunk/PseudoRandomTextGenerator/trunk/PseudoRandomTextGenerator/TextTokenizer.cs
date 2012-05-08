@@ -41,7 +41,7 @@ namespace TextTransformer
                 switch (Granularity)
                 {
                     case Granularity.Character:
-                        tokens = new Regex(@".").Split(Source).ToList();
+                        tokens = Source.ToCharArray().Select(c => c.ToString()).ToList();
                         break;
                     case Granularity.Word:
                         tokens = new Regex(@"\s+").Split(Source).ToList();
