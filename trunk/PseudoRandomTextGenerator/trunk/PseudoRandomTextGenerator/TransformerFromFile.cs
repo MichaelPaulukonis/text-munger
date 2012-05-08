@@ -37,7 +37,7 @@ namespace TextTransformer
             // if we process multiple words, add a space as padding
             // if we process a single word, no padding
             // and, yeah, this will only work on space-padded multi-words. c'est la vie.
-            var words = TransformerTools.SplitToWords(Source);
+            var words = new TextTokenizer(Granularity.Word, Source).Tokens;
             var padding = (words.Any()) ? " " : string.Empty;
 
             var sb = new StringBuilder();
@@ -89,7 +89,9 @@ namespace TextTransformer
             return (word[0].ToString().ToUpper() == word[0].ToString());
         }
 
-        public override Granularity Granularity { get { return Granularity.Word; }
+        public override Granularity Granularity
+        {
+            get { return Granularity.Word; }
             set { return; }
         }
 
@@ -166,12 +168,11 @@ namespace TextTransformer
         }
 
         private string _desc = "Translation based on rules obtained from a file.";
+
         public override string Description
         {
             get { return _desc; }
             // what about set? need to read it from a file, and nothing else needs it. ouch.
         }
-
-
     }
 }
