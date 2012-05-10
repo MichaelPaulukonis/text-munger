@@ -371,7 +371,11 @@ namespace TextTransformer
             var length = _random.Next(minLength, maxLength);
 
             // get the first key AT RANDOM
-            var key = new Key { Current = GetRandomKey(), Previous = string.Empty };
+            // hey, we're INITIALIZING THE KEY!
+            // and we call the same code INSIDE OF GETWORD(key)
+            //var key = new Key { Current = GetRandomKey(), Previous = string.Empty };
+            //key = GetWord(key);
+            var key = InitializeKey();
 
             var keyRepCount = 0;
             const int keyRepLimit = 5;
@@ -388,7 +392,6 @@ namespace TextTransformer
             // update the current key by getting the tail and appending the nextWord
             while (sentenceLength < length)
             {
-                key = GetWord(key);
                 words.Add(key.Word);
                 sentenceLength += (key.Word.Length + ruleDelimLength);
                 // Q: do we need to remove the space for the alternate method?
@@ -409,9 +412,17 @@ namespace TextTransformer
                         key.Current = GetRandomKey();
                     }
                 }
+                key = GetWord(key); // update for next loop
             }
 
             return string.Join(TokenizerRule.Delimiter, words);
+        }
+
+        private Key InitializeKey()
+        {
+            var key = new Key { Current = GetRandomKey(), Previous = string.Empty };
+            key = GetWord(key);
+            return key;
         }
 
         // since it's an object, we could just make it by Ref and stop worrying about return values...
@@ -420,44 +431,15 @@ namespace TextTransformer
             if (_chain.ContainsKey(k.Current))
             {
                 // get a random (ie, unweighted) entry
-                //var index = _random.Next(_chain[key].Count - 1); // original, seems to always return 0 for length 2
                 var index = _random.Next(0, _chain[k.Current].Count);
                 k.Word = _chain[k.Current][index];
             }
             else
-            { // since key does not exist, get any existing word at random
-                // ie, unweighted, no basis on existing key. hrm.
-
-                // any OTHER need for the old method?
-                k.Word = GetWord(GetRandomKey());
+            { // since key does not exist, re-initialize it
+                k = InitializeKey();
             }
 
             return k;
-        }
-
-        private string GetWord(string key)
-        {
-            string word;
-
-            if (_chain.ContainsKey(key))
-            {
-                // get a random (ie, unweighted) entry
-                //var index = _random.Next(_chain[key].Count - 1); // original, seems to always return 0 for length 2
-                var index = _random.Next(0, _chain[key].Count);
-                word = _chain[key][index];
-            }
-            else
-            { // since key does not exist, get any existing word at random
-                // ie, unweighted, no basis on existing key. hrm.
-
-                // aaaaand, this is also crap, because now we have a key that never existed, and we're going to keep randomizing.
-                // ugh. we're in bad letter territory, now
-                // WTF?
-                // TODO: curr, prev and word shound be members of some dataStructure
-                word = GetWord(GetRandomKey());
-            }
-
-            return word;
         }
 
         private string GetRandomKey()
