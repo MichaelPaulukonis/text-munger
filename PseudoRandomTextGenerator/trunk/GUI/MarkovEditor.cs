@@ -36,6 +36,8 @@ namespace GUI
             // TODO: I don't think that the Markov Editor exposes that.
             // it exposes the Tokenizer, but not the enum... we need to convert around.....
             cbRules.SelectedIndex = (int)MarkovGenerator.MarkovRuleType;
+
+            chkCaseSensitive.Checked = MarkovGenerator.CaseSensitive;
         }
 
         private void txtKeySize_TextChanged(object sender, EventArgs e)
@@ -94,6 +96,11 @@ namespace GUI
             Enum.TryParse(cbRules.SelectedItem.ToString(), true, out sel);
             var mr = new MarkovRuleFactory(sel).GetRule();
             return mr;
+        }
+
+        private void chkCaseSensitive_CheckedChanged(object sender, EventArgs e)
+        {
+            MarkovGenerator.CaseSensitive = chkCaseSensitive.Checked;
         }
 
         // TODO: this runs when we pre-populate the list

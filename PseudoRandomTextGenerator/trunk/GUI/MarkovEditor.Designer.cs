@@ -39,6 +39,7 @@
             this.btnSave = new System.Windows.Forms.Button();
             this.cbRules = new System.Windows.Forms.ComboBox();
             this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
+            this.chkCaseSensitive = new System.Windows.Forms.CheckBox();
             this.SuspendLayout();
             // 
             // label1
@@ -109,7 +110,7 @@
             // 
             // btnSave
             // 
-            this.btnSave.Location = new System.Drawing.Point(80, 131);
+            this.btnSave.Location = new System.Drawing.Point(73, 153);
             this.btnSave.Name = "btnSave";
             this.btnSave.Size = new System.Drawing.Size(75, 23);
             this.btnSave.TabIndex = 8;
@@ -129,11 +130,23 @@
             this.cbRules.Size = new System.Drawing.Size(121, 21);
             this.cbRules.TabIndex = 9;
             // 
+            // chkCaseSensitive
+            // 
+            this.chkCaseSensitive.AutoSize = true;
+            this.chkCaseSensitive.Location = new System.Drawing.Point(80, 117);
+            this.chkCaseSensitive.Name = "chkCaseSensitive";
+            this.chkCaseSensitive.Size = new System.Drawing.Size(96, 17);
+            this.chkCaseSensitive.TabIndex = 10;
+            this.chkCaseSensitive.Text = "Case Sensitive";
+            this.chkCaseSensitive.UseVisualStyleBackColor = true;
+            this.chkCaseSensitive.CheckedChanged += new System.EventHandler(this.chkCaseSensitive_CheckedChanged);
+            // 
             // MarkovEditor
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(219, 179);
+            this.Controls.Add(this.chkCaseSensitive);
             this.Controls.Add(this.cbRules);
             this.Controls.Add(this.btnSave);
             this.Controls.Add(this.txtLengthMax);
@@ -162,5 +175,6 @@
         private System.Windows.Forms.Button btnSave;
         private System.Windows.Forms.ComboBox cbRules;
         private System.Windows.Forms.ToolTip toolTip1;
+        private System.Windows.Forms.CheckBox chkCaseSensitive;
     }
 }
