@@ -23,7 +23,7 @@ namespace GUI
 
         private void PopulateForm()
         {
-            txtLineLength.Text = _xray.LineLength.ToString();
+            txtLineLength.Text = _xray.LineLengthLimit.ToString();
             txtDensity.Text = _xray.Density.Percentage.ToString();
             txtYaw.Text = _xray.Density.RandomWalker.Yaw.ToString();
             txtWarble.Text = _xray.Density.RandomWalker.Warble.ToString();
@@ -38,7 +38,7 @@ namespace GUI
 
         private void txtLineLength_TextChanged(object sender, System.EventArgs e)
         {
-            _xray.LineLength = int.Parse(txtLineLength.Text);
+            _xray.LineLengthLimit = int.Parse(txtLineLength.Text);
         }
 
         private void txtDensity_TextChanged(object sender, System.EventArgs e)
