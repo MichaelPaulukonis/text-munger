@@ -12,20 +12,26 @@ namespace TextTransformer
         {
             RetainAlignment = true;
             this.Density = new Density();
-            LineLength = 80;
+            LineLengthLimit = 80;
         }
 
         [DataMember]
         public Density Density { get; set; }
 
         [DataMember]
-        public int LineLength { get; set; }
+        public int LineLengthLimit { get; set; }
 
         /// <summary>
         /// Retain original spacing, or fill in with Density
         /// </summary>
         [DataMember]
         public Boolean RetainAlignment { get; set; }
+
+        [DataMember]
+        public Boolean FlushRight { get; set; }
+
+        [DataMember]
+        public Boolean FlushLeft { get; set; }
 
         public override string Source { get; set; }
 
@@ -38,6 +44,11 @@ namespace TextTransformer
         {
             var mod = Source;
 
+            // TODO: we need to analyze the incoming, better
+            // if multiple lines, we need to retain that,
+            //    BUT enforce the line-length
+            // if "single" line, we need to split it
+
             // this is a pre-line-length operation
             if (!RetainAlignment)
             {
@@ -46,20 +57,62 @@ namespace TextTransformer
                 mod = Density.Munged;
             }
 
-            // sadly, does NOT pad with spaces at the end. waaaaah!
-            // "(.{1,80})"
-            var regex = string.Format("(.{{1,{0}}})", LineLength);
-            mod = Regex.Replace(mod, regex, "$1\n");
-            mod = PadItOut(mod);
+            var sb = new StringBuilder();
+            var lines = new TextTokenizer(Granularity.Line, mod).Tokens;
+            // TODO: loop through lines
 
-            // this is a post-line-length operation
-            if (RetainAlignment)
+            foreach (var line in lines)
             {
-                // TODO: what if we get tabs, etc?
-                mod = mod.Replace(" ", ".");
+                // if too long, cut it off
+                // if too short, pad it out
+                // also, flush-left, flush-right it
+
+                var newline = string.Empty;
+
+                if (line.Length > LineLengthLimit)
+                {
+                    // wait. if eveything comes in AS ONE LINE
+                    // this is f****D
+                    // we need more analysis, here....
+                    newline = line.Substring(0, LineLengthLimit);
+                }
+                else
+                {
+                    newline = line.PadRight(LineLengthLimit);
+                }
+
+                if (FlushLeft)
+                {
+                    newline = newline.PadLeft(LineLengthLimit);
+                }
+                else if (FlushRight)
+                {
+                    newline = newline.Trim().PadRight(LineLengthLimit);
+                }
+
+                if (RetainAlignment)
+                {
+                    newline = newline.Replace(" ", ".");
+                }
+                sb.AppendLine(newline);
             }
 
-            return mod;
+            //mod = sb.ToString();
+
+            // sadly, does NOT pad with spaces at the end. waaaaah!
+            // "(.{1,80})"
+            //var regex = string.Format("(.{{1,{0}}})", LineLengthLimit);
+            //mod = Regex.Replace(mod, regex, "$1\n");
+            //mod = PadItOut(mod);
+
+            // this is a post-line-length operation
+            //if (RetainAlignment)
+            //{
+            //    // TODO: what if we get tabs, etc?
+            //    mod = mod.Replace(" ", ".");
+            //}
+
+            return sb.ToString();
         }
 
         private string PadItOut(string source)
@@ -71,9 +124,9 @@ namespace TextTransformer
             {
                 var append = string.Empty;
                 var l = line.Length;
-                if (l < LineLength)
+                if (l < LineLengthLimit)
                 {
-                    append = new String(' ', LineLength - l);
+                    append = new String(' ', LineLengthLimit - l);
                 }
                 // TODO: aargh, string concatenation inside of string-buildering!
                 sb.AppendLine(line + append);

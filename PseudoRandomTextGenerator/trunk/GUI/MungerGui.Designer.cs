@@ -49,6 +49,7 @@
             this.rbInternet = new System.Windows.Forms.RadioButton();
             this.rbLibrary = new System.Windows.Forms.RadioButton();
             this.tabPage2 = new System.Windows.Forms.TabPage();
+            this.btnLoadRules = new System.Windows.Forms.Button();
             this.btnSaveRules = new System.Windows.Forms.Button();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
             this.RuleSetSelector = new CustomSelectControl.MultipleSelectionControl();
@@ -62,7 +63,7 @@
             this.btnApply = new System.Windows.Forms.Button();
             this.openFileDialog = new System.Windows.Forms.OpenFileDialog();
             this.saveFileDialog = new System.Windows.Forms.SaveFileDialog();
-            this.btnLoadRules = new System.Windows.Forms.Button();
+            this.tabPage4 = new System.Windows.Forms.TabPage();
             this.tabControl1.SuspendLayout();
             this.contextMenuStrip1.SuspendLayout();
             this.tabPage1.SuspendLayout();
@@ -81,6 +82,7 @@
             this.tabControl1.Controls.Add(this.tabPage1);
             this.tabControl1.Controls.Add(this.tabPage2);
             this.tabControl1.Controls.Add(this.tabPage3);
+            this.tabControl1.Controls.Add(this.tabPage4);
             this.tabControl1.Location = new System.Drawing.Point(13, 13);
             this.tabControl1.Name = "tabControl1";
             this.tabControl1.SelectedIndex = 0;
@@ -158,7 +160,7 @@
             this.tabPage1.Padding = new System.Windows.Forms.Padding(3);
             this.tabPage1.Size = new System.Drawing.Size(691, 674);
             this.tabPage1.TabIndex = 0;
-            this.tabPage1.Text = "Get Sources";
+            this.tabPage1.Text = "Source";
             this.tabPage1.UseVisualStyleBackColor = true;
             // 
             // SourceBox
@@ -268,6 +270,16 @@
             this.tabPage2.Text = "Select Transforms";
             this.tabPage2.UseVisualStyleBackColor = true;
             // 
+            // btnLoadRules
+            // 
+            this.btnLoadRules.Location = new System.Drawing.Point(541, 279);
+            this.btnLoadRules.Name = "btnLoadRules";
+            this.btnLoadRules.Size = new System.Drawing.Size(119, 23);
+            this.btnLoadRules.TabIndex = 12;
+            this.btnLoadRules.Text = "Load Rules";
+            this.btnLoadRules.UseVisualStyleBackColor = true;
+            this.btnLoadRules.Click += new System.EventHandler(this.btnLoadRules_Click);
+            // 
             // btnSaveRules
             // 
             this.btnSaveRules.Location = new System.Drawing.Point(541, 250);
@@ -291,6 +303,7 @@
             // RuleSetSelector
             // 
             this.RuleSetSelector.AllowMultipleItems = true;
+            this.RuleSetSelector.DisplayFilter = true;
             this.RuleSetSelector.Location = new System.Drawing.Point(6, 20);
             this.RuleSetSelector.Name = "RuleSetSelector";
             this.RuleSetSelector.SelectedItems = ((System.Collections.Generic.List<object>)(resources.GetObject("RuleSetSelector.SelectedItems")));
@@ -396,15 +409,15 @@
             this.btnApply.UseVisualStyleBackColor = true;
             this.btnApply.Click += new System.EventHandler(this.btnApply_Click);
             // 
-            // btnLoadRules
+            // tabPage4
             // 
-            this.btnLoadRules.Location = new System.Drawing.Point(541, 279);
-            this.btnLoadRules.Name = "btnLoadRules";
-            this.btnLoadRules.Size = new System.Drawing.Size(119, 23);
-            this.btnLoadRules.TabIndex = 12;
-            this.btnLoadRules.Text = "Load Rules";
-            this.btnLoadRules.UseVisualStyleBackColor = true;
-            this.btnLoadRules.Click += new System.EventHandler(this.btnLoadRules_Click);
+            this.tabPage4.Location = new System.Drawing.Point(4, 22);
+            this.tabPage4.Name = "tabPage4";
+            this.tabPage4.Padding = new System.Windows.Forms.Padding(3);
+            this.tabPage4.Size = new System.Drawing.Size(691, 674);
+            this.tabPage4.TabIndex = 3;
+            this.tabPage4.Text = "Diagnostics";
+            this.tabPage4.UseVisualStyleBackColor = true;
             // 
             // MungerGui
             // 
@@ -466,5 +479,6 @@
         private System.Windows.Forms.TextBox Snippets;
         private System.Windows.Forms.Button btnSaveRules;
         private System.Windows.Forms.Button btnLoadRules;
+        private System.Windows.Forms.TabPage tabPage4;
     }
 }

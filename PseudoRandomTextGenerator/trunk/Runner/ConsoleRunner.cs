@@ -80,7 +80,7 @@ namespace Runner
         public void TestXrmlSerialization()
         {
             var x = new XrmlFormat();
-            x.LineLength = 2;
+            x.LineLengthLimit = 2;
             x.Density.Percentage = 50;
 
             var xx = x.ToXml();
