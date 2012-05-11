@@ -284,6 +284,9 @@ namespace TextTransformer
             }
         }
 
+        [DataMember]
+        public bool CaseSensitive { get; set; }
+
         public override string Munged
         {
             get { return Munge(); }
@@ -350,15 +353,20 @@ namespace TextTransformer
 
         private void AddToken(IEnumerable<string> keyTokens, string value)
         {
-            // do we need to remove the space for the alternate method?
-            var chainKey = string.Join(_wordDelim, keyTokens); // original
-            //var chainKey = string.Join("", keyTokens); // tokenized punctuation and whitespace
+            var chainKey = string.Join(_wordDelim, keyTokens);
+            if (CaseSensitive)
+            {
+                chainKey = chainKey.ToLower();
+            }
 
             if (_chain.ContainsKey(chainKey))
             {
                 if (!_chain[chainKey].Contains(value)) _chain[chainKey].Add(value);
             }
-            else _chain.Add(chainKey, new List<string> { value });
+            else
+            {
+                _chain.Add(chainKey, new List<string> { value });
+            }
         }
 
         // TODO: overload, to accept a designated seed-string
