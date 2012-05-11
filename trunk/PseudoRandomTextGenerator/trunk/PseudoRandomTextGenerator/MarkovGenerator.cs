@@ -354,7 +354,7 @@ namespace TextTransformer
         private void AddToken(IEnumerable<string> keyTokens, string value)
         {
             var chainKey = string.Join(_wordDelim, keyTokens);
-            if (CaseSensitive)
+            if (!CaseSensitive)
             {
                 chainKey = chainKey.ToLower();
             }
