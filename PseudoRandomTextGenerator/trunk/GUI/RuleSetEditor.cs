@@ -92,6 +92,8 @@ namespace GUI
             // TODO: fix this
             var rule = (TransformerBase)((ListBox)sender).SelectedItem;
 
+            if (rule == null) return; // sometimes clicks come through...
+
             if (rule.GetType() == typeof(MarkovGenerator))
             {
                 var ed = new MarkovEditor((MarkovGenerator)rule);

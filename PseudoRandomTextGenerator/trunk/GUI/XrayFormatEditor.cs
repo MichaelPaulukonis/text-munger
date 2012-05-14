@@ -28,7 +28,8 @@ namespace GUI
             txtYaw.Text = _xray.Density.RandomWalker.Yaw.ToString();
             txtWarble.Text = _xray.Density.RandomWalker.Warble.ToString();
             txtTenacity.Text = _xray.Density.RandomWalker.Tenacity.ToString();
-            rbFillIn.Checked = _xray.RetainAlignment;
+            rbDensity.Checked = !_xray.RetainAlignment;
+            //rbFillIn.Checked = _xray.RetainAlignment;
         }
 
         private void btnSave_Click(object sender, System.EventArgs e)
@@ -63,17 +64,11 @@ namespace GUI
 
         private void rbDensity_CheckedChanged(object sender, System.EventArgs e)
         {
-            // one of these will have to be negative
-            // depending upon which retains the handler...
             _xray.RetainAlignment = !rbDensity.Checked;
             panelDensity.Enabled = rbDensity.Checked;
         }
 
         // TODO: form elemements:
         // punctuation mark (default: period )
-        // density percentage
-        // cols to cut-at (default: 80)
-        // eventually, random deviation - how much swing
-        // and maybe some different density algorithms
     }
 }

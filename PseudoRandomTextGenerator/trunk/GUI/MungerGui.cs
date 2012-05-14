@@ -6,6 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Windows.Forms;
+using NDesk.Options;
 using TextSourcers;
 using TextTransformer;
 
@@ -17,6 +18,40 @@ namespace GUI
         private string _output;
         private List<Text> _previouslySelected;
         private const string RuleSetSuffix = ".sqn.xml";
+
+        public MungerGui(string[] args)
+            : this()
+        {
+            OptionSet p = new OptionSet() {
+              { "r|ruleset=", v => { PreLoadRuleSet(v); } },
+                };
+
+            List<string> extra;
+            try
+            {
+                extra = p.Parse(args);
+            }
+            catch (OptionException e)
+            {
+                Console.Write("greet: ");
+                Console.WriteLine(e.Message);
+                Console.WriteLine("Try `greet --help' for more information.");
+                return;
+            }
+        }
+
+        private void PreLoadRuleSet(string rulePath)
+        {
+            var rs = LoadRules(rulePath)[0];
+
+            var si = RuleSetSelector.SelectedItems;
+
+            si.Add(rs);
+
+            // the getter does not expose the actual underlying object, so we need to pass it back
+            // until it is fixed
+            RuleSetSelector.SelectedItems = si;
+        }
 
         public MungerGui()
         {
@@ -83,10 +118,16 @@ namespace GUI
             var rs = (RuleSet)((ListBox)sender).SelectedItem;
             if (!_activeEditors.Contains(rs))
             {
-                _activeEditors.Add(rs);
+                //_activeEditors.Add(rs);
+                AddActiveRuleset(rs);
                 var ed = new RuleSetEditor(rs, RuleSetSelector, _activeEditors);
                 ed.Show();
             }
+        }
+
+        private void AddActiveRuleset(RuleSet rs)
+        {
+            _activeEditors.Add(rs);
         }
 
         // TODO: throw some logging on here
@@ -227,6 +268,7 @@ namespace GUI
             }
         }
 
+        // TODO: why does this create LIST, doesn't it only return ONE RuleSet ?!?!?
         private List<RuleSet> LoadRules(string rulesFile)
         {
             string xml;
