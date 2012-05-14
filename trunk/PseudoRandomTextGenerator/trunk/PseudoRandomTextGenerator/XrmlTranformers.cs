@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Runtime.Serialization;
 using System.Text;
 using System.Text.RegularExpressions;
@@ -43,67 +44,73 @@ namespace TextTransformer
         private string Munge()
         {
             var mod = Source;
+            var sb = new StringBuilder();
 
             // TODO: we need to analyze the incoming, better
             // if multiple lines, we need to retain that,
             //    BUT enforce the line-length
             // if "single" line, we need to split it
 
+            var lines = new TextTokenizer(Granularity.Line, mod).Tokens;
+            if (lines.Count == 1)
+            {
+                // monolithic block, chop it up
+                var regex = string.Format("(.{{1,{0}}})", LineLengthLimit);
+                // THIS WORKS AWESOMELY if the source-text has NO LINE-BREAKS
+                //
+                // if the source-text HAS LINE-BREAKS... THIS SUCKS
+                var line = Regex.Replace(lines[0], regex, "$1\n");
+                lines[0] = PadItOut(line);
+            }
+
             // this is a pre-line-length operation
             if (!RetainAlignment)
             {
                 // process density first, as that removes line-breaks
-                Density.Source = mod;
+                Density.Source = string.Join("", ((List<string>)lines).ToArray());
                 mod = Density.Munged;
+                var regex = string.Format("(.{{1,{0}}})", LineLengthLimit);
+                mod = Regex.Replace(mod, regex, "$1\n");
+                return mod;
             }
-
-            var sb = new StringBuilder();
-            var lines = new TextTokenizer(Granularity.Line, mod).Tokens;
-            // TODO: loop through lines
-
-            foreach (var line in lines)
+            else
             {
-                // if too long, cut it off
-                // if too short, pad it out
-                // also, flush-left, flush-right it
+                foreach (var line in lines)
+                {
+                    // if too long, cut it off
+                    // if too short, pad it out
+                    // also, flush-left, flush-right it
 
-                var newline = string.Empty;
+                    var newline = string.Empty;
 
-                if (line.Length > LineLengthLimit)
-                {
-                    // wait. if eveything comes in AS ONE LINE
-                    // this is f****D
-                    // we need more analysis, here....
-                    newline = line.Substring(0, LineLengthLimit);
-                }
-                else
-                {
-                    newline = line.PadRight(LineLengthLimit);
-                }
+                    if (line.Length > LineLengthLimit)
+                    {
+                        // wait. if eveything comes in AS ONE LINE
+                        // this is f****D
+                        // we need more analysis, here....
+                        newline = line.Substring(0, LineLengthLimit);
+                    }
+                    else
+                    {
+                        newline = line.PadRight(LineLengthLimit);
+                    }
 
-                if (FlushLeft)
-                {
-                    newline = newline.PadLeft(LineLengthLimit);
-                }
-                else if (FlushRight)
-                {
-                    newline = newline.Trim().PadRight(LineLengthLimit);
-                }
+                    if (FlushLeft)
+                    {
+                        newline = newline.PadLeft(LineLengthLimit);
+                    }
+                    else if (FlushRight)
+                    {
+                        newline = newline.Trim().PadRight(LineLengthLimit);
+                    }
 
-                if (RetainAlignment)
-                {
-                    newline = newline.Replace(" ", ".");
+                    if (RetainAlignment)
+                    {
+                        newline = newline.Replace(" ", ".");
+                    }
+                    sb.AppendLine(newline);
                 }
-                sb.AppendLine(newline);
             }
-
-            //mod = sb.ToString();
-
-            // sadly, does NOT pad with spaces at the end. waaaaah!
-            // "(.{1,80})"
-            //var regex = string.Format("(.{{1,{0}}})", LineLengthLimit);
-            //mod = Regex.Replace(mod, regex, "$1\n");
-            //mod = PadItOut(mod);
 
             // this is a post-line-length operation
             //if (RetainAlignment)
