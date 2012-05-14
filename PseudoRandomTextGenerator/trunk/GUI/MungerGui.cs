@@ -18,39 +18,38 @@ namespace GUI
         private string _output;
         private List<Text> _previouslySelected;
         private const string RuleSetSuffix = ".sqn.xml";
+        private Diagnostic _diagnostic;
 
-        public MungerGui(string[] args)
+        public MungerGui(IEnumerable<string> args)
             : this()
         {
-            OptionSet p = new OptionSet() {
+            var p = new OptionSet() {
               { "r|ruleset=", v => { PreLoadRuleSet(v); } },
                 };
 
-            List<string> extra;
-            try
-            {
-                extra = p.Parse(args);
-            }
-            catch (OptionException e)
-            {
-                Console.Write("greet: ");
-                Console.WriteLine(e.Message);
-                Console.WriteLine("Try `greet --help' for more information.");
-                return;
-            }
-        }
+            p.Parse(args);
 
-        private void PreLoadRuleSet(string rulePath)
-        {
-            var rs = LoadRules(rulePath)[0];
+            /* TODO: enable params for the following:
+             *
+             *       Pre-set source
+             *       Apply rules
+             *       Save output
+             *
+             *       default/help for bad params
+             */
 
-            var si = RuleSetSelector.SelectedItems;
-
-            si.Add(rs);
-
-            // the getter does not expose the actual underlying object, so we need to pass it back
-            // until it is fixed
-            RuleSetSelector.SelectedItems = si;
+            //List<string> extra;
+            //try
+            //{
+            //    extra = p.Parse(args);
+            //}
+            //catch (OptionException e)
+            //{
+            //    Console.Write("greet: ");
+            //    Console.WriteLine(e.Message);
+            //    Console.WriteLine("Try `greet --help' for more information.");
+            //    return;
+            //}
         }
 
         public MungerGui()
@@ -58,6 +57,9 @@ namespace GUI
             InitializeComponent();
 
             InitializeOpenFileDialog();
+
+            _diagnostic = new Diagnostic(txtDiagnostic);
+            DiagnosticsEnabled = true;
 
             // erase dev-guides
             Output.Text = string.Empty;
@@ -70,6 +72,8 @@ namespace GUI
             // TODO: separate out the logic and the GUI as much as possible
             // that would make this whole thing scriptable.... ?
         }
+
+        private bool DiagnosticsEnabled { get; set; }
 
         private void PopulateAvailableRulesets()
         {
@@ -86,6 +90,19 @@ namespace GUI
             RuleSetSelector.AddDoubleClickHandler(DisplayRuleSetEditor);
 
             LoadPredefinedRuleSets();
+        }
+
+        private void PreLoadRuleSet(string rulePath)
+        {
+            var rs = LoadRules(rulePath)[0];
+
+            var si = RuleSetSelector.SelectedItems;
+
+            si.Add(rs);
+
+            // the getter does not expose the actual underlying object, so we need to pass it back
+            // until it is fixed
+            RuleSetSelector.SelectedItems = si;
         }
 
         // I'm going to have to think about this.....
@@ -138,6 +155,8 @@ namespace GUI
         {
             using (new HourGlass())
             {
+                _diagnostic.Write("started rule applicaton....");
+
                 _output = Source.Text;
 
                 // go through words, apply granulars, based on percentage
@@ -167,11 +186,13 @@ namespace GUI
                     }
                 }
 
+                _diagnostic.Write("Finished rule applicaton....");
+
                 Output.Text = _output;
             }
         }
 
-        private void ApplyGlobals(List<TransformerBase> globalRules)
+        private void ApplyGlobals(IEnumerable<TransformerBase> globalRules)
         {
             foreach (var rule in globalRules)
             {
@@ -481,6 +502,38 @@ namespace GUI
         private void Snippets_TextChanged(object sender, EventArgs e)
         {
             btnSave.Enabled = (Snippets.Text.Length > 0);
+        }
+
+        private void tabPage1_Click(object sender, EventArgs e)
+        {
+        }
+    }
+
+    internal class Diagnostic
+    {
+        private readonly TextBox _target;
+
+        // it would be nice if it wasn't so form-centric
+        // but this will do for now.
+        // oh, why not Log4Net ? Becuase I want a visible diagnostic window
+        public Diagnostic(TextBox target)
+        {
+            _target = target;
+        }
+
+        public void Write(string msg)
+        {
+            _target.AppendText(string.Format("{0}: {1}\r\n", TimeStamp(), msg));
+        }
+
+        private static string TimeStamp()
+        {
+            return DateTime.Now.ToString("yyyy.MM.dd HH.mm.ss.fff");
+        }
+
+        public void Clear()
+        {
+            _target.Text = string.Empty;
         }
     }
 
