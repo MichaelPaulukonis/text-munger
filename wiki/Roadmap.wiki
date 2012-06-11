@@ -52,6 +52,7 @@ For certain limited definitions of the word "useful."
   * re-think of rule selection/layout -- too many clicks, currently.
   * common tokenizer -- word, char, sentence, other. punctuation-sensitive or not.
   * Attempt to delete Gutenberg boilerplate
+  * portamnteaux list, and other analysis of output (a la [http://www.eddeaddad.net/charNG charNG])
 
 
 == Transformation Rules Additions and Enhancements ==
