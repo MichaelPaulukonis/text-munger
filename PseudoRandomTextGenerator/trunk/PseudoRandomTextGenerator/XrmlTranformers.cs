@@ -56,6 +56,7 @@ namespace TextTransformer
             {
                 // monolithic block, chop it up
                 var regex = string.Format("(.{{1,{0}}})", LineLengthLimit);
+
                 // THIS WORKS AWESOMELY if the source-text has NO LINE-BREAKS
                 //
                 // if the source-text HAS LINE-BREAKS... THIS SUCKS
@@ -135,6 +136,7 @@ namespace TextTransformer
                 {
                     append = new String(' ', LineLengthLimit - l);
                 }
+
                 // TODO: aargh, string concatenation inside of string-buildering!
                 sb.AppendLine(line + append);
             }
@@ -293,9 +295,10 @@ namespace TextTransformer
 
                 var flatPuncts = (int)Math.Round(curPuncts);
 
-                var offset = RandomOffset(flatPuncts);
+                //var offset = RandomOffset(flatPuncts);
+
                 // uh.... WAAAAY off, and goes negative, and pretty much stays there... so, needs tweaking
-                //var offset = RandomWalker.Next();
+                var offset = RandomWalker.Next();
 
                 flatPuncts += offset;
 
@@ -315,6 +318,7 @@ namespace TextTransformer
 
             var u1 = _rnd.NextDouble();
             var u2 = _rnd.NextDouble();
+
             // not sure what this line is figuring out
             // ugh.
             var normal = Math.Sqrt(-2 * Math.Log(u1)) * Math.Cos(2 * Math.PI * u2);
@@ -344,6 +348,8 @@ namespace TextTransformer
         private int _yaw;
         private int _tenacity;
 
+        // TODO: document better what the hell is going on in here
+
         public RandomWalker(int yaw, int warble, int tenacity)
         {
             //RangeMin = rangeMin;
@@ -353,24 +359,17 @@ namespace TextTransformer
             Tenacity = tenacity;
             _tenacity = tenacity;
             _yaw = yaw;
+
             //Density = density;
         }
 
         // major-deviation walk
         [DataMember]
-        public int Yaw
-        {
-            get;
-            set;
-        }
+        public int Yaw { get; set; }
 
         // minor deviation walk around Yaw-point
         [DataMember]
-        public int Warble
-        {
-            get;
-            set;
-        }
+        public int Warble { get; set; }
 
         // tendancy to warble around Yaw point
         [DataMember]
@@ -382,12 +381,15 @@ namespace TextTransformer
             if (_tenacity <= 0) // reset yaw and tenacity
             {
                 _tenacity = _rnd.Next(Tenacity);
-                _yaw += _rnd.Next(-Yaw, Yaw);
+                _yaw = _rnd.Next(-Yaw, Yaw);
             }
 
             // new warble each retrieval
             var warble = _rnd.Next(-Warble, Warble);
-            return _yaw + warble;
+
+            var next = _yaw + warble;
+
+            return next;
         }
     }
 }
