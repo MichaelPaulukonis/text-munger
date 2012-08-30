@@ -40,6 +40,7 @@ namespace GUI
         }
 
         public bool TextsSelected { get; set; }
+
         // the label is now "Select" which makes more sense
         // TODO: make sure all selectors use the same verbiage
         private void btnExit_Click(object sender, EventArgs e)
@@ -52,6 +53,8 @@ namespace GUI
 
         // TODO: expost the actual list of library items for re-selection
         // and provide ability to pre-populate Selected items
+        // TODO: this string-building stuff should be inside of the GUI
+        // return the object, let the caller deal with this.....
         public string Source
         {
             get
