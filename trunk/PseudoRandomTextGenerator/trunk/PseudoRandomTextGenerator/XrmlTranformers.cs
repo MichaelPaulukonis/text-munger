@@ -287,10 +287,6 @@ namespace TextTransformer
 
             //for (Int32 density = 0; density <= numberSteps; density++)
             {
-                // this cound be documented better
-                // basically, it's an attempt at a better mapping of a 0..100 percentage to 0..1840 characters
-                // with the analysis that a straight map is ugly. there's a smoothing effect that has been tweaked
-                // for my preferred amounts
                 Double t = -boundary + 2.0 * boundary * density / (numberSteps - 1);
                 Double correction = 1.0 / (1.0 + Math.Exp(Math.Abs(boundary)));
                 Double value = 1.0 / (1.0 + Math.Exp(-t));
@@ -304,19 +300,9 @@ namespace TextTransformer
                 // uh.... WAAAAY off, and goes negative, and pretty much stays there... so, needs tweaking
                 var offset = RandomWalker.Next();
 
-                // if the offset is negative AND makes the total (flatPuncts) <= 0
-                // MORE THAN ONCE (or twice or something)
-                // that's when we have an issue
-                // so... make our walker somehow aware of flatPuncts?
-                // or... allow flatPuncts to reset the walker to not be so negative?
-                // see, if flatPuncts is 10, -9 offset twice in a row isn't bad.
-                // it's <= 0 twice in a row
-                // I need to dump all of this stuff into the Diagnostics to see what is going on...
-                // TODO: what if.....
-                //       flatpuncts itself was part of the randomWalker retrieval?
-                //       what about RangeMax/RangeMin?
-                //       am I mixing up too many classes? Or does this mean they shouldn't be separate?
                 flatPuncts += offset;
+
+                // the problem is not a negative offset -- it's negative offsets that make flatPuncts negative
 
                 if (flatPuncts > RangeMax) flatPuncts = (int)RangeMax;
                 if (flatPuncts < RangeMin) flatPuncts = (int)RangeMin;
@@ -380,22 +366,18 @@ namespace TextTransformer
         }
 
         // major-deviation walk
-        // add-space/decrease-space
         [DataMember]
         public int Yaw { get; set; }
 
         // minor deviation walk around Yaw-point
-        // should never be more or less than Yaw...
         [DataMember]
         public int Warble { get; set; }
 
         // tendancy to warble around Yaw point
-        // what do I mean by "tendancy" ????
-        // currently (2012.08) it's a simple countdown....
         [DataMember]
         public int Tenacity { get; set; }
 
-        private int _last = 1; // start non-negative
+        private int _last = 1; // start positive
 
         public int Next()
         {
@@ -409,21 +391,14 @@ namespace TextTransformer
             // new warble each retrieval
             var warble = _rnd.Next(-Warble, Warble);
 
-            // if this is zero or negative, we should "rebound" the next time around
-            // "next" ......
             var next = _yaw + warble;
 
-            // triggered with a -5 and a -3
-            // yaw was 4, warble was -9
-            var again = (next <= 0 && _last <= 0);
-
-            if (again)
+            if (_last <= 0 && next <= 0)
             {
-                // reset something...
+                // something resetting?
             }
 
             _last = next;
-
             return next;
         }
     }

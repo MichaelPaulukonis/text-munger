@@ -225,6 +225,7 @@ namespace GUI
                 {
                     outword = word;
                 }
+
                 // TODO: spaces don't work so well, here.....
                 sb.Append(outword + " ");
             }
@@ -415,6 +416,17 @@ namespace GUI
             return source;
         }
 
+        // THIS WORKS
+        // so, when to use....
+        // from a file-menu, I suppose....
+        private void SaveTexts(List<Text> texts)
+        {
+            // TODO: ah, the name!
+            var name = "texts.xml";
+
+            File.WriteAllText(name, texts.ToXml());
+        }
+
         // add to OK-click handler?
         private string LoadFromFile()
         {
@@ -474,6 +486,7 @@ namespace GUI
             if (item == undoToolStripMenuItem) { Output.Undo(); }
             if (item == cutToolStripMenuItem) { Output.Cut(); }
             if (item == copyToolStripMenuItem) { Output.Copy(); }
+
             // I prefer the text bracketed -- suppose this could be optional
             if (item == copyToSnippetsToolStripMenuItem) { Snippets.AppendText("\r\n" + Output.SelectedText + "\r\n"); }
             if (item == pasteToolStripMenuItem) { Output.Paste(); }
