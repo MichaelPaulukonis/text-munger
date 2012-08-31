@@ -381,9 +381,19 @@ namespace TextTransformer
             _yaw = yaw;
         }
 
+        private int _y;
+
         // major-deviation walk
         [DataMember]
-        public int Yaw { get; set; }
+        public int Yaw
+        {
+            get { return _y; }
+            set
+            {
+                _y = value;
+                _yaw = value;
+            }
+        }
 
         // minor deviation walk around Yaw-point
         [DataMember]
@@ -403,12 +413,24 @@ namespace TextTransformer
             // TODO: make tenacity a percentage
             // that is, the chance that the yaw WON'T change
             // not a stupid countdown.....
-            _tenacity--;
-            if (_tenacity <= 0) // reset yaw and tenacity
+
+            //var i = int.Parse(textPercentage.Text);
+            //if (rnd.Next(1, 101) <= i)
+            //{
+            //    do();
+            //}
+            //
+            if (_rnd.Next(1, 100) >= Tenacity)
             {
-                _tenacity = _rnd.Next(Tenacity);
                 _yaw = _rnd.Next(-Yaw, Yaw);
             }
+
+            //_tenacity--;
+            //if (_tenacity <= 0) // reset yaw and tenacity
+            //{
+            //    _tenacity = _rnd.Next(Tenacity);
+            //    _yaw = _rnd.Next(-Yaw, Yaw);
+            //}
 
             // new warble each retrieval
             var warble = _rnd.Next(-Warble, Warble);
