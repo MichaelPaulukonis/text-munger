@@ -174,6 +174,7 @@ namespace TextTransformer
         {
             Percentage = percentage;
             this.RandomWalker = new RandomWalker(30, 10, 10);
+            Boundary = 6.0;
         }
 
         [DataMember]
@@ -258,23 +259,23 @@ namespace TextTransformer
             return new string(block, amt);
         }
 
-        private double _boundary = 6.0;
-
         [DataMember]
-        public double Boundary
-        {
-            get { return _boundary; }
-            set { _boundary = value; }
-        }
+        public double Boundary { get; set; }
+
+        private const Double _rangeMin = 0;
+        private const Double _rangeMax = 1840;
+
+        private const Int32 _numberSteps = 101;
 
         // TODO: I suppose randomization should be able to be turned on/off....
         // http://stackoverflow.com/questions/706952/smooth-movement-to-ascend-through-the-atmosphere/707035#707035
-        public int GetPunctAmount(int density)
+        public int GetPunctAmount(int percentage)
         {
-            Double RangeMin = 0;
-            Double RangeMax = 1840;
-
-            Int32 numberSteps = 101;
+            // the calculation, below, is generated each time, due to density (percentage) calculations
+            // but... how often does the density change?
+            // maybe only calc it if/when density is (re)set
+            // not static with class, as this can allow for ramping FX, etc.
+            // TODO: oooooooh, hadn't thought of that!
 
             // Positive values produce ascending functions.
             // Negative values produce descending functions.
@@ -282,34 +283,53 @@ namespace TextTransformer
             // Values with larger magnitude produce more step like functions.
             // Zero causes an error.
             // Try for example +1.0, +6.0, +20.0 and -1.0, -6.0, -20.0
-            //Double boundary = +6.0;
-            var boundary = Boundary;
+            Double t = -Boundary + 2.0 * Boundary * percentage / (_numberSteps - 1);
+            Double value = 1.0 / (1.0 + Math.Exp(-t));
+            Double correction = 1.0 / (1.0 + Math.Exp(Math.Abs(Boundary)));
+            Double _correctedValue = (value - correction) / (1.0 - 2.0 * correction);
 
-            //for (Int32 density = 0; density <= numberSteps; density++)
+            var curPuncts = (_correctedValue * (_rangeMax - _rangeMin) + _rangeMin);
+
+            var flatPuncts = (int)Math.Round(curPuncts);
+
+            //var offset = RandomOffset(flatPuncts);
+
+            // uh.... WAAAAY off, and goes negative, and pretty much stays there... so, needs tweaking
+            // do ALL the values in RandomWalker need to be related to the curPuncts calculation?
+
+            // RandomWalker.Yaw + Warble should not be > flatpuncts
+
+            // how to enforce this ?!?!?
+
+            var offset = RandomWalker.Next();
+            flatPuncts += offset;
+
+            if (flatPuncts <= 0)
             {
-                Double t = -boundary + 2.0 * boundary * density / (numberSteps - 1);
-                Double correction = 1.0 / (1.0 + Math.Exp(Math.Abs(boundary)));
-                Double value = 1.0 / (1.0 + Math.Exp(-t));
-                Double correctedValue = (value - correction) / (1.0 - 2.0 * correction);
-                var curPuncts = (correctedValue * (RangeMax - RangeMin) + RangeMin);
+                if (_overageCount > 0)
+                {
+                    flatPuncts = 1; // go back to one punct...
 
-                var flatPuncts = (int)Math.Round(curPuncts);
-
-                //var offset = RandomOffset(flatPuncts);
-
-                // uh.... WAAAAY off, and goes negative, and pretty much stays there... so, needs tweaking
-                var offset = RandomWalker.Next();
-
-                flatPuncts += offset;
-
-                // the problem is not a negative offset -- it's negative offsets that make flatPuncts negative
-
-                if (flatPuncts > RangeMax) flatPuncts = (int)RangeMax;
-                if (flatPuncts < RangeMin) flatPuncts = (int)RangeMin;
-
-                return flatPuncts;
+                    // again, it would be nice if there was some sort of waver in here
+                    // as opposed to _always_ being one run-on, followed by singles.....
+                    // however, it's better than it was...
+                }
             }
+            else
+            {
+                // reset now that we're not jammed up anymore.
+                _overageCount = 0;
+            }
+
+            // the problem is not a negative offset -- it's negative offsets that make flatPuncts negative
+
+            if (flatPuncts > _rangeMax) { flatPuncts = (int)_rangeMax; _overageCount++; }
+            if (flatPuncts < _rangeMin) { flatPuncts = (int)_rangeMin; _overageCount++; }
+
+            return flatPuncts;
         }
+
+        private int _overageCount = 0;
 
         public int RandomOffset(int density)
         {
@@ -348,21 +368,17 @@ namespace TextTransformer
     {
         private static Random _rnd = new Random();
         private int _yaw;
-        private int _tenacity;
+        private int _tenacity; // local counter
 
         // TODO: document better what the hell is going on in here
 
         public RandomWalker(int yaw, int warble, int tenacity)
         {
-            //RangeMin = rangeMin;
-            //RangeMax = rangeMax;
             Yaw = yaw;
             Warble = warble;
             Tenacity = tenacity;
             _tenacity = tenacity;
             _yaw = yaw;
-
-            //Density = density;
         }
 
         // major-deviation walk
@@ -374,6 +390,9 @@ namespace TextTransformer
         public int Warble { get; set; }
 
         // tendancy to warble around Yaw point
+        // currently, it just seems to be a countdown...
+        // bleaugh.
+        // this is static once set, and used only for resetting
         [DataMember]
         public int Tenacity { get; set; }
 
@@ -381,6 +400,9 @@ namespace TextTransformer
 
         public int Next()
         {
+            // TODO: make tenacity a percentage
+            // that is, the chance that the yaw WON'T change
+            // not a stupid countdown.....
             _tenacity--;
             if (_tenacity <= 0) // reset yaw and tenacity
             {
