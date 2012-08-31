@@ -40,52 +40,52 @@
             this.deleteToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.selectAllToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.tabPage1 = new System.Windows.Forms.TabPage();
+            this.tableSourceLayout = new System.Windows.Forms.TableLayoutPanel();
+            this.Source = new System.Windows.Forms.TextBox();
+            this.tableSelectors = new System.Windows.Forms.TableLayoutPanel();
+            this.panelRadioButtons = new System.Windows.Forms.Panel();
+            this.rbLibrary = new System.Windows.Forms.RadioButton();
+            this.rbEdit = new System.Windows.Forms.RadioButton();
+            this.rbInternet = new System.Windows.Forms.RadioButton();
+            this.rbFile = new System.Windows.Forms.RadioButton();
+            this.tableButtons = new System.Windows.Forms.TableLayoutPanel();
+            this.btnSourceRetrieve = new System.Windows.Forms.Button();
+            this.btnClearSource = new System.Windows.Forms.Button();
             this.tabPage2 = new System.Windows.Forms.TabPage();
             this.btnLoadRules = new System.Windows.Forms.Button();
             this.btnSaveRules = new System.Windows.Forms.Button();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
             this.RuleSetSelector = new CustomSelectControl.MultipleSelectionControl();
             this.tabPage3 = new System.Windows.Forms.TabPage();
+            this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
+            this.tableLayoutPanel2 = new System.Windows.Forms.TableLayoutPanel();
+            this.btnSave = new System.Windows.Forms.Button();
+            this.btnApply = new System.Windows.Forms.Button();
             this.tabOutputs = new System.Windows.Forms.TabControl();
             this.tabOutput = new System.Windows.Forms.TabPage();
             this.Output = new System.Windows.Forms.TextBox();
             this.tabSnippets = new System.Windows.Forms.TabPage();
             this.Snippets = new System.Windows.Forms.TextBox();
-            this.btnSave = new System.Windows.Forms.Button();
-            this.btnApply = new System.Windows.Forms.Button();
             this.tabPage4 = new System.Windows.Forms.TabPage();
+            this.txtDiagnostic = new System.Windows.Forms.TextBox();
             this.openFileDialog = new System.Windows.Forms.OpenFileDialog();
             this.saveFileDialog = new System.Windows.Forms.SaveFileDialog();
-            this.txtDiagnostic = new System.Windows.Forms.TextBox();
-            this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
-            this.tableLayoutPanel2 = new System.Windows.Forms.TableLayoutPanel();
-            this.rbLibrary = new System.Windows.Forms.RadioButton();
-            this.rbInternet = new System.Windows.Forms.RadioButton();
-            this.rbFile = new System.Windows.Forms.RadioButton();
-            this.btnClearSource = new System.Windows.Forms.Button();
-            this.btnSourceRetrieve = new System.Windows.Forms.Button();
-            this.rbEdit = new System.Windows.Forms.RadioButton();
-            this.Source = new System.Windows.Forms.TextBox();
-            this.tableSourceLayout = new System.Windows.Forms.TableLayoutPanel();
-            this.tableSelectors = new System.Windows.Forms.TableLayoutPanel();
-            this.panelRadioButtons = new System.Windows.Forms.Panel();
-            this.tableButtons = new System.Windows.Forms.TableLayoutPanel();
             this.tabControl1.SuspendLayout();
             this.contextMenuStrip1.SuspendLayout();
             this.tabPage1.SuspendLayout();
-            this.tabPage2.SuspendLayout();
-            this.groupBox2.SuspendLayout();
-            this.tabPage3.SuspendLayout();
-            this.tabOutputs.SuspendLayout();
-            this.tabOutput.SuspendLayout();
-            this.tabSnippets.SuspendLayout();
-            this.tabPage4.SuspendLayout();
-            this.tableLayoutPanel1.SuspendLayout();
-            this.tableLayoutPanel2.SuspendLayout();
             this.tableSourceLayout.SuspendLayout();
             this.tableSelectors.SuspendLayout();
             this.panelRadioButtons.SuspendLayout();
             this.tableButtons.SuspendLayout();
+            this.tabPage2.SuspendLayout();
+            this.groupBox2.SuspendLayout();
+            this.tabPage3.SuspendLayout();
+            this.tableLayoutPanel1.SuspendLayout();
+            this.tableLayoutPanel2.SuspendLayout();
+            this.tabOutputs.SuspendLayout();
+            this.tabOutput.SuspendLayout();
+            this.tabSnippets.SuspendLayout();
+            this.tabPage4.SuspendLayout();
             this.SuspendLayout();
             // 
             // tabControl1
@@ -179,6 +179,147 @@
             this.tabPage1.UseVisualStyleBackColor = true;
             this.tabPage1.Click += new System.EventHandler(this.tabPage1_Click);
             // 
+            // tableSourceLayout
+            // 
+            this.tableSourceLayout.ColumnCount = 1;
+            this.tableSourceLayout.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tableSourceLayout.Controls.Add(this.Source, 0, 1);
+            this.tableSourceLayout.Controls.Add(this.tableSelectors, 0, 0);
+            this.tableSourceLayout.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tableSourceLayout.Location = new System.Drawing.Point(3, 3);
+            this.tableSourceLayout.Margin = new System.Windows.Forms.Padding(0);
+            this.tableSourceLayout.Name = "tableSourceLayout";
+            this.tableSourceLayout.RowCount = 3;
+            this.tableSourceLayout.RowStyles.Add(new System.Windows.Forms.RowStyle());
+            this.tableSourceLayout.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tableSourceLayout.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
+            this.tableSourceLayout.Size = new System.Drawing.Size(710, 680);
+            this.tableSourceLayout.TabIndex = 12;
+            // 
+            // Source
+            // 
+            this.Source.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.Source.Font = new System.Drawing.Font("Courier New", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.Source.Location = new System.Drawing.Point(0, 100);
+            this.Source.Margin = new System.Windows.Forms.Padding(0);
+            this.Source.Multiline = true;
+            this.Source.Name = "Source";
+            this.Source.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
+            this.Source.Size = new System.Drawing.Size(710, 560);
+            this.Source.TabIndex = 11;
+            this.Source.TextChanged += new System.EventHandler(this.Source_TextChanged);
+            // 
+            // tableSelectors
+            // 
+            this.tableSelectors.ColumnCount = 2;
+            this.tableSelectors.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.tableSelectors.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.tableSelectors.Controls.Add(this.panelRadioButtons, 0, 0);
+            this.tableSelectors.Controls.Add(this.tableButtons, 1, 0);
+            this.tableSelectors.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tableSelectors.Location = new System.Drawing.Point(0, 0);
+            this.tableSelectors.Margin = new System.Windows.Forms.Padding(0);
+            this.tableSelectors.Name = "tableSelectors";
+            this.tableSelectors.RowCount = 1;
+            this.tableSelectors.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.tableSelectors.Size = new System.Drawing.Size(710, 100);
+            this.tableSelectors.TabIndex = 12;
+            // 
+            // panelRadioButtons
+            // 
+            this.panelRadioButtons.Controls.Add(this.rbLibrary);
+            this.panelRadioButtons.Controls.Add(this.rbEdit);
+            this.panelRadioButtons.Controls.Add(this.rbInternet);
+            this.panelRadioButtons.Controls.Add(this.rbFile);
+            this.panelRadioButtons.Location = new System.Drawing.Point(0, 0);
+            this.panelRadioButtons.Margin = new System.Windows.Forms.Padding(0);
+            this.panelRadioButtons.Name = "panelRadioButtons";
+            this.panelRadioButtons.Size = new System.Drawing.Size(126, 99);
+            this.panelRadioButtons.TabIndex = 0;
+            // 
+            // rbLibrary
+            // 
+            this.rbLibrary.AutoSize = true;
+            this.rbLibrary.Location = new System.Drawing.Point(3, 3);
+            this.rbLibrary.Name = "rbLibrary";
+            this.rbLibrary.Size = new System.Drawing.Size(56, 17);
+            this.rbLibrary.TabIndex = 4;
+            this.rbLibrary.Text = "Library";
+            this.rbLibrary.UseVisualStyleBackColor = true;
+            this.rbLibrary.CheckedChanged += new System.EventHandler(this.rbSource_CheckedChanged);
+            // 
+            // rbEdit
+            // 
+            this.rbEdit.AutoSize = true;
+            this.rbEdit.Checked = true;
+            this.rbEdit.Location = new System.Drawing.Point(3, 72);
+            this.rbEdit.Name = "rbEdit";
+            this.rbEdit.Size = new System.Drawing.Size(43, 17);
+            this.rbEdit.TabIndex = 10;
+            this.rbEdit.TabStop = true;
+            this.rbEdit.Text = "Edit";
+            this.rbEdit.UseVisualStyleBackColor = true;
+            this.rbEdit.CheckedChanged += new System.EventHandler(this.rbSource_CheckedChanged);
+            // 
+            // rbInternet
+            // 
+            this.rbInternet.AutoSize = true;
+            this.rbInternet.Location = new System.Drawing.Point(3, 26);
+            this.rbInternet.Name = "rbInternet";
+            this.rbInternet.Size = new System.Drawing.Size(98, 17);
+            this.rbInternet.TabIndex = 5;
+            this.rbInternet.Text = "Internet Source";
+            this.rbInternet.UseVisualStyleBackColor = true;
+            this.rbInternet.CheckedChanged += new System.EventHandler(this.rbSource_CheckedChanged);
+            // 
+            // rbFile
+            // 
+            this.rbFile.AutoSize = true;
+            this.rbFile.Location = new System.Drawing.Point(3, 49);
+            this.rbFile.Name = "rbFile";
+            this.rbFile.Size = new System.Drawing.Size(41, 17);
+            this.rbFile.TabIndex = 6;
+            this.rbFile.Text = "File";
+            this.rbFile.UseVisualStyleBackColor = true;
+            this.rbFile.CheckedChanged += new System.EventHandler(this.rbSource_CheckedChanged);
+            // 
+            // tableButtons
+            // 
+            this.tableButtons.ColumnCount = 1;
+            this.tableButtons.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.tableButtons.Controls.Add(this.btnSourceRetrieve, 0, 0);
+            this.tableButtons.Controls.Add(this.btnClearSource, 0, 1);
+            this.tableButtons.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tableButtons.Location = new System.Drawing.Point(355, 0);
+            this.tableButtons.Margin = new System.Windows.Forms.Padding(0);
+            this.tableButtons.Name = "tableButtons";
+            this.tableButtons.RowCount = 2;
+            this.tableButtons.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.tableButtons.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.tableButtons.Size = new System.Drawing.Size(355, 100);
+            this.tableButtons.TabIndex = 1;
+            // 
+            // btnSourceRetrieve
+            // 
+            this.btnSourceRetrieve.Location = new System.Drawing.Point(3, 3);
+            this.btnSourceRetrieve.Name = "btnSourceRetrieve";
+            this.btnSourceRetrieve.Size = new System.Drawing.Size(104, 23);
+            this.btnSourceRetrieve.TabIndex = 9;
+            this.btnSourceRetrieve.Text = "Select Sources";
+            this.btnSourceRetrieve.UseVisualStyleBackColor = true;
+            this.btnSourceRetrieve.Visible = false;
+            this.btnSourceRetrieve.Click += new System.EventHandler(this.btnSourceRetrieve_Click);
+            // 
+            // btnClearSource
+            // 
+            this.btnClearSource.Location = new System.Drawing.Point(3, 53);
+            this.btnClearSource.Name = "btnClearSource";
+            this.btnClearSource.Size = new System.Drawing.Size(75, 23);
+            this.btnClearSource.TabIndex = 8;
+            this.btnClearSource.Text = "Clear";
+            this.btnClearSource.UseVisualStyleBackColor = true;
+            this.btnClearSource.Click += new System.EventHandler(this.btnClearSource_Click);
+            // 
             // tabPage2
             // 
             this.tabPage2.Controls.Add(this.btnLoadRules);
@@ -242,6 +383,61 @@
             this.tabPage3.Text = "Munged Output";
             this.tabPage3.UseVisualStyleBackColor = true;
             // 
+            // tableLayoutPanel1
+            // 
+            this.tableLayoutPanel1.ColumnCount = 1;
+            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tableLayoutPanel1.Controls.Add(this.tableLayoutPanel2, 0, 0);
+            this.tableLayoutPanel1.Controls.Add(this.tabOutputs, 0, 1);
+            this.tableLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tableLayoutPanel1.Location = new System.Drawing.Point(0, 0);
+            this.tableLayoutPanel1.Margin = new System.Windows.Forms.Padding(0);
+            this.tableLayoutPanel1.Name = "tableLayoutPanel1";
+            this.tableLayoutPanel1.RowCount = 2;
+            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 25F));
+            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tableLayoutPanel1.Size = new System.Drawing.Size(716, 686);
+            this.tableLayoutPanel1.TabIndex = 18;
+            // 
+            // tableLayoutPanel2
+            // 
+            this.tableLayoutPanel2.ColumnCount = 2;
+            this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 75F));
+            this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 248F));
+            this.tableLayoutPanel2.Controls.Add(this.btnSave, 1, 0);
+            this.tableLayoutPanel2.Controls.Add(this.btnApply, 0, 0);
+            this.tableLayoutPanel2.Location = new System.Drawing.Point(0, 0);
+            this.tableLayoutPanel2.Margin = new System.Windows.Forms.Padding(0);
+            this.tableLayoutPanel2.Name = "tableLayoutPanel2";
+            this.tableLayoutPanel2.RowCount = 1;
+            this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tableLayoutPanel2.Size = new System.Drawing.Size(323, 25);
+            this.tableLayoutPanel2.TabIndex = 0;
+            // 
+            // btnSave
+            // 
+            this.btnSave.Enabled = false;
+            this.btnSave.Location = new System.Drawing.Point(75, 0);
+            this.btnSave.Margin = new System.Windows.Forms.Padding(0);
+            this.btnSave.Name = "btnSave";
+            this.btnSave.Size = new System.Drawing.Size(75, 23);
+            this.btnSave.TabIndex = 16;
+            this.btnSave.Text = "Save";
+            this.btnSave.UseVisualStyleBackColor = true;
+            this.btnSave.Click += new System.EventHandler(this.btnSave_Click);
+            // 
+            // btnApply
+            // 
+            this.btnApply.Enabled = false;
+            this.btnApply.Location = new System.Drawing.Point(0, 0);
+            this.btnApply.Margin = new System.Windows.Forms.Padding(0);
+            this.btnApply.Name = "btnApply";
+            this.btnApply.Size = new System.Drawing.Size(75, 23);
+            this.btnApply.TabIndex = 15;
+            this.btnApply.Text = "ApplyRules";
+            this.btnApply.UseVisualStyleBackColor = true;
+            this.btnApply.Click += new System.EventHandler(this.btnApply_Click);
+            // 
             // tabOutputs
             // 
             this.tabOutputs.Controls.Add(this.tabOutput);
@@ -281,8 +477,8 @@
             this.Output.Size = new System.Drawing.Size(702, 629);
             this.Output.TabIndex = 18;
             this.Output.Text = "         1         2         3         4         5         6         7         8\r" +
-    "\n1234567890123456789012345678901234567890123456789012345678901234567890123456789" +
-    "0";
+                "\n1234567890123456789012345678901234567890123456789012345678901234567890123456789" +
+                "0";
             this.Output.TextChanged += new System.EventHandler(this.Output_TextChanged);
             // 
             // tabSnippets
@@ -311,33 +507,9 @@
             this.Snippets.Size = new System.Drawing.Size(702, 629);
             this.Snippets.TabIndex = 19;
             this.Snippets.Text = "         1         2         3         4         5         6         7         8\r" +
-    "\n1234567890123456789012345678901234567890123456789012345678901234567890123456789" +
-    "0";
+                "\n1234567890123456789012345678901234567890123456789012345678901234567890123456789" +
+                "0";
             this.Snippets.TextChanged += new System.EventHandler(this.Snippets_TextChanged);
-            // 
-            // btnSave
-            // 
-            this.btnSave.Enabled = false;
-            this.btnSave.Location = new System.Drawing.Point(75, 0);
-            this.btnSave.Margin = new System.Windows.Forms.Padding(0);
-            this.btnSave.Name = "btnSave";
-            this.btnSave.Size = new System.Drawing.Size(75, 23);
-            this.btnSave.TabIndex = 16;
-            this.btnSave.Text = "Save";
-            this.btnSave.UseVisualStyleBackColor = true;
-            this.btnSave.Click += new System.EventHandler(this.btnSave_Click);
-            // 
-            // btnApply
-            // 
-            this.btnApply.Enabled = false;
-            this.btnApply.Location = new System.Drawing.Point(0, 0);
-            this.btnApply.Margin = new System.Windows.Forms.Padding(0);
-            this.btnApply.Name = "btnApply";
-            this.btnApply.Size = new System.Drawing.Size(75, 23);
-            this.btnApply.TabIndex = 15;
-            this.btnApply.Text = "ApplyRules";
-            this.btnApply.UseVisualStyleBackColor = true;
-            this.btnApply.Click += new System.EventHandler(this.btnApply_Click);
             // 
             // tabPage4
             // 
@@ -359,177 +531,6 @@
             this.txtDiagnostic.Size = new System.Drawing.Size(710, 680);
             this.txtDiagnostic.TabIndex = 0;
             // 
-            // tableLayoutPanel1
-            // 
-            this.tableLayoutPanel1.ColumnCount = 1;
-            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel1.Controls.Add(this.tableLayoutPanel2, 0, 0);
-            this.tableLayoutPanel1.Controls.Add(this.tabOutputs, 0, 1);
-            this.tableLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tableLayoutPanel1.Location = new System.Drawing.Point(0, 0);
-            this.tableLayoutPanel1.Margin = new System.Windows.Forms.Padding(0);
-            this.tableLayoutPanel1.Name = "tableLayoutPanel1";
-            this.tableLayoutPanel1.RowCount = 2;
-            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 25F));
-            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel1.Size = new System.Drawing.Size(716, 686);
-            this.tableLayoutPanel1.TabIndex = 18;
-            // 
-            // tableLayoutPanel2
-            // 
-            this.tableLayoutPanel2.ColumnCount = 2;
-            this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 75F));
-            this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 75F));
-            this.tableLayoutPanel2.Controls.Add(this.btnSave, 1, 0);
-            this.tableLayoutPanel2.Controls.Add(this.btnApply, 0, 0);
-            this.tableLayoutPanel2.Location = new System.Drawing.Point(0, 0);
-            this.tableLayoutPanel2.Margin = new System.Windows.Forms.Padding(0);
-            this.tableLayoutPanel2.Name = "tableLayoutPanel2";
-            this.tableLayoutPanel2.RowCount = 1;
-            this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel2.Size = new System.Drawing.Size(323, 25);
-            this.tableLayoutPanel2.TabIndex = 0;
-            // 
-            // rbLibrary
-            // 
-            this.rbLibrary.AutoSize = true;
-            this.rbLibrary.Location = new System.Drawing.Point(3, 3);
-            this.rbLibrary.Name = "rbLibrary";
-            this.rbLibrary.Size = new System.Drawing.Size(56, 17);
-            this.rbLibrary.TabIndex = 4;
-            this.rbLibrary.Text = "Library";
-            this.rbLibrary.UseVisualStyleBackColor = true;
-            this.rbLibrary.CheckedChanged += new System.EventHandler(this.rbSource_CheckedChanged);
-            // 
-            // rbInternet
-            // 
-            this.rbInternet.AutoSize = true;
-            this.rbInternet.Location = new System.Drawing.Point(3, 26);
-            this.rbInternet.Name = "rbInternet";
-            this.rbInternet.Size = new System.Drawing.Size(98, 17);
-            this.rbInternet.TabIndex = 5;
-            this.rbInternet.Text = "Internet Source";
-            this.rbInternet.UseVisualStyleBackColor = true;
-            this.rbInternet.CheckedChanged += new System.EventHandler(this.rbSource_CheckedChanged);
-            // 
-            // rbFile
-            // 
-            this.rbFile.AutoSize = true;
-            this.rbFile.Location = new System.Drawing.Point(3, 49);
-            this.rbFile.Name = "rbFile";
-            this.rbFile.Size = new System.Drawing.Size(41, 17);
-            this.rbFile.TabIndex = 6;
-            this.rbFile.Text = "File";
-            this.rbFile.UseVisualStyleBackColor = true;
-            this.rbFile.CheckedChanged += new System.EventHandler(this.rbSource_CheckedChanged);
-            // 
-            // btnClearSource
-            // 
-            this.btnClearSource.Location = new System.Drawing.Point(3, 53);
-            this.btnClearSource.Name = "btnClearSource";
-            this.btnClearSource.Size = new System.Drawing.Size(75, 23);
-            this.btnClearSource.TabIndex = 8;
-            this.btnClearSource.Text = "Clear";
-            this.btnClearSource.UseVisualStyleBackColor = true;
-            this.btnClearSource.Click += new System.EventHandler(this.btnClearSource_Click);
-            // 
-            // btnSourceRetrieve
-            // 
-            this.btnSourceRetrieve.Location = new System.Drawing.Point(3, 3);
-            this.btnSourceRetrieve.Name = "btnSourceRetrieve";
-            this.btnSourceRetrieve.Size = new System.Drawing.Size(104, 23);
-            this.btnSourceRetrieve.TabIndex = 9;
-            this.btnSourceRetrieve.Text = "Select Sources";
-            this.btnSourceRetrieve.UseVisualStyleBackColor = true;
-            this.btnSourceRetrieve.Visible = false;
-            this.btnSourceRetrieve.Click += new System.EventHandler(this.btnSourceRetrieve_Click);
-            // 
-            // rbEdit
-            // 
-            this.rbEdit.AutoSize = true;
-            this.rbEdit.Checked = true;
-            this.rbEdit.Location = new System.Drawing.Point(3, 72);
-            this.rbEdit.Name = "rbEdit";
-            this.rbEdit.Size = new System.Drawing.Size(43, 17);
-            this.rbEdit.TabIndex = 10;
-            this.rbEdit.TabStop = true;
-            this.rbEdit.Text = "Edit";
-            this.rbEdit.UseVisualStyleBackColor = true;
-            this.rbEdit.CheckedChanged += new System.EventHandler(this.rbSource_CheckedChanged);
-            // 
-            // Source
-            // 
-            this.Source.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.Source.Font = new System.Drawing.Font("Courier New", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.Source.Location = new System.Drawing.Point(0, 100);
-            this.Source.Margin = new System.Windows.Forms.Padding(0);
-            this.Source.Multiline = true;
-            this.Source.Name = "Source";
-            this.Source.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
-            this.Source.Size = new System.Drawing.Size(710, 580);
-            this.Source.TabIndex = 11;
-            this.Source.TextChanged += new System.EventHandler(this.Source_TextChanged);
-            // 
-            // tableSourceLayout
-            // 
-            this.tableSourceLayout.ColumnCount = 1;
-            this.tableSourceLayout.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableSourceLayout.Controls.Add(this.Source, 0, 1);
-            this.tableSourceLayout.Controls.Add(this.tableSelectors, 0, 0);
-            this.tableSourceLayout.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tableSourceLayout.Location = new System.Drawing.Point(3, 3);
-            this.tableSourceLayout.Margin = new System.Windows.Forms.Padding(0);
-            this.tableSourceLayout.Name = "tableSourceLayout";
-            this.tableSourceLayout.RowCount = 2;
-            this.tableSourceLayout.RowStyles.Add(new System.Windows.Forms.RowStyle());
-            this.tableSourceLayout.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableSourceLayout.Size = new System.Drawing.Size(710, 680);
-            this.tableSourceLayout.TabIndex = 12;
-            // 
-            // tableSelectors
-            // 
-            this.tableSelectors.ColumnCount = 2;
-            this.tableSelectors.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tableSelectors.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tableSelectors.Controls.Add(this.panelRadioButtons, 0, 0);
-            this.tableSelectors.Controls.Add(this.tableButtons, 1, 0);
-            this.tableSelectors.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tableSelectors.Location = new System.Drawing.Point(0, 0);
-            this.tableSelectors.Margin = new System.Windows.Forms.Padding(0);
-            this.tableSelectors.Name = "tableSelectors";
-            this.tableSelectors.RowCount = 1;
-            this.tableSelectors.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tableSelectors.Size = new System.Drawing.Size(710, 100);
-            this.tableSelectors.TabIndex = 12;
-            // 
-            // panelRadioButtons
-            // 
-            this.panelRadioButtons.Controls.Add(this.rbLibrary);
-            this.panelRadioButtons.Controls.Add(this.rbEdit);
-            this.panelRadioButtons.Controls.Add(this.rbInternet);
-            this.panelRadioButtons.Controls.Add(this.rbFile);
-            this.panelRadioButtons.Location = new System.Drawing.Point(0, 0);
-            this.panelRadioButtons.Margin = new System.Windows.Forms.Padding(0);
-            this.panelRadioButtons.Name = "panelRadioButtons";
-            this.panelRadioButtons.Size = new System.Drawing.Size(126, 99);
-            this.panelRadioButtons.TabIndex = 0;
-            // 
-            // tableButtons
-            // 
-            this.tableButtons.ColumnCount = 1;
-            this.tableButtons.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tableButtons.Controls.Add(this.btnSourceRetrieve, 0, 0);
-            this.tableButtons.Controls.Add(this.btnClearSource, 0, 1);
-            this.tableButtons.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tableButtons.Location = new System.Drawing.Point(355, 0);
-            this.tableButtons.Margin = new System.Windows.Forms.Padding(0);
-            this.tableButtons.Name = "tableButtons";
-            this.tableButtons.RowCount = 2;
-            this.tableButtons.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tableButtons.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tableButtons.Size = new System.Drawing.Size(355, 100);
-            this.tableButtons.TabIndex = 1;
-            // 
             // MungerGui
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -541,9 +542,17 @@
             this.tabControl1.ResumeLayout(false);
             this.contextMenuStrip1.ResumeLayout(false);
             this.tabPage1.ResumeLayout(false);
+            this.tableSourceLayout.ResumeLayout(false);
+            this.tableSourceLayout.PerformLayout();
+            this.tableSelectors.ResumeLayout(false);
+            this.panelRadioButtons.ResumeLayout(false);
+            this.panelRadioButtons.PerformLayout();
+            this.tableButtons.ResumeLayout(false);
             this.tabPage2.ResumeLayout(false);
             this.groupBox2.ResumeLayout(false);
             this.tabPage3.ResumeLayout(false);
+            this.tableLayoutPanel1.ResumeLayout(false);
+            this.tableLayoutPanel2.ResumeLayout(false);
             this.tabOutputs.ResumeLayout(false);
             this.tabOutput.ResumeLayout(false);
             this.tabOutput.PerformLayout();
@@ -551,14 +560,6 @@
             this.tabSnippets.PerformLayout();
             this.tabPage4.ResumeLayout(false);
             this.tabPage4.PerformLayout();
-            this.tableLayoutPanel1.ResumeLayout(false);
-            this.tableLayoutPanel2.ResumeLayout(false);
-            this.tableSourceLayout.ResumeLayout(false);
-            this.tableSourceLayout.PerformLayout();
-            this.tableSelectors.ResumeLayout(false);
-            this.panelRadioButtons.ResumeLayout(false);
-            this.panelRadioButtons.PerformLayout();
-            this.tableButtons.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
