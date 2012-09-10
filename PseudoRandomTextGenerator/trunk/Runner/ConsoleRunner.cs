@@ -72,6 +72,7 @@ namespace Runner
             // THIS does NOT work
             var tf = new TransformationFactory(Granularity.Word);
             var rules = tf.GetTransformers();
+
             // cannot deserialize Leet....
             var rx = rules.ToXml();
             var rr = new List<TransformerBase>().FromXML(rx);
@@ -166,6 +167,7 @@ namespace Runner
             Random generator = new Random();
 
             var density = 1840.0;
+
             //var density = 5;
 
             double minOffset = density;
@@ -182,9 +184,11 @@ namespace Runner
             {
                 double u1 = generator.NextDouble();
                 double u2 = generator.NextDouble();
+
                 // not sure what this line is figureing out
                 // ugh.
                 double normal = Math.Sqrt(-2 * Math.Log(u1)) * Math.Cos(2 * Math.PI * u2);
+
                 //double offset = (normal * 8.333) + density;
                 double offset = ((normal * deviation) + mean) / 2;
 
@@ -201,6 +205,7 @@ namespace Runner
 
                 total += offset;
             }
+
             // minOffset of 30, maxOffset around 70
             // still not sure how to use these
             Console.WriteLine(string.Format("Average offset: {0}", maxOffset / 100));
@@ -243,7 +248,13 @@ namespace Runner
                 Console.WriteLine("Generating....\r\n\r\n");
 
                 _textGenerator.Source = _textCache;
-                var gen = _textGenerator.Write(minLength: 8000, maxLength: 10000);
+
+                _textGenerator.LengthMin = 8000;
+                _textGenerator.LengthMax = 10000;
+                var gen = _textGenerator.Munge();
+
+                // this should be private
+                //var gen = _textGenerator.Write(minLength: 8000, maxLength: 10000);
 
                 gen = ApplyGranularRules(gen);
                 gen = ApplyGlobalRules(gen);
@@ -299,6 +310,7 @@ namespace Runner
         private static IEnumerable<TransformerBase> GetGlobalRules()
         {
             var l = new List<TransformerBase> {
+
                 //new PunctuizeWhitespace(), // this conflicts with Density....
                 new Density{ Percentage = 97}
                 ,new XrmlFormat()

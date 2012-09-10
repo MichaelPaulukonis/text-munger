@@ -136,9 +136,11 @@ namespace TextTransformer
                 case MarkovRuleType.Default:
                     rule = new DefaultRule();
                     break;
+
                 case MarkovRuleType.XrayWord:
                     rule = new XrayWordRule();
                     break;
+
                 case MarkovRuleType.XrayChar:
                     rule = new XrayCharRule();
                     break;
@@ -217,6 +219,7 @@ namespace TextTransformer
                     // only go to the trouble of Initialization if and only if the input has changed
                     _source = value;
                     _settingsAreDirty = true;
+
                     // TODO: what about when Source is empty?
                     //InitializeChain();
                 }
@@ -252,6 +255,7 @@ namespace TextTransformer
                 if (_keySize != _origKeySize)
                 {
                     _settingsAreDirty = true;
+
                     // Clear out source on KeySizeChange so that chain can be re-initialized
                     //Source = string.Empty;
                 }
@@ -299,6 +303,12 @@ namespace TextTransformer
                 InitializeChain();
                 _settingsAreDirty = false;
             }
+
+            // TODO: this preliminarily works
+            // with no respect to performance, or dealing with missing values
+            // or non-matching case, or anything like that.
+            //var key = GetKeyThatStartsWith("vast");
+            //return this.Write(LengthMin, LengthMax, key);
 
             return this.Write(LengthMin, LengthMax);
         }
@@ -369,26 +379,28 @@ namespace TextTransformer
             }
         }
 
-        // TODO: overload, to accept a designated seed-string
+        // refactoring refs to this method
+        // so we can externally designate a seed-string
+        private string Write(int minLength, int maxLength)
+        {
+            // get the first key AT RANDOM
+            var key = InitializeKey();
+
+            return Write(minLength, maxLength, key);
+        }
+
         // if seed-string does not exist, also use random
-        // also, length, and some other factors to come from the _rule
-        public string Write(int minLength, int maxLength)
+        private string Write(int minLength, int maxLength, Key key)
         {
             // once we get a string longer than this we are done
             // NOTE: minLength is a hard barrier, while maxLength is soft.
             var length = _random.Next(minLength, maxLength);
 
-            // get the first key AT RANDOM
-            // hey, we're INITIALIZING THE KEY!
-            // and we call the same code INSIDE OF GETWORD(key)
-            //var key = new Key { Current = GetRandomKey(), Previous = string.Empty };
-            //key = GetWord(key);
-            var key = InitializeKey();
-
             var keyRepCount = 0;
             const int keyRepLimit = 5;
 
             var sentenceLength = 0;
+
             // keep the words in a list, so we aren't doing more string manipulation than necessary
             var words = new List<string>();
             var ruleDelimLength = TokenizerRule.Delimiter.Length; // cache this.
@@ -402,11 +414,13 @@ namespace TextTransformer
             {
                 words.Add(key.Word);
                 sentenceLength += (key.Word.Length + ruleDelimLength);
+
                 // Q: do we need to remove the space for the alternate method?
                 // A: not now, all methods use the space as a delimiter IN THE STORAGE MODEL
                 //    not in the output. this allows us to split the key-length "words" into components
 
                 key.Previous = key.Current;
+
                 // skip the first word of the existing key, add a space and the next word
                 // update the current key by getting the tail and appending the nextWord
                 key.Current = string.Join(_wordDelim, key.Current.Split(Convert.ToChar(_wordDelim)).Skip(FirstWord)) + _wordDelim + key.Word;
@@ -417,7 +431,7 @@ namespace TextTransformer
                     keyRepCount++;
                     if (keyRepCount >= keyRepLimit)
                     {
-                        key.Current = GetRandomKey();
+                        key.Current = GetRandomKeyWord();
                     }
                 }
                 key = GetWord(key); // update for next loop
@@ -426,9 +440,27 @@ namespace TextTransformer
             return string.Join(TokenizerRule.Delimiter, words);
         }
 
+        private Key InitializeKey(string word)
+        {
+            var key = new Key { Current = GetRandomKeyWord(), Previous = string.Empty, Word = word };
+
+            // GetWord will actuall reset the key entirely if it can't find a matching work.
+            // this is not obvious
+            if (word == string.Empty)
+            {
+                key = GetWord(key);
+            }
+            return key;
+        }
+
         private Key InitializeKey()
         {
-            var key = new Key { Current = GetRandomKey(), Previous = string.Empty };
+            return InitializeKey(string.Empty);
+
+            var key = new Key { Current = GetRandomKeyWord(), Previous = string.Empty };
+
+            // GetWord will actuall reset the key entirely if it can't find a matching work.
+            // this is not obvioud
             key = GetWord(key);
             return key;
         }
@@ -450,10 +482,29 @@ namespace TextTransformer
             return k;
         }
 
-        private string GetRandomKey()
+        private string GetRandomKeyWord()
         {
             var keyIndex = _random.Next(_chain.Count);
             return _chain.Keys.ToArray()[keyIndex];
+        }
+
+        // TODO: a better name, that is still accurate
+        // TODO: default if not found
+        // TODO: this is incorrect
+        // The word we are looking for should match, not the key. the key is part of the PREVIOUS words
+        // we need to match some arbitrary key whose VALUE contains the starter.....
+        private Key GetKeyThatStartsWith(string starter)
+        {
+            var k = _chain.Keys.FirstOrDefault(key => key.StartsWith(starter));
+
+            //var v = _chain.Values.FirstOrDefault(value => value.Contains(starter));
+            var v = _chain.Values.FirstOrDefault(value => value.Contains(starter));
+
+            var w = _chain.FirstOrDefault(x => x.Value.Contains(starter));
+
+            return new Key { Current = w.Key, Previous = string.Empty, Word = starter };
+
+            return new Key { Current = k, Previous = string.Empty, Word = starter };
         }
 
         public override string ToString()
