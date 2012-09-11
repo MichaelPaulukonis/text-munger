@@ -40,6 +40,8 @@
             this.cbRules = new System.Windows.Forms.ComboBox();
             this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
             this.chkCaseSensitive = new System.Windows.Forms.CheckBox();
+            this.txtStarterSeed = new System.Windows.Forms.TextBox();
+            this.label5 = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // label1
@@ -110,7 +112,7 @@
             // 
             // btnSave
             // 
-            this.btnSave.Location = new System.Drawing.Point(73, 153);
+            this.btnSave.Location = new System.Drawing.Point(73, 179);
             this.btnSave.Name = "btnSave";
             this.btnSave.Size = new System.Drawing.Size(75, 23);
             this.btnSave.TabIndex = 8;
@@ -133,7 +135,7 @@
             // chkCaseSensitive
             // 
             this.chkCaseSensitive.AutoSize = true;
-            this.chkCaseSensitive.Location = new System.Drawing.Point(80, 117);
+            this.chkCaseSensitive.Location = new System.Drawing.Point(80, 143);
             this.chkCaseSensitive.Name = "chkCaseSensitive";
             this.chkCaseSensitive.Size = new System.Drawing.Size(96, 17);
             this.chkCaseSensitive.TabIndex = 10;
@@ -141,11 +143,32 @@
             this.chkCaseSensitive.UseVisualStyleBackColor = true;
             this.chkCaseSensitive.CheckedChanged += new System.EventHandler(this.chkCaseSensitive_CheckedChanged);
             // 
+            // txtStarterSeed
+            // 
+            this.txtStarterSeed.Location = new System.Drawing.Point(80, 117);
+            this.txtStarterSeed.Name = "txtStarterSeed";
+            this.txtStarterSeed.Size = new System.Drawing.Size(68, 20);
+            this.txtStarterSeed.TabIndex = 12;
+            this.toolTip1.SetToolTip(this.txtStarterSeed, "char size of output");
+            this.txtStarterSeed.TextChanged += new System.EventHandler(this.txtStarterSeed_TextChanged);
+            // 
+            // label5
+            // 
+            this.label5.AutoSize = true;
+            this.label5.Location = new System.Drawing.Point(40, 117);
+            this.label5.Name = "label5";
+            this.label5.Size = new System.Drawing.Size(36, 13);
+            this.label5.TabIndex = 11;
+            this.label5.Text = "starter";
+            this.label5.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            // 
             // MarkovEditor
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(219, 179);
+            this.ClientSize = new System.Drawing.Size(219, 216);
+            this.Controls.Add(this.txtStarterSeed);
+            this.Controls.Add(this.label5);
             this.Controls.Add(this.chkCaseSensitive);
             this.Controls.Add(this.cbRules);
             this.Controls.Add(this.btnSave);
@@ -176,5 +199,7 @@
         private System.Windows.Forms.ComboBox cbRules;
         private System.Windows.Forms.ToolTip toolTip1;
         private System.Windows.Forms.CheckBox chkCaseSensitive;
+        private System.Windows.Forms.TextBox txtStarterSeed;
+        private System.Windows.Forms.Label label5;
     }
 }

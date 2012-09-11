@@ -171,10 +171,13 @@ namespace TextTransformer
         private const int FirstWord = 1;
         private static readonly string _wordDelim = Convert.ToChar(6).ToString(); // this is for the storage model only, not for output.
         private bool _settingsAreDirty = false; // have any settings changed?
+        private const int DefaultKeySize = 2;
 
-        public MarkovGenerator() : this(new DefaultRule(), 2) { }
+        public MarkovGenerator() :
+            this(new DefaultRule(), DefaultKeySize) { }
 
-        public MarkovGenerator(int keySize) : this(new DefaultRule(), keySize) { }
+        public MarkovGenerator(int keySize) :
+            this(new DefaultRule(), keySize) { }
 
         public MarkovGenerator(MarkovRuleType ruleType, int keySize)
             : this(new MarkovRuleFactory(ruleType).GetRule(), keySize)
@@ -189,6 +192,8 @@ namespace TextTransformer
 
             LengthMin = 2000;
             LengthMax = 2000;
+
+            StarterSeed = string.Empty;
         }
 
         // TODO: should there be more params exposed?
@@ -199,6 +204,17 @@ namespace TextTransformer
             // that might be something to clone, so we process different chained Processors...
             var c = new MarkovGenerator(TokenizerRule, KeySize) { LengthMin = this.LengthMin, LengthMax = this.LengthMax };
             return c;
+        }
+
+        private void Init()
+        {
+            StarterSeed = string.Empty;
+        }
+
+        [OnDeserializing]
+        private void OnDeserializing(StreamingContext ctx)
+        {
+            Init();
         }
 
         [DataMember]
@@ -262,6 +278,16 @@ namespace TextTransformer
             }
         }
 
+        // TODO: when recreating from serialized data, this is not honored.
+        private string _ss = string.Empty;
+
+        [DataMember]
+        public string StarterSeed
+        {
+            get { return _ss; }
+            set { _ss = value; }
+        }
+
         public IMarkovRule TokenizerRule
         {
             get { return _rule; }
@@ -308,9 +334,15 @@ namespace TextTransformer
             // with no respect to performance, or dealing with missing values
             // or non-matching case, or anything like that.
             //var key = GetKeyThatStartsWith("vast");
-            //return this.Write(LengthMin, LengthMax, key);
-
-            return this.Write(LengthMin, LengthMax);
+            if (StarterSeed.Length > 0)
+            {
+                var key = GetKeyThatStartsWith(StarterSeed);
+                return this.Write(LengthMin, LengthMax, key);
+            }
+            else
+            {
+                return this.Write(LengthMin, LengthMax);
+            }
         }
 
         public void ReadTextFile(string filePath)
