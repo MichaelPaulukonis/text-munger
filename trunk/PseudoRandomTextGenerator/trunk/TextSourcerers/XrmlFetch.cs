@@ -104,12 +104,20 @@ namespace TextSourcers
     {
         public string Extract(string url)
         {
-            const string xpath = @"//div[@style='font-family: monospace;']";
-            var source = WebFetch.Fetch(url);
-            var doc = new HtmlDocument();
-            doc.LoadHtml(source);
-            var target = doc.DocumentNode.SelectSingleNode(xpath);
-            var text = HttpUtility.HtmlDecode(target.InnerText);
+            var text = string.Empty;
+            try
+            {
+                const string xpath = @"//div[@style='font-family: monospace;']";
+                var source = WebFetch.Fetch(url);
+                var doc = new HtmlDocument();
+                doc.LoadHtml(source);
+                var target = doc.DocumentNode.SelectSingleNode(xpath);
+                text = HttpUtility.HtmlDecode(target.InnerText);
+            }
+            catch (Exception ex)
+            {
+                // TODO: log it, or something....
+            }
 
             return text;
         }
