@@ -20,6 +20,8 @@ namespace GUI
 
         public EditorShortLines(ShortLines sl)
         {
+            this.StartPosition = FormStartPosition.CenterParent;
+
             InitializeComponent();
             _sl = sl;
             PopulateForm();

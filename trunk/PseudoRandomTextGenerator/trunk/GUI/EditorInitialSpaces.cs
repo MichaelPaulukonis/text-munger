@@ -22,6 +22,8 @@ namespace GUI
         {
             _ins = ins;
 
+            this.StartPosition = FormStartPosition.CenterParent;
+
             InitializeComponent();
 
             PopulateForm();

@@ -16,6 +16,8 @@ namespace GUI
 
         private frmLibraryPicker()
         {
+            this.StartPosition = FormStartPosition.CenterParent;
+
             InitializeComponent();
             var filter = "Library files (*.lib.xml)|*.lib.xml|All files (*.*)|*.*";
             saveLibraryDialog.Filter = filter;

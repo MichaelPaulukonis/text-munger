@@ -15,6 +15,8 @@ namespace GUI
 
         public MarkovEditor(MarkovGenerator mg)
         {
+            this.StartPosition = FormStartPosition.CenterParent;
+
             InitializeComponent();
             _m = mg;
             PopulateForm();
