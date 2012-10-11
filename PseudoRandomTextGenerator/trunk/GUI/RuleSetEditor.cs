@@ -23,6 +23,8 @@ namespace GUI
             InitializeSaveFileDialog();
 
             Editor.AddDoubleClickHandler(DisplayRuleEditor);
+
+            this.StartPosition = FormStartPosition.CenterParent;
         }
 
         private RuleSetEditor(MultipleSelectionControl control, List<RuleSet> activeRuleSetEditors)

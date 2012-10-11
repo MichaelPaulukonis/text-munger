@@ -11,6 +11,8 @@ namespace GUI
 
         public XrayFormatEditor(XrmlFormat x)
         {
+            this.StartPosition = FormStartPosition.CenterParent;
+
             InitializeComponent();
             _xray = x;
             PopulateForm();
