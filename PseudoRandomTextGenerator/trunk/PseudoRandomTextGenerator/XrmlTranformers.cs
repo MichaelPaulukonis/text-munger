@@ -60,7 +60,7 @@ namespace TextTransformer
                 // THIS WORKS AWESOMELY if the source-text has NO LINE-BREAKS
                 //
                 // if the source-text HAS LINE-BREAKS... THIS SUCKS
-                var line = Regex.Replace(lines[0], regex, "$1\n");
+                var line = Regex.Replace(lines[0], regex, "$1\r\n");
                 lines[0] = PadItOut(line);
             }
 
@@ -71,7 +71,7 @@ namespace TextTransformer
                 Density.Source = string.Join("", ((List<string>)lines).ToArray());
                 mod = Density.Munged;
                 var regex = string.Format("(.{{1,{0}}})", LineLengthLimit);
-                mod = Regex.Replace(mod, regex, "$1\n");
+                mod = Regex.Replace(mod, regex, "$1\r\n");
                 return mod;
             }
             else
