@@ -138,6 +138,7 @@ namespace GUI
                 //_activeEditors.Add(rs);
                 AddActiveRuleset(rs);
                 var ed = new RuleSetEditor(rs, RuleSetSelector, _activeEditors);
+                ed.StartPosition = FormStartPosition.CenterParent;
                 ed.Show();
             }
         }
