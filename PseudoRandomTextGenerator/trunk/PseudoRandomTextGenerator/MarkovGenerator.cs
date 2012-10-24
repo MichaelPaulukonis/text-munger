@@ -169,7 +169,11 @@ namespace TextTransformer
         private static readonly Random _random = new Random();
         private IMarkovRule _rule;
         private const int FirstWord = 1;
+
+        // aaand, this is stupid. "storage model" requires strings to be split and joined?
+        // what a about a semantic data-structure?!?!?
         private static readonly string _wordDelim = Convert.ToChar(6).ToString(); // this is for the storage model only, not for output.
+
         private bool _settingsAreDirty = false; // have any settings changed?
         private const int DefaultKeySize = 2;
 
