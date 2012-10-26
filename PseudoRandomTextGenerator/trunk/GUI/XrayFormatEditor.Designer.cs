@@ -71,6 +71,8 @@
             this.txtDensity.Name = "txtDensity";
             this.txtDensity.Size = new System.Drawing.Size(100, 20);
             this.txtDensity.TabIndex = 3;
+            this.toolTip1.SetToolTip(this.txtDensity, "Density of the Punctuation.\r\n100% = all puncts, 0% = all text.\r\n\r\nNOTE: use of Ya" +
+                    "w will change the density.");
             this.txtDensity.TextChanged += new System.EventHandler(this.txtDensity_TextChanged);
             // 
             // label2
@@ -89,6 +91,8 @@
             this.txtYaw.Name = "txtYaw";
             this.txtYaw.Size = new System.Drawing.Size(100, 20);
             this.txtYaw.TabIndex = 5;
+            this.toolTip1.SetToolTip(this.txtYaw, "Major variance range around Density.\r\n\r\nNOTE: this changes the effective density " +
+                    "percentage \r\ndrastically.");
             this.txtYaw.TextChanged += new System.EventHandler(this.txtYaw_TextChanged);
             // 
             // label3
@@ -107,6 +111,7 @@
             this.txtWarble.Name = "txtWarble";
             this.txtWarble.Size = new System.Drawing.Size(100, 20);
             this.txtWarble.TabIndex = 7;
+            this.toolTip1.SetToolTip(this.txtWarble, "Minor variance around Yaw.");
             this.txtWarble.TextChanged += new System.EventHandler(this.txtWarble_TextChanged);
             // 
             // label4
@@ -125,6 +130,7 @@
             this.txtTenacity.Name = "txtTenacity";
             this.txtTenacity.Size = new System.Drawing.Size(100, 20);
             this.txtTenacity.TabIndex = 9;
+            this.toolTip1.SetToolTip(this.txtTenacity, "Percentage chance that that Warble will NOT change.");
             this.txtTenacity.TextChanged += new System.EventHandler(this.txtTenacity_TextChanged);
             // 
             // label5
@@ -173,6 +179,9 @@
             this.rbFillIn.TabIndex = 12;
             this.rbFillIn.TabStop = true;
             this.rbFillIn.Text = "FillAround";
+            this.toolTip1.SetToolTip(this.rbFillIn, "Allows the preservation of original whitespace, with\r\npunctuation \"FillingAround\"" +
+                    " the text.\r\n\r\nUseful if you want to retain characteristics of \"free-verse\"\r\nstyl" +
+                    "e output.");
             this.rbFillIn.UseVisualStyleBackColor = true;
             this.rbFillIn.CheckedChanged += new System.EventHandler(this.rbDensity_CheckedChanged);
             // 
@@ -184,6 +193,8 @@
             this.rbDensity.Size = new System.Drawing.Size(75, 17);
             this.rbDensity.TabIndex = 14;
             this.rbDensity.Text = "Density Fill";
+            this.toolTip1.SetToolTip(this.rbDensity, "Ignores original whitespace, and adds a variable amount\r\nof punctuation between t" +
+                    "he output tokens.");
             this.rbDensity.UseVisualStyleBackColor = true;
             this.rbDensity.CheckedChanged += new System.EventHandler(this.rbDensity_CheckedChanged);
             // 

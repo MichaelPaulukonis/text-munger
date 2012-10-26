@@ -338,6 +338,11 @@ namespace GUI
                 {
                     text = Snippets.Text;
                 }
+
+                // strip out non-ASCII chars
+                // from http://stackoverflow.com/a/123340/41153
+                text = Regex.Replace(text, @"[^\u0000-\u007F]", string.Empty);
+
                 File.WriteAllText(name, text);
             }
         }

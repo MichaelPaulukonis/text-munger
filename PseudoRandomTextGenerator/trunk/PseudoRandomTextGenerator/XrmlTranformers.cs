@@ -410,27 +410,10 @@ namespace TextTransformer
 
         public int Next()
         {
-            // TODO: make tenacity a percentage
-            // that is, the chance that the yaw WON'T change
-            // not a stupid countdown.....
-
-            //var i = int.Parse(textPercentage.Text);
-            //if (rnd.Next(1, 101) <= i)
-            //{
-            //    do();
-            //}
-            //
             if (_rnd.Next(1, 100) >= Tenacity)
             {
                 _yaw = _rnd.Next(-Yaw, Yaw);
             }
-
-            //_tenacity--;
-            //if (_tenacity <= 0) // reset yaw and tenacity
-            //{
-            //    _tenacity = _rnd.Next(Tenacity);
-            //    _yaw = _rnd.Next(-Yaw, Yaw);
-            //}
 
             // new warble each retrieval
             var warble = _rnd.Next(-Warble, Warble);
